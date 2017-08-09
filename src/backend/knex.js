@@ -5,7 +5,7 @@ export default require('knex')({
         port: 3396,
         user: 'root',
         password: 'root',
-        database: 'kl',
+        database: 'keylo',
         charset: 'utf8',
     }
 });
