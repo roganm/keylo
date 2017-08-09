@@ -31,9 +31,7 @@ exports.up = function(knex, Promise) {
             indsTable.boolean('PermitShowListingLink');
             indsTable.boolean('Active').notNullable().defaultTo(true);
 
-            indsTable.timestamp('Created_At').notNullable();
-            indsTable.timestamp('Deleted_At').notNullable();
-            indsTable.timestamp('Updated_At').notNullable();
+            indsTable.timestamps(true, true);
         })
 
         .createTable('organizations', function(orgsTable) {
@@ -64,9 +62,7 @@ exports.up = function(knex, Promise) {
             orgsTable.boolean('PermitShowListingLink');
             orgsTable.boolean('Active').notNullable().defaultTo(true);
 
-            orgsTable.timestamp('Created_At').notNullable();
-            orgsTable.timestamp('Deleted_At').notNullable();
-            orgsTable.timestamp('Updated_At').notNullable();
+            orgsTable.timestamps(true, true);
         })
 
         .createTable('photos', function(photsTable) {
@@ -84,9 +80,7 @@ exports.up = function(knex, Promise) {
 
             photsTable.boolean('Active').notNullable().defaultTo(true);
 
-            photsTable.timestamp('Created_At').notNullable();
-            photsTable.timestamp('Deleted_At').notNullable();
-            photsTable.timestamp('Updated_At').notNullable();
+            photsTable.timestamps(true, true);
         })
 
         .createTable('listings', function(listTable) {
@@ -121,9 +115,7 @@ exports.up = function(knex, Promise) {
             listTable.string('VideoLink', 250);
 
             listTable.boolean('Active').notNullable().defaultTo(true);
-            listTable.datetime('Created_At').notNullable();
-            listTable.datetime('Updated_At').notNullable();
-            listTable.datetime('Deleted_At').notNullable();
+            listTable.timestamps(true, true);
         })
         .createTable('listing_realtor_organization', function(lroTable) {
             // Primary Key
@@ -131,13 +123,14 @@ exports.up = function(knex, Promise) {
 
             // Data
             lroTable.string('GUID', 50).notNullable().unique();
-            lroTable.string('ListingId', 50).notNullable();
-            lroTable.string('RealtorId', 50).notNullable();
-            lroTable.string('OrganizationId', 50);
+            lroTable.string('ListingId', 50).notNullable()
+                .references('guid').inTable('listings');
+            lroTable.string('IndividualId', 50).notNullable()
+                .references('guid').inTable('individuals');
+            lroTable.string('OrganizationId', 50).references('guid')
+                .inTable('organizations');
             lroTable.boolean('Active').notNullable().defaultTo(true);
-            lroTable.string('Created_At').notNullable();
-            lroTable.string('Updated_At').notNullable();
-            lroTable.string('Deleted_At').notNullable();
+            lroTable.timestamps(true, true);
         })
 
         .createTable('listing_photo', function(lpTable) {
@@ -146,12 +139,12 @@ exports.up = function(knex, Promise) {
 
             // Data
             lpTable.string('GUID', 50).notNullable().unique();
-            lpTable.string('ListingId', 50).notNullable();
-            lpTable.string('PhotoId', 50).notNullable();
+            lpTable.string('ListingId', 50).notNullable()
+                .references('guid').inTable('listings');
+            lpTable.string('PhotoId', 50).notNullable()
+                .references('guid').inTable('photos');
             lpTable.boolean('Active').notNullable().defaultTo(true);
-            lpTable.string('Created_At').notNullable();
-            lpTable.string('Updated_At').notNullable();
-            lpTable.string('Deleted_At').notNullable();
+            lpTable.timestamps(true, true);
         })
 
         .createTable('listing_business', function(lbTable) {
@@ -160,12 +153,12 @@ exports.up = function(knex, Promise) {
 
             // Data
             lbTable.string('GUID', 50).notNullable().unique();
-            lbTable.string('ListingId', 50).notNullable();
+            lbTable.string('ListingId', 50).notNullable()
+                .references('guid').inTable('listings');
             lbTable.string('BusinessId', 50).notNullable();
+
             lbTable.boolean('Active').notNullable().defaultTo(true);
-            lbTable.string('Created_At').notNullable();
-            lbTable.string('Updated_At').notNullable();
-            lbTable.string('Deleted_At').notNullable();
+            lbTable.timestamps(true, true);
         });
 };
 
