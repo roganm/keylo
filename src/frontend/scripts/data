@@ -1,0 +1,61 @@
+Listing
+    GUID
+    ID
+    MlsNumber
+    RealtorIds(GUID)
+    PropertyId(GUID)
+    DetailsUrl
+    StatusId
+    OpenHouseDate
+    PhotoChangeDate
+    AlternateUrl
+    BusinessId
+
+Realtor
+    GUID
+    InidividualId
+    OrganizationId
+    Name
+    FirstName
+    LastName
+    WebsiteType1
+    WebsiteType2
+    WebsiteType3
+    WebsiteType4
+    WebsiteType5
+    PhotoUrl
+
+Organization
+    GUID
+    OrganizationId
+    Name
+    Logo
+    Address
+    PhoneType1
+    PhoneType2
+    PhoneType3
+    PhoneType4
+    PhoneType5
+    Website
+
+
+Property
+    GUID
+    Address
+    Longitude
+    Latitude
+    Price
+    Type
+    OwnershipType
+    ZoningType
+    LandSize
+    PostalCode
+
+Building
+    BathroomTotal
+    Bedrooms
+    SizeInterior
+    Type
+
+Business
+    GUID
