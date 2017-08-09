@@ -1,61 +1,125 @@
-Listing
-    GUID
-    ID
-    MlsNumber
-    RealtorIds(GUID)
-    PropertyId(GUID)
-    DetailsUrl
-    StatusId
-    OpenHouseDate
-    PhotoChangeDate
-    AlternateUrl
+************************************************************
+
+LISTING_REALTOR_ORGANIZATION
+    ListingId
+    RealtorId
+    OrganizationId
+    Timestamp
+
+************************************************************
+
+LISTING_PHOTO
+    ListingId
+    PhotoId
+    Timestamp
+
+************************************************************
+
+LISTING_BUSINESS
+    ListingId
     BusinessId
+    Timestamp
 
-Realtor
-    GUID
-    InidividualId
-    OrganizationId
-    Name
-    FirstName
-    LastName
-    WebsiteType1
-    WebsiteType2
-    WebsiteType3
-    WebsiteType4
-    WebsiteType5
-    PhotoUrl
+************************************************************
 
-Organization
+LISTINGS
+    GUID 
+    Id
+    MlsNumber
+    PublicRemarks
+    BathroomTotal
+    Bedrooms
+    SizeInterior
+    SizeTotal
+    Type
+    Price
+    Type
+    AddressText
+    Longitude
+    Latitude
+    PostalCode
+    RelativeDetailsURL
+    StatusId
+    PhotoChangeDateUTC
+    TypeId
+    OwnershipType
+    ZoningType
+    BrochureLink
+    PhotoLink
+    SoundLink
+    VideoLink
+    Timestamp
+
+************************************************************
+
+PHOTOS
     GUID
-    OrganizationId
+    SequenceId
+    HighResPath
+    MedResPath
+    LowResPath
+    LastUpdated
+    Timestamp
+
+************************************************************
+
+BUSINESSES
+    GUID
+    Timestamp
+
+************************************************************
+
+ORGANIZATIONS
+    GUID
+    OrganizationID
     Name
     Logo
-    Address
+    AddressText
     PhoneType1
     PhoneType2
     PhoneType3
     PhoneType4
     PhoneType5
-    Website
+    Email1
+    Email2
+    Email3
+    Email4
+    WebsiteType1
+    WebsiteType2
+    WebsiteType3
+    WebsiteType4
+    WebsiteType5
+    HasEmail
+    PermitFreetextEmail
+    PermitShowListingLink
+    Timestamp
 
+************************************************************
 
-Property
+INDIVIDUALS
     GUID
-    Address
-    Longitude
-    Latitude
-    Price
-    Type
-    OwnershipType
-    ZoningType
-    LandSize
-    PostalCode
+    IndividualID
+    Name
+    PhoneType1
+    PhoneType2
+    PhoneType3
+    PhoneType4
+    PhoneType5
+    WebsiteType1
+    WebsiteType2
+    WebsiteType3
+    WebsiteType4
+    WebsiteType5
+    Email1
+    Email2
+    Email3
+    Email4
+    Photo
+    PermitFreetextEmail
+    FirstName
+    LastName
+    CorporationDisplayTypeId
+    PermitShowListingLink
+    Timestamp
 
-Building
-    BathroomTotal
-    Bedrooms
-    SizeInterior
-    Type
-
-Business
-    GUID
+************************************************************
