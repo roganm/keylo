@@ -27,7 +27,7 @@ exports.up = function(knex, Promise) {
             indsTable.boolean('PermitFreetextEmail');
             indsTable.string('FirstName', 250);
             indsTable.string('LastName', 250);
-            indsTable.decimal('CorporationDisplayTypeId', 2);
+            indsTable.decimal('CorporationDisplayTypeId');
             indsTable.boolean('PermitShowListingLink');
             indsTable.boolean('Active').notNullable().defaultTo(true);
 
@@ -106,6 +106,8 @@ exports.up = function(knex, Promise) {
             listTable.string('RelativeDetailsURL', 250);
             listTable.string('StatusId', 250);
             listTable.string('PhotoChangeDateUTC', 250);
+            listTable.string('PriceChangeDateUTC', 250);
+            listTable.string('OpenHouseInsertDateUTC', 250);
             listTable.string('TypeId', 250);
             listTable.string('OwnershipType', 250);
             listTable.string('ZoningType', 250);
@@ -165,8 +167,6 @@ exports.up = function(knex, Promise) {
 exports.down = function(knex, Promise) {
     return knex
         .schema
-        .dropTableIfExists('birds')
-        .dropTableIfExists('users')
         .dropTableIfExists('individuals')
         .dropTableIfExists('organizations')
         .dropTableIfExists('photos')

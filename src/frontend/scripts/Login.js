@@ -14,7 +14,7 @@ class Login extends Component {
                 <label>Password: &nbsp;</label>
             <input type="password" />
             </div>
-            <div>
+            
           </form>
 
     );

@@ -1,24 +1,7 @@
-exports.seed = function (knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('listings').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        { id: 1, colName: 'rowValue1' },
-        { id: 2, colName: 'rowValue2' },
-        { id: 3, colName: 'rowValue3' }
-      ]);
-    });
-};
+const data = require('./data.json');
+const GUID = require('node-uuid');
 
-import GUID from 'node-uuid';
-
-exports.seed = function seed(knex, Promise) {
-  const tableName = 'listings';
-
-  const data = require('./data.json');
-
-  let listing = {
+let listing = {
     guid: null,
     listingid: null,
     mlsnumber: null,
@@ -49,40 +32,6 @@ exports.seed = function seed(knex, Promise) {
     videolink: null,
   }
 
-  let individual = {
-    guid: null,
-    individualid: null,
-    name: null,
-    phonetype1: null,
-    phonetype2: null,
-    phonetype3: null,
-    phonetype4: null,
-    phonetype5: null,
-    websitetype1: null,
-    websitetype2: null,
-    websitetype3: null,
-    websitetype4: null,
-    websitetype5: null,
-    email1: null,
-    email2: null,
-    email3: null,
-    email4: null,
-    photo: null,
-    permitfreetextemail: null,
-    firstname: null,
-    lastname: null,
-    corporationdisplaytypeid: null,
-    permitshowlistinglink: null,
-  }
-
-  let listings = [];
-
-  let individuals = [];
-
-  let photos = [];
-
-  let orgs = [];
-
   for (let i = 0; i < data.length; i++) {
     listing.guid = GUID.v4();
     listing.listingid = data[i].Id;
@@ -111,17 +60,5 @@ exports.seed = function seed(knex, Promise) {
     listing.photolink = data[i].AlternateURL.PhotoLink;
     listing.soundlink = data[i].AlternateURL.SoundLink;
     listing.videolink = data[i].AlternateURL.VideoLink;
-    console.log(listing);
   }
-
-  var rows = [
-
-  ];
-
-  return knex(tableName)
-    // Empty the table (DELETE)
-    .del()
-    .then(function () {
-      return knex.insert(rows).into(tableName);
-    });
-};
+    console.log(listing);

@@ -10,7 +10,7 @@ class App extends Component {
           <img src="logo.svg" className="App-logo" alt="Hello" />
           <h2>Welcome to Keylo</h2>
         </div>
-        <p className="App-intro">
+        <p className="App-intro"><br />
           To begin, do 2084 pushups.
         </p>
         <Login />
