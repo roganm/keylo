@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
             // Data
             indsTable.string('Name', 50).notNullable();
             indsTable.string('GUID', 50).notNullable().unique();
-            indsTable.string('IndividualId', 50).notNullable().unique();
+            indsTable.decimal('IndividualId').notNullable().unique();
             indsTable.string('PhoneType1', 14);
             indsTable.string('PhoneType2', 14);
             indsTable.string('PhoneType3', 14);
@@ -35,13 +35,13 @@ exports.up = function(knex, Promise) {
         })
 
         .createTable('organizations', function(orgsTable) {
-            // Primary Key
+            // Primary
             orgsTable.increments();
 
             // Data
             orgsTable.string('Name', 50).notNullable();
             orgsTable.string('GUID', 50).notNullable().unique();
-            orgsTable.string('OrganizationId', 50).notNullable().unique();
+            orgsTable.decimal('OrganizationId').notNullable().unique();
             orgsTable.string('Logo', 250);
             orgsTable.string('AddressText', 250);
             orgsTable.string('PhoneType1', 14);
@@ -126,9 +126,9 @@ exports.up = function(knex, Promise) {
             // Data
             lroTable.string('GUID', 50).notNullable().unique();
             lroTable.string('ListingId', 50).notNullable()
-                .references('guid').inTable('listings');
+                .references('GUID').inTable('listings');
             lroTable.string('IndividualId', 50).notNullable()
-                .references('guid').inTable('individuals');
+                .references('GUID').inTable('individuals');
             lroTable.string('OrganizationId', 50).references('guid')
                 .inTable('organizations');
             lroTable.boolean('Active').notNullable().defaultTo(true);
@@ -142,9 +142,9 @@ exports.up = function(knex, Promise) {
             // Data
             lpTable.string('GUID', 50).notNullable().unique();
             lpTable.string('ListingId', 50).notNullable()
-                .references('guid').inTable('listings');
+                .references('GUID').inTable('listings');
             lpTable.string('PhotoId', 50).notNullable()
-                .references('guid').inTable('photos');
+                .references('GUID').inTable('photos');
             lpTable.boolean('Active').notNullable().defaultTo(true);
             lpTable.timestamps(true, true);
         })
@@ -156,7 +156,7 @@ exports.up = function(knex, Promise) {
             // Data
             lbTable.string('GUID', 50).notNullable().unique();
             lbTable.string('ListingId', 50).notNullable()
-                .references('guid').inTable('listings');
+                .references('GUID').inTable('listings');
             lbTable.string('BusinessId', 50).notNullable();
 
             lbTable.boolean('Active').notNullable().defaultTo(true);

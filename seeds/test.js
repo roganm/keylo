@@ -1,15 +1,15 @@
 const data = require('./data.json');
 const GUID = require('node-uuid');
 const Knex = require('knex')({
-    client: 'mysql',
-    connection: {
-        host: 'localhost',
-        port: 3396,
-        user: 'root',
-        password: 'root',
-        database: 'keylo',
-        charset: 'utf8',
-    }
+  client: 'mysql',
+  connection: {
+    host: 'localhost',
+    port: 3396,
+    user: 'root',
+    password: 'root',
+    database: 'keylo',
+    charset: 'utf8',
+  }
 });
 
 let listings = [];
@@ -99,6 +99,7 @@ for (let i = 0; i < data.length; i++) {
   listing.medrespath = data[i].Property.Photo.MedResPath;
   listing.lowrespath = data[i].Property.Photo.LowResPath;
   listing.photolastupdated = data[i].Property.Photo.LastUpdated;
+
   if (data[i].AlternateURL) {
     listing.brochurelink = data[i].AlternateURL.BrochureLink ? data[i].AlternateURL.BrochureLink : null;
     listing.photolink = data[i].AlternateURL.PhotoLink ? data[i].AlternateURL.PhotoLink : null;
@@ -199,19 +200,19 @@ for (let i = 0; i < data.length; i++) {
       for (let k = 0; k < data[i].Individual[j].Websites.length; k++) {
         switch (data[i].Individual[j].Websites[k].WebsiteTypeId) {
           case '1':
-            individual.websitetype1 = data[i].Individual[j].Websites[k].Website
+            individual.websitetype1 = data[i].Individual[j].Websites[k].Website;
             break;
           case '2':
-            individual.websitetype2 = data[i].Individual[j].Websites[k].Website
+            individual.websitetype2 = data[i].Individual[j].Websites[k].Website;
             break;
           case '3':
-            individual.websitetype3 = data[i].Individual[j].Websites[k].Website
+            individual.websitetype3 = data[i].Individual[j].Websites[k].Website;
             break;
           case '4':
-            individual.websitetype4 = data[i].Individual[j].Websites[k].Website
+            individual.websitetype4 = data[i].Individual[j].Websites[k].Website;
             break;
           case '5':
-            individual.websitetype5 = data[i].Individual[j].Websites[k].Website
+            individual.websitetype5 = data[i].Individual[j].Websites[k].Website;
             break;
         }
       }
@@ -222,9 +223,20 @@ for (let i = 0; i < data.length; i++) {
     refs.individuals.push(individual.guid);
     individuals.push(individual);
 
+    const getOperation = Knex('organizations').where({
+      'OrganizationId': data[i].Individual[j].Organization.OrganizationID
+    }).select('GUID').then((org) => {
+      if (org) {
+        console.log(org);
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+
     organization.guid = GUID.v4();
     organization.name = data[i].Individual[j].Organization.Name;
     organization.logo = data[i].Individual[j].Organization.Logo;
+    organization.organizationid = data[i].Individual[j].Organization.OrganizationID;
     organization.addresstext = data[i].Individual[j].Organization.Address.AddressText;
     organization.permitfreetextemail = data[i].Individual[j].Organization.PermitFreeTextEmail;
     organization.permitshowlistinglink = data[i].Individual[j].Organization.PermitShowListingLink;
@@ -255,19 +267,19 @@ for (let i = 0; i < data.length; i++) {
       for (let k = 0; k < data[i].Individual[j].Organization.Websites.length; k++) {
         switch (data[i].Individual[j].Organization.Websites[k].WebsiteTypeId) {
           case '1':
-            individual.websitetype1 = data[i].Individual[j].Organization.Websites[k].Website
+            individual.websitetype1 = data[i].Individual[j].Organization.Websites[k].Website;
             break;
           case '2':
-            individual.websitetype2 = data[i].Individual[j].Organization.Websites[k].Website
+            individual.websitetype2 = data[i].Individual[j].Organization.Websites[k].Website;
             break;
           case '3':
-            individual.websitetype3 = data[i].Individual[j].Organization.Websites[k].Website
+            individual.websitetype3 = data[i].Individual[j].Organization.Websites[k].Website;
             break;
           case '4':
-            individual.websitetype4 = data[i].Individual[j].Organization.Websites[k].Website
+            individual.websitetype4 = data[i].Individual[j].Organization.Websites[k].Website;
             break;
           case '5':
-            individual.websitetype5 = data[i].Individual[j].Organization.Websites[k].Website
+            individual.websitetype5 = data[i].Individual[j].Organization.Websites[k].Website;
             break;
         }
       }
@@ -280,6 +292,3 @@ for (let i = 0; i < data.length; i++) {
   }
 
 }
-
-console.log(refs);
-
