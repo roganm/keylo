@@ -175,6 +175,8 @@ for (let i = 0; i < data.length; i++) {
 
 
   }
-console.log(refs);
+
+  console.log(refs);
+
 }
 
