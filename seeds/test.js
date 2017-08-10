@@ -20,20 +20,9 @@ let photos = [];
 
 let organizations = [];
 
-var refs = {
-  listing: null,
-  individuals: [
-
-  ],
-  organizations: [
-
-  ],
-  photos: [
-
-  ],
-}
-
 for (let i = 0; i < data.length; i++) {
+
+  var listingref = null;
 
   var listing = {
     guid: null,
@@ -71,7 +60,7 @@ for (let i = 0; i < data.length; i++) {
     photolastupdated: null,
   }
 
-  listing.guid = GUID.v4();
+  listing.GUID = GUID.v4();
   listing.listingid = data[i].Id;
   listing.mlsnumber = data[i].MlsNumber;
   listing.publicremarks = data[i].PublicRemarks;
@@ -107,14 +96,29 @@ for (let i = 0; i < data.length; i++) {
     listing.videolink = data[i].AlternateURL.VideoLink ? data[i].AlternateURL.VideoLink : null;
   }
 
-  refs.listing = listing.guid;
+  refs.listing = listing.GUID;
 
   listings.push(listing);
 
   for (let j = 0; j < data[i].Individual.length; j++) {
 
+    // Check if this individual exists in the database
+    const getOperation = Knex('individuals').where({
+      'IndividualId': data[i].Individual[j].IndividualID
+    }).select('GUID').then((org) => {
+      if (org) {
+        // Get their GUID for the refs table
+        refs.
+        // If their details have changed, lets update them
+      } else {
+        // New realtor, lets make them
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+
     let individual = {
-      guid: null,
+      GUID: null,
       individualid: null,
       name: null,
       phonetype1: null,
@@ -140,7 +144,7 @@ for (let i = 0; i < data.length; i++) {
     };
 
     organization = {
-      guid: null,
+      GUID: null,
       name: null,
       organizationid: null,
       logo: null,
@@ -163,7 +167,7 @@ for (let i = 0; i < data.length; i++) {
       permitshowlistinglink: null,
     }
 
-    individual.guid = GUID.v4();
+    individual.GUID = GUID.v4();
     individual.individualid = data[i].Individual[j].IndividualID;
     individual.name = data[i].Individual[j].Name;
     individual.photo = data[i].Individual[j].Photo;
@@ -220,20 +224,22 @@ for (let i = 0; i < data.length; i++) {
 
     individual.email1 = data[i].Individual[j].Emails[0].ContactId;
 
-    refs.individuals.push(individual.guid);
+    refs.individuals.push(individual.GUID);
     individuals.push(individual);
 
     const getOperation = Knex('organizations').where({
       'OrganizationId': data[i].Individual[j].Organization.OrganizationID
     }).select('GUID').then((org) => {
       if (org) {
-        console.log(org);
+        refs.organizations
+      } else {
+        //New org
       }
     }).catch((err) => {
       console.log(err);
     });
 
-    organization.guid = GUID.v4();
+    organization.GUID = GUID.v4();
     organization.name = data[i].Individual[j].Organization.Name;
     organization.logo = data[i].Individual[j].Organization.Logo;
     organization.organizationid = data[i].Individual[j].Organization.OrganizationID;
@@ -287,7 +293,7 @@ for (let i = 0; i < data.length; i++) {
 
     organization.email1 = data[i].Individual[j].Organization.Emails[0].ContactId;
 
-    refs.organizations.push(organization.guid);
+    refs.organizations.push(organization.GUID);
     organizations.push(organization);
   }
 
