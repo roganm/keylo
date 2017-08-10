@@ -75,6 +75,19 @@ exports.seed = function seed(knex, Promise) {
     permitshowlistinglink: null,
   }
 
+  let refs = {
+    listing: null,
+    individuals: [
+
+    ],
+    orgs: [
+
+    ],
+    photos: [
+
+    ],
+  }
+
   let listings = [];
 
   let individuals = [];
@@ -84,6 +97,7 @@ exports.seed = function seed(knex, Promise) {
   let orgs = [];
 
   for (let i = 0; i < data.length; i++) {
+    
     listing.guid = GUID.v4();
     listing.listingid = data[i].Id;
     listing.mlsnumber = data[i].MlsNumber;

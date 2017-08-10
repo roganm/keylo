@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
             // Data
             indsTable.string('Name', 50).notNullable();
             indsTable.string('GUID', 50).notNullable().unique();
-            indsTable.string('IndividualId', 10);
+            indsTable.string('IndividualId', 50).notNullable().unique();
             indsTable.string('PhoneType1', 14);
             indsTable.string('PhoneType2', 14);
             indsTable.string('PhoneType3', 14);
@@ -41,7 +41,7 @@ exports.up = function(knex, Promise) {
             // Data
             orgsTable.string('Name', 50).notNullable();
             orgsTable.string('GUID', 50).notNullable().unique();
-            orgsTable.string('OrganizationId', 10);
+            orgsTable.string('OrganizationId', 50).notNullable().unique();
             orgsTable.string('Logo', 250);
             orgsTable.string('AddressText', 250);
             orgsTable.string('PhoneType1', 14);
@@ -89,8 +89,8 @@ exports.up = function(knex, Promise) {
 
             // Data
             listTable.string('GUID', 50).notNullable().unique();
-            listTable.string('ListingId', 250);
-            listTable.string('MlsNumber', 250);
+            listTable.string('ListingId', 250).notNullable().unique();
+            listTable.string('MlsNumber', 250).notNullable().unique();
             listTable.string('PublicRemarks', 250);
             listTable.string('BathroomTotal', 250);
             listTable.string('Bedrooms', 250);
