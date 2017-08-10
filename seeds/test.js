@@ -1,5 +1,16 @@
 const data = require('./data.json');
 const GUID = require('node-uuid');
+const Knex = require('knex')({
+    client: 'mysql',
+    connection: {
+        host: 'localhost',
+        port: 3396,
+        user: 'root',
+        password: 'root',
+        database: 'keylo',
+        charset: 'utf8',
+    }
+});
 
 let listings = [];
 
@@ -7,19 +18,22 @@ let individuals = [];
 
 let photos = [];
 
-let orgs = [];
+let organizations = [];
+
+var refs = {
+  listing: null,
+  individuals: [
+
+  ],
+  organizations: [
+
+  ],
+  photos: [
+
+  ],
+}
 
 for (let i = 0; i < data.length; i++) {
-
-  var refs = {
-    listing: null,
-    individuals: [
-
-    ],
-    photos: [
-
-    ],
-  }
 
   var listing = {
     guid: null,
@@ -50,6 +64,11 @@ for (let i = 0; i < data.length; i++) {
     photolink: null,
     soundlink: null,
     videolink: null,
+    photosequenceid: null,
+    highrespath: null,
+    medrespath: null,
+    lowrespath: null,
+    photolastupdated: null,
   }
 
   listing.guid = GUID.v4();
@@ -75,6 +94,11 @@ for (let i = 0; i < data.length; i++) {
   listing.ownershiptype = data[i].OwnershipType ? data[i].OwnershipType : null;
   listing.zoningtype = data[i].ZoningType ? data[i].ZoningType : null;
   listing.openhouseinsertdateutc = data[i].OpenHouseInsertDateUTC ? data[i].OpenHouseInsertDateUTC : null;
+  listing.photosequenceid = data[i].Property.Photo.SequenceId;
+  listing.highrespath = data[i].Property.Photo.HighResPath;
+  listing.medrespath = data[i].Property.Photo.MedResPath;
+  listing.lowrespath = data[i].Property.Photo.LowResPath;
+  listing.photolastupdated = data[i].Property.Photo.LastUpdated;
   if (data[i].AlternateURL) {
     listing.brochurelink = data[i].AlternateURL.BrochureLink ? data[i].AlternateURL.BrochureLink : null;
     listing.photolink = data[i].AlternateURL.PhotoLink ? data[i].AlternateURL.PhotoLink : null;
@@ -87,6 +111,7 @@ for (let i = 0; i < data.length; i++) {
   listings.push(listing);
 
   for (let j = 0; j < data[i].Individual.length; j++) {
+
     let individual = {
       guid: null,
       individualid: null,
@@ -111,6 +136,30 @@ for (let i = 0; i < data.length; i++) {
       lastname: null,
       corporationdisplaytypeid: null,
       permitshowlistinglink: null,
+    };
+
+    organization = {
+      guid: null,
+      name: null,
+      organizationid: null,
+      logo: null,
+      addresstext: null,
+      phonetype1: null,
+      phonetype2: null,
+      phonetype3: null,
+      phonetype4: null,
+      phonetype5: null,
+      websitetype1: null,
+      websitetype2: null,
+      websitetype3: null,
+      websitetype4: null,
+      websitetype5: null,
+      email1: null,
+      email2: null,
+      email3: null,
+      email4: null,
+      permitfreetextemail: null,
+      permitshowlistinglink: null,
     }
 
     individual.guid = GUID.v4();
@@ -124,9 +173,9 @@ for (let i = 0; i < data.length; i++) {
     individual.permitshowlistinglink = data[i].Individual[j].PermitShowListingLink;
 
 
-    if(data[i].Individual[j].Phones) {
-      for(let k = 0; k < data[i].Individual[j].Phones.length; k++){
-        switch(data[i].Individual[j].Phones[k].PhoneTypeId){
+    if (data[i].Individual[j].Phones) {
+      for (let k = 0; k < data[i].Individual[j].Phones.length; k++) {
+        switch (data[i].Individual[j].Phones[k].PhoneTypeId) {
           case '1':
             individual.phonetype1 = data[i].Individual[j].Phones[k].AreaCode + '-' + data[i].Individual[j].Phones[k].PhoneNumber;
             break;
@@ -146,9 +195,9 @@ for (let i = 0; i < data.length; i++) {
       }
     }
 
-    if(data[i].Individual[j].Websites) {
-      for(let k = 0; k < data[i].Individual[j].Websites.length; k++){
-        switch(data[i].Individual[j].Websites[k].WebsiteTypeId){
+    if (data[i].Individual[j].Websites) {
+      for (let k = 0; k < data[i].Individual[j].Websites.length; k++) {
+        switch (data[i].Individual[j].Websites[k].WebsiteTypeId) {
           case '1':
             individual.websitetype1 = data[i].Individual[j].Websites[k].Website
             break;
@@ -173,11 +222,64 @@ for (let i = 0; i < data.length; i++) {
     refs.individuals.push(individual.guid);
     individuals.push(individual);
 
+    organization.guid = GUID.v4();
+    organization.name = data[i].Individual[j].Organization.Name;
+    organization.logo = data[i].Individual[j].Organization.Logo;
+    organization.addresstext = data[i].Individual[j].Organization.Address.AddressText;
+    organization.permitfreetextemail = data[i].Individual[j].Organization.PermitFreeTextEmail;
+    organization.permitshowlistinglink = data[i].Individual[j].Organization.PermitShowListingLink;
 
+    if (data[i].Individual[j].Organization.Phones) {
+      for (let k = 0; k < data[i].Individual[j].Organization.Phones.length; k++) {
+        switch (data[i].Individual[j].Organization.Phones[k].PhoneTypeId) {
+          case '1':
+            individual.phonetype1 = data[i].Individual[j].Organization.Phones[k].AreaCode + '-' + data[i].Individual[j].Organization.Phones[k].PhoneNumber;
+            break;
+          case '2':
+            individual.phonetype2 = data[i].Individual[j].Organization.Phones[k].AreaCode + '-' + data[i].Individual[j].Organization.Phones[k].PhoneNumber;
+            break;
+          case '3':
+            individual.phonetype3 = data[i].Individual[j].Organization.Phones[k].AreaCode + '-' + data[i].Individual[j].Organization.Phones[k].PhoneNumber;
+            break;
+          case '4':
+            individual.phonetype4 = data[i].Individual[j].Organization.Phones[k].AreaCode + '-' + data[i].Individual[j].Organization.Phones[k].PhoneNumber;
+            break;
+          case '5':
+            individual.phonetype5 = data[i].Individual[j].Organization.Phones[k].AreaCode + '-' + data[i].Individual[j].Organization.Phones[k].PhoneNumber;
+            break;
+        }
+      }
+    }
+
+    if (data[i].Individual[j].Organization.Websites) {
+      for (let k = 0; k < data[i].Individual[j].Organization.Websites.length; k++) {
+        switch (data[i].Individual[j].Organization.Websites[k].WebsiteTypeId) {
+          case '1':
+            individual.websitetype1 = data[i].Individual[j].Organization.Websites[k].Website
+            break;
+          case '2':
+            individual.websitetype2 = data[i].Individual[j].Organization.Websites[k].Website
+            break;
+          case '3':
+            individual.websitetype3 = data[i].Individual[j].Organization.Websites[k].Website
+            break;
+          case '4':
+            individual.websitetype4 = data[i].Individual[j].Organization.Websites[k].Website
+            break;
+          case '5':
+            individual.websitetype5 = data[i].Individual[j].Organization.Websites[k].Website
+            break;
+        }
+      }
+    }
+
+    organization.email1 = data[i].Individual[j].Organization.Emails[0].ContactId;
+
+    refs.organizations.push(organization.guid);
+    organizations.push(organization);
   }
 
-  console.log(refs);
-
-  
 }
+
+console.log(refs);
 
