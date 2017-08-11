@@ -1,4 +1,4 @@
-const bulk_data = require('./data.json');
+const bulk_data = require('./huge.json');
 const GUID = require('node-uuid');
 const Knex = require('knex')({
   client: 'mysql',
@@ -12,15 +12,10 @@ const Knex = require('knex')({
   }
 });
 
-let relations = [];
-
-
-
 function parse(data, i) {
 
-  var listref;
-  var indrefs;
-  var orgrefs;
+  console.log(i);
+
   var j = 0;
 
   Knex('listings').select('guid').where({
@@ -43,8 +38,6 @@ function parse(data, i) {
             }).catch((err) => {
               console.log(err);
             });
-
-
 
         })
         .catch((err) => {
@@ -91,6 +84,8 @@ function createListing(data) {
       soundlink: null,
       videolink: null,
       photosequenceid: null,
+      parking: null,
+      ammenitiesnearby: null,
       highrespath: null,
       medrespath: null,
       lowrespath: null,
@@ -123,6 +118,8 @@ function createListing(data) {
     listing.zoningtype = data.ZoningType ? data.ZoningType : null;
     listing.openhouseinsertdateutc = data.OpenHouseInsertDateUTC ? data.OpenHouseInsertDateUTC : null;
     listing.photosequenceid = data.Property.Photo[0].SequenceId;
+    listing.parking = data.Property.Parking.Name;
+    listing.ammenitiesnearby = data.Property.AmmenitiesNearBy;
     listing.highrespath = data.Property.Photo[0].HighResPath;
     listing.medrespath = data.Property.Photo[0].MedResPath;
     listing.lowrespath = data.Property.Photo[0].LowResPath;
@@ -193,6 +190,7 @@ function createIndividual(data, j, listid) {
           email3: null,
           email4: null,
           photo: null,
+          position: null,
           permitfreetextemail: null,
           firstname: null,
           lastname: null,
@@ -204,6 +202,7 @@ function createIndividual(data, j, listid) {
         individual.individualid = data[j].IndividualID;
         individual.name = data[j].Name;
         individual.photo = data[j].Photo;
+        individual.position = data[j].Position;
         individual.permitfreetextemail = data[j].PermitFreeTextEmail;
         individual.firstname = data[j].FirstName;
         individual.lastname = data[j].LastName;

@@ -24,6 +24,7 @@ exports.up = function(knex, Promise) {
             indsTable.string('email3', 50);
             indsTable.string('email4', 50);
             indsTable.string('photo', 250);
+            indsTable.string('position', 250);
             indsTable.boolean('permitfreetextemail');
             indsTable.string('firstname', 250);
             indsTable.string('lastname', 250);
@@ -77,6 +78,7 @@ exports.up = function(knex, Promise) {
             listTable.string('bathroomtotal', 250);
             listTable.string('bedrooms', 250);
             listTable.string('sizeinterior', 250);
+            listTable.string('storiestotal', 250);
             listTable.string('sizetotal', 250);
             listTable.string('type', 250);
             listTable.string('propertytype', 250);
@@ -91,8 +93,10 @@ exports.up = function(knex, Promise) {
             listTable.string('photochangedateutc', 250);
             listTable.string('pricechangedateutc', 250);
             listTable.string('openhouseinsertdateutc', 250);
+            listTable.string('parking', 250);
             listTable.string('typeid', 250);
             listTable.string('ownershiptype', 250);
+            listTable.string('ammenitiesnearby', 250);
             listTable.string('zoningtype', 250);
             listTable.string('brochurelink', 250);
             listTable.string('photolink', 250);
