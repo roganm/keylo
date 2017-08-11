@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
             // Data
             indsTable.string('name', 50).notNullable();
             indsTable.string('guid', 50).notNullable().unique();
-            indsTable.string('individualid', 250).notNullable().unique();
+            indsTable.integer('individualid').notNullable().unique();
             indsTable.string('phonetype1', 14);
             indsTable.string('phonetype2', 14);
             indsTable.string('phonetype3', 14);
@@ -41,7 +41,7 @@ exports.up = function(knex, Promise) {
             // Data
             orgsTable.string('name', 50).notNullable();
             orgsTable.string('guid', 50).notNullable().unique();
-            orgsTable.string('organizationid', 250).notNullable().unique();
+            orgsTable.integer('organizationid').notNullable().unique();
             orgsTable.string('logo', 250);
             orgsTable.string('addresstext', 250);
             orgsTable.string('phonetype1', 14);
@@ -112,12 +112,9 @@ exports.up = function(knex, Promise) {
 
             // Data
             lroTable.string('guid', 50).notNullable().unique();
-            lroTable.string('listingid', 50).notNullable()
-                .references('guid').inTable('listings');
-            lroTable.string('individualid', 50).notNullable()
-                .references('guid').inTable('individuals');
-            lroTable.string('organizationid', 50).references('guid')
-                .inTable('organizations');
+            lroTable.string('listingid', 50);
+            lroTable.string('individualid', 50);
+            lroTable.string('organizationid', 50);
             lroTable.boolean('active').notNullable().defaultTo(true);
             lroTable.timestamps(true, true);
         })
@@ -128,8 +125,7 @@ exports.up = function(knex, Promise) {
 
             // Data
             lbTable.string('guid', 50).notNullable().unique();
-            lbTable.string('listingid', 50).notNullable()
-                .references('guid').inTable('listings');
+            lbTable.string('listingid', 50).notNullable();
             lbTable.string('businessid', 50).notNullable();
 
             lbTable.boolean('active').notNullable().defaultTo(true);
