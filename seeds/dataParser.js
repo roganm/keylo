@@ -1,10 +1,10 @@
-const bulk_data = require('./huge.json');
+const bulk_data = require('./data.json');
 const GUID = require('node-uuid');
 const Knex = require('knex')({
   client: 'mysql',
   connection: {
     host: 'localhost',
-    port: 3306,
+    port: 3396,
     user: 'root',
     password: 'root',
     database: 'keylo',
@@ -16,8 +16,6 @@ function parse(data, i) {
 
   console.log(i);
 
-  var j = 0;
-
   Knex('listings').select('guid').where({
     'listingid': data[i].Id
   }).then((lst) => {
@@ -25,17 +23,20 @@ function parse(data, i) {
       //console.log(lst);
       if (data[++i]) {
         parse(data, i);
+      } else {
+        Knex.destroy();
       }
     } else {
       createListing(data[i])
         .then((listid) => {
 
-          createIndividual(data[i].Individual, j, listid)
+          createIndividual(data[i].Individual, 0, listid)
             .then((ind) => {
-
 
               if (data[++i]) {
                 parse(data, i);
+              } else {
+                Knex.destroy();
               }
 
             }).catch((err) => {
