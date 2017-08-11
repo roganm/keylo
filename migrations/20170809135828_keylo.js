@@ -116,9 +116,9 @@ exports.up = function(knex, Promise) {
 
             // Data
             lroTable.string('guid', 50).notNullable().unique();
-            lroTable.string('listingid', 50);
-            lroTable.string('individualid', 50);
-            lroTable.string('organizationid', 50);
+            lroTable.string('listingid', 50).references('guid').inTable('listings');
+            lroTable.string('individualid', 50).references('guid').inTable('individuals');
+            lroTable.string('organizationid', 50).references('guid').inTable('organizations');
             lroTable.boolean('active').notNullable().defaultTo(true);
             lroTable.timestamps(true, true);
         })

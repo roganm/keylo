@@ -24,6 +24,100 @@ const routes = [
         }
     },
     {
+        path: '/realtors',
+        method: 'GET',
+        handler: (request, reply) => {
+            const getOperation = Knex('individuals').select('name', 'guid').orderBy('lastname', 'desc')
+                .then((results) => {
+                    if (!results || results.length === 0) {
+                        reply({
+                            error: true,
+                            errMessage: 'no results found',
+                        });
+                    }
+                    reply({
+                        dataCount: results.length,
+                        data: results,
+                    });
+                }).catch((err) => {
+                    reply('server-side error: ' + err);
+                });
+        }
+    },
+    {
+        path: '/realtors/{realtorGuid}',
+        method: 'GET',
+        config: {
+            /*auth: {
+                strategy: 'token',
+            },
+            pre: [
+                {
+                    method: (request, reply) => {
+                        const { birdGuid } = request.params,
+                            { scope } = request.auth.credentials;
+                        const getOperation = Knex('birds').where({
+
+                            guid: birdGuid,
+
+                        }).select('owner').then(([result]) => {
+                            if (!result) {
+
+                                reply({
+
+                                    error: true,
+                                    errMessage: `the bird with id ${birdGuid} was not found`
+
+                                }).takeover();
+
+                            }
+
+                            if (result.owner !== scope) {
+
+                                reply({
+
+                                    error: true,
+                                    errMessage: `the bird with id ${birdGuid} is not in the current scope`
+
+                                }).takeover();
+
+                            }
+
+                            return reply.continue();
+                        });
+                    }
+                }
+            ]*/
+        },
+        handler: (request, reply) => {
+            const { realtorGuid } = request.params
+            const getOperation = Knex.raw(`SELECT org.name, ind.name, lst.mlsnumber, lst.price FROM listing_realtor_organization lro LEFT OUTER JOIN individuals ind ON lro.individualid=ind.guid LEFT OUTER JOIN organizations org ON lro.organizationid=org.guid LEFT OUTER JOIN listings lst ON lro.listingid=lst.guid WHERE lro.individualid=\'${realtorGuid}\'`)            
+            
+                .then(([result]) => {
+                    if (!result) {
+
+                        reply({
+
+                            error: true,
+                            errMessage: `the realtor with id ${realtorGuid} was not found`
+
+                        })
+
+                    } else {
+
+                        reply({
+                            data: result
+                        })
+
+                    }
+                })
+                .catch((err) => {
+                    reply('server-side error: ' + err);
+                });
+        }
+    }
+    /*
+    {
         path: '/users',
         method: 'POST',
         config: {
@@ -245,7 +339,7 @@ const routes = [
 
             });
         }
-    }
+    }*/
 ]
 
 export default routes
