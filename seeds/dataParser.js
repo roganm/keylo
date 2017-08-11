@@ -23,13 +23,16 @@ function parse(data, i) {
   }).then((lst) => {
     if (lst[0]) {
       //console.log(lst);
+      if (data[++i]) {
+        parse(data, i);
+      }
     } else {
       createListing(data[i])
         .then((listid) => {
 
           createIndividual(data[i].Individual, j, listid)
             .then((ind) => {
-              
+
 
               if (data[++i]) {
                 parse(data, i);
@@ -117,13 +120,15 @@ function createListing(data) {
     listing.ownershiptype = data.OwnershipType ? data.OwnershipType : null;
     listing.zoningtype = data.ZoningType ? data.ZoningType : null;
     listing.openhouseinsertdateutc = data.OpenHouseInsertDateUTC ? data.OpenHouseInsertDateUTC : null;
-    listing.photosequenceid = data.Property.Photo[0].SequenceId;
-    listing.parking = data.Property.Parking.Name;
+    if (data.Property.Parking) listing.parking = data.Property.Parking.Name;
     listing.ammenitiesnearby = data.Property.AmmenitiesNearBy;
-    listing.highrespath = data.Property.Photo[0].HighResPath;
-    listing.medrespath = data.Property.Photo[0].MedResPath;
-    listing.lowrespath = data.Property.Photo[0].LowResPath;
-    listing.photolastupdated = data.Property.Photo[0].LastUpdated;
+    if (data.Property.Photo) {
+      listing.photosequenceid = data.Property.Photo[0].SequenceId;
+      listing.highrespath = data.Property.Photo[0].HighResPath;
+      listing.medrespath = data.Property.Photo[0].MedResPath;
+      listing.lowrespath = data.Property.Photo[0].LowResPath;
+      listing.photolastupdated = data.Property.Photo[0].LastUpdated;
+    }
 
     if (data.AlternateURL) {
       listing.brochurelink = data.AlternateURL.BrochureLink ? data.AlternateURL.BrochureLink : null;
@@ -386,7 +391,9 @@ function createOrg(data, listid, individ) {
           }
         }
 
-        organization.email1 = data.Emails[0].ContactId;
+        if (data.Emails) {
+          organization.email1 = data.Emails[0].ContactId;
+        }
 
         Knex('organizations').insert(organization)
           .then((res) => {
