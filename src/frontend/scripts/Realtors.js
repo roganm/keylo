@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 
-class Realors extends Component {
+class Realtors extends Component {
+  constructor(props) {
+    super(props);
+    this.state.data = props.data;
+  }
+
   render() {
     return (
 
-          <form>
-            <div>
-                <label>E-mail: &nbsp;</label>
-            <input type="text" />
-            </div>
-            <div>
-                <label>Password: &nbsp;</label>
-            <input type="password" />
-            </div>
-            
-          </form>
+      <div>
+        {this.state.data}
+      </div>
 
     );
   }
 }
 
-export default Realtor;
+export default Realtors;

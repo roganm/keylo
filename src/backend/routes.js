@@ -27,7 +27,7 @@ const routes = [
         path: '/realtors',
         method: 'GET',
         handler: (request, reply) => {
-            const getOperation = Knex('individuals').select('name', 'guid').orderBy('lastname', 'desc')
+            const getOperation = Knex('individuals').select('name', 'guid', 'photo').orderBy('firstname', 'asc')
                 .then((results) => {
                     if (!results || results.length === 0) {
                         reply({
