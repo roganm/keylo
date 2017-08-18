@@ -1,8 +1,17 @@
+var webpack = require('webpack');
+var path = require('path');
+
 module.exports = {
     entry: './src/frontend/scripts/index.js',
     output: {
-        path: __dirname,
-        filename: './src/frontend/public/bundle.js',
+        path: path.resolve(__dirname, 'src/frontend/public'),
+        filename: 'bundle.js',
+        publicPath: ''
+    },
+    devServer: {
+        inline: true,
+        contentBase: './src/frontend/public',
+        port: 4000
     },
     module: {
         loaders: [
@@ -14,11 +23,16 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
-                    presets: ['es2015', 'react'],
+                    presets: ['latest', 'stage-0', 'react'],
                 },
             },
             {
-                test: /\.css$/, loader: 'style-loader!css-loader',
+                test: /\.json$/,
+                loader: 'json-loader',
+            },
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader!autoprefixer-loader',
             },
         ],
 },
