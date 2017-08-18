@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import Realtors from './Realtors';
+import RealtorList from './components/realtor/RealtorList';
+import data from './lib/realtors.json';
 import './App.css';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { items: [] }
-  }
+window.React = React
 
+class App extends Component {
+
+/*
   componentDidMount() {
     return fetch('./realtors')
       .then(response => {
@@ -28,8 +28,24 @@ class App extends Component {
         console.log('Fetch Error', err);
       });
   }
-
+*/
   render() {
+    
+    return (
+      <div className="App">
+        <div className="App-header">
+          <img src="logo.svg" className="App-logo" alt="Hello" />
+          <h2>Welcome to Keylo</h2>
+        </div>
+        <div>
+            <RealtorList realtors={data} />
+        </div>
+      </div>      
+    );
+    
+    
+    /*
+
     return (
       <div className="App">
         <div className="App-header">
@@ -46,7 +62,9 @@ class App extends Component {
           </ul>
         </div>
       </div>
-    );
+    );*/
+
+
   }
 }
 
