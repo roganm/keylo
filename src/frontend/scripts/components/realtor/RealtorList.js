@@ -1,8 +1,6 @@
-import React from 'react';
 import RealtorRow from './RealtorRow';
-import './Realtor.css';
 
-const RealtorList = ({ realtors }) => {
+const RealtorList = ({ realtors, handler }) => {
 
     return (
         <table className="Table">
@@ -18,7 +16,7 @@ const RealtorList = ({ realtors }) => {
             <tbody>
                 {realtors.map((realtor, i) =>
                     <RealtorRow key={i}
-                        {...realtor} />
+                        {...realtor} index={i} handler={handler} />
                 )}
             </tbody>
 

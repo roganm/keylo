@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import RealtorList from './components/realtor/RealtorList';
-import data from './lib/realtors.json';
+import Realtor from './components/realtor/Realtor';
 import './App.css';
 
 window.React = React
@@ -38,7 +37,7 @@ class App extends Component {
           <h2>Welcome to Keylo</h2>
         </div>
         <div>
-            <RealtorList realtors={data} />
+            <Realtor />
         </div>
       </div>      
     );
