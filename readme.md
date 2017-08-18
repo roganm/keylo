@@ -31,9 +31,9 @@ To seed your database with data, run `node ./seeds/dataParser.js`. This should o
 ### Starting the server
 -----
 1. Run `npm start`
-2. Open your browser and navigate to `http://locahost:3000/realtors`
+2. Open your browser and navigate to `http://localhost:3000/realtors`
 3. Pick a guid out of the list, eg. `579e4298-0777-434f-b507-be0a7a322f55`
-4. Navigate to `http://locahost:3000/realtors/[CHOSEN GUID]` eg. `http://locahost:3000/realtors/579e4298-0777-434f-b507-be0a7a322f55`
+4. Navigate to `http://localhost:3000/realtors/[CHOSEN GUID]` eg. `http://localhost:3000/realtors/579e4298-0777-434f-b507-be0a7a322f55`
 
 
 
