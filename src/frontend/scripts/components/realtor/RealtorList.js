@@ -16,7 +16,7 @@ const RealtorList = ({ realtors, handler }) => {
             <tbody>
                 {realtors.map((realtor, i) =>
                     <RealtorRow key={i}
-                        {...realtor} index={i} handler={handler} />
+                        {...realtor} handler={handler} />
                 )}
             </tbody>
 

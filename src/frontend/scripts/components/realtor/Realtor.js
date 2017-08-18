@@ -38,7 +38,7 @@ class Realtor extends Component {
         this.state = {
             filterText: '',
             realtors: data,
-            selectedRealtor: null
+            selectedRealtorData: null
         }
 
         this.realtorSelector = this.realtorSelector.bind(this);
@@ -55,15 +55,32 @@ class Realtor extends Component {
 
     }
 
-    realtorSelector(index) {
-        this.setState({
-            selectedRealtor: index
-        });
+    realtorSelector(guid) {
+        fetch('./realtors/' + guid)
+            .then(response => {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+                }
+
+                // Examine the text in the response  
+                response.json().then(listings => {
+                    this.setState({
+                        selectedRealtorData: listings.data
+                    });
+                });
+            }
+            )
+            .catch(function (err) {
+                console.log('Fetch Error', err);
+            });
+
     }
 
     realtorClear() {
         this.setState({
-            selectedRealtor: null
+            selectedRealtorData: null
         });
     }
 
@@ -75,7 +92,7 @@ class Realtor extends Component {
             if (name.indexOf(filter) !== -1) rows.push(realtor);
         });
         return (
-            (!this.state.selectedRealtor) ?
+            (!this.state.selectedRealtorData) ?
                 <div>
                     <SearchBar
                         filterText={this.state.filterText}
@@ -84,9 +101,12 @@ class Realtor extends Component {
                         realtors={rows}
                         handler={this.realtorSelector} />
                 </div> :
-                <RealtorDetail
-                    realtor={this.state.realtors[this.state.selectedRealtor]}
-                    handler={this.realtorClear} />
+                <div>
+                    <RealtorDetail
+                        listings={this.state.selectedRealtorData}
+                        handler={this.realtorClear} />
+                        <br></br><button onClick={this.realtorClear}>Back</button>
+                </div>
         )
     }
 }
