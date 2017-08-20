@@ -6,8 +6,8 @@ const RealtorList = ({ realtors, handler }) => {
         <table className="Table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
+                    <th width="50">ID</th>
+                    <th width="250">Name</th>
                     <th>Phone</th>
                     <th>GUID</th>
                     <th>Update At</th>
@@ -19,7 +19,6 @@ const RealtorList = ({ realtors, handler }) => {
                         {...realtor} handler={handler} />
                 )}
             </tbody>
-
         </table>
     )
 }

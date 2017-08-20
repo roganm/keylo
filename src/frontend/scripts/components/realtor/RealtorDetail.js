@@ -1,6 +1,6 @@
 import RealtorDetailRow from './RealtorDetailRow';
 
-const RealtorDetail = ({ listings, handler }) => {
+const RealtorDetail = ({ listings }) => {
     return (
         <table className="Table">
             <thead>
@@ -14,7 +14,7 @@ const RealtorDetail = ({ listings, handler }) => {
             <tbody>
                 {listings.map((listing, i) =>
                     <RealtorDetailRow key={i}
-                        {...listing} handler={handler} />
+                        {...listing} />
                 )}
             </tbody>
         </table>

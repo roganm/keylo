@@ -1,5 +1,12 @@
 .Table {
+  width: 100%;
   margin-top: 1.5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.RealtorContainer {
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -23,5 +30,26 @@ tr:nth-child(even) {
 tr:hover {
   background-color: #61DAFB;
   cursor: pointer;
+}
+
+.Pagination {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Page {
+  text-align: left;
+  background-color: #A730FD;
+  position: relative;
+  width: 50px;
+  padding: 8px 16px;
+  float: left;
+}
+
+.Pages {
+  text-align: left;
+  position: relative;
+  float: left;
 }
 
