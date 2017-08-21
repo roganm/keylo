@@ -9,13 +9,17 @@ const Pagination = ({ first, last, total, current, pages, perPage, pageHandler, 
         buttons.push(i);
     }
 
+    if(current > pages) {
+        current = pages;
+    }
+
     return (
         <div className="Pagination">
             <span><br></br>Showing {first} to {last} of {total}
             </span>
             <br></br>
             <ButtonGroup>
-                {
+                {  
                     buttons.map((button) =>
                         <Button active={current === button} key={button} onClick={() => pageHandler(button)}>{button}</Button>
                     )

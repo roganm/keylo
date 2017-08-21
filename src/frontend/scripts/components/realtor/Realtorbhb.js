@@ -12,6 +12,8 @@ class Realtor extends Component {
         this.state = {
             filterText: '',
             realtors: data,
+            filter: [],
+            page: [],
             realtorsPerPage: 25,
             currentPage: 1,
             selectedRealtorData: null
@@ -22,26 +24,48 @@ class Realtor extends Component {
         this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handlePerPageChange = this.handlePerPageChange.bind(this);
+        this.performFilter = this.performFilter.bind(this);
+        this.performPaging = this.performPaging.bind(this);
     }
 
     handlePageChange(page) {
         this.setState({
             currentPage: page
-        });
+        }, this.performPaging());
     }
 
     handlePerPageChange(pages) {
+        console.log(pages);
         this.setState({
-            currentPage: 1,
             realtorsPerPage: pages
-        });
+        }, this.performPaging());
     }
 
     handleFilterTextInput(filterText) {
         this.setState({
-            currentPage: 1,
             filterText: filterText
+        }, this.performFilter());
+    }
+
+    performFilter() {
+        var rows = [];
+        const filter = this.state.filterText.toLowerCase();
+        this.state.realtors.forEach((realtor) => {
+            name = realtor.name.toLowerCase();
+            if (name.indexOf(filter) !== -1) rows.push(realtor);
         });
+
+        this.performPaging();
+    }
+
+    performPaging() {
+        var rows = this.state.filter;
+        var first = ((this.state.currentPage - 1) * this.state.realtorsPerPage) + 1;
+        if (rows.length > this.state.realtorsPerPage) {
+            rows = rows.slice((first - 1), (first - 1 + this.state.realtorsPerPage));
+        }
+        this.state.page = rows;
+        
     }
 
     realtorSelector(guid) {
@@ -73,25 +97,19 @@ class Realtor extends Component {
         });
     }
 
+    componentWillMount() {
+        this.state.filter = this.state.realtors;
+        this.state.page = this.state.realtors.slice(0, this.state.realtorsPerPage);
+    }
+
     render() {
-        var rows = [];
-        const filter = this.state.filterText.toLowerCase();
-        this.state.realtors.forEach((realtor) => {
-            name = realtor.name.toLowerCase();
-            if (name.indexOf(filter) !== -1) rows.push(realtor);
-        });
 
-        var total = rows.length;
+        var total = this.state.filter.length;
         var first = ((this.state.currentPage - 1) * this.state.realtorsPerPage) + 1;
-
-        if (rows.length > this.state.realtorsPerPage) {
-            rows = rows.slice((first - 1), (first - 1 + this.state.realtorsPerPage));
-        }
-
         var pages = Math.ceil(total / this.state.realtorsPerPage);
-        var last = first + rows.length - 1;
+        var last = first + this.state.page.length - 1;
 
-        if(rows.length === 0) {
+        if(this.state.page.length === 0) {
              first = last = 0;
         }
 
@@ -102,7 +120,7 @@ class Realtor extends Component {
                         filterText={this.state.filterText}
                         onFilterTextInput={this.handleFilterTextInput} />
                     <RealtorList
-                        realtors={rows}
+                        realtors={this.state.page}
                         handler={this.realtorSelector} />
                     <Pagination
                         first={first}

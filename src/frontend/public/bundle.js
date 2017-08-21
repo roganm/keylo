@@ -33958,7 +33958,6 @@ var Realtor = function (_Component) {
     _createClass(Realtor, [{
         key: 'handlePageChange',
         value: function handlePageChange(page) {
-            console.log(page);
             this.setState({
                 currentPage: page
             });
@@ -33966,8 +33965,8 @@ var Realtor = function (_Component) {
     }, {
         key: 'handlePerPageChange',
         value: function handlePerPageChange(pages) {
-            console.log(pages);
             this.setState({
+                currentPage: 1,
                 realtorsPerPage: pages
             });
         }
@@ -33975,6 +33974,7 @@ var Realtor = function (_Component) {
         key: 'handleFilterTextInput',
         value: function handleFilterTextInput(filterText) {
             this.setState({
+                currentPage: 1,
                 filterText: filterText
             });
         }
@@ -34028,13 +34028,6 @@ var Realtor = function (_Component) {
 
             if (rows.length === 0) {
                 first = last = 0;
-            }
-
-            if (this.state.currentPage > pages) {
-                if (pages < 1) pages = 1;
-                this.setState({
-                    currentPage: pages
-                });
             }
 
             return !this.state.selectedRealtorData ? _react2.default.createElement(
@@ -34103,6 +34096,10 @@ var Pagination = function Pagination(_ref) {
 
     for (var i = 1; i <= pages; i++) {
         buttons.push(i);
+    }
+
+    if (current > pages) {
+        current = pages;
     }
 
     return React.createElement(
