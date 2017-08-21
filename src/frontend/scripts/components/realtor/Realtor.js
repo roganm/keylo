@@ -3,6 +3,7 @@ import Pagination from './Pagination';
 import SearchBar from './SearchBar';
 import RealtorList from './RealtorList';
 import RealtorDetail from './RealtorDetail';
+import Home from '../home/Home';
 import './Realtor.css';
 import data from '../../lib/realtors.json';
 
@@ -91,13 +92,24 @@ class Realtor extends Component {
         var pages = Math.ceil(total / this.state.realtorsPerPage);
         var last = first + rows.length - 1;
 
-        if(rows.length === 0) {
-             first = last = 0;
+        if (rows.length === 0) {
+            first = last = 0;
         }
 
-        return (
-            (!this.state.selectedRealtorData) ?
+        if (this.state.selectedRealtorData) {
+            return (
                 <div className="RealtorContainer">
+                    <RealtorDetail
+                        listings={this.state.selectedRealtorData} />
+                    <br></br><button onClick={this.realtorClear}>Back</button>
+                </div>
+            )
+        }
+
+        if (last > 0) {
+            return (
+                <div className="RealtorContainer">
+                    <Home />
                     <SearchBar
                         filterText={this.state.filterText}
                         onFilterTextInput={this.handleFilterTextInput} />
@@ -113,12 +125,18 @@ class Realtor extends Component {
                         perPage={this.state.realtorsPerPage}
                         pageHandler={this.handlePageChange}
                         perPageHandler={this.handlePerPageChange} />
-                </div> :
-                <div>
-                    <RealtorDetail
-                        listings={this.state.selectedRealtorData} />
-                    <br></br><button onClick={this.realtorClear}>Back</button>
                 </div>
+            )
+        }
+
+        return (
+            <div className="RealtorContainer">
+                <Home />
+                <SearchBar
+                    filterText={this.state.filterText}
+                    onFilterTextInput={this.handleFilterTextInput} />
+                No results to display.<br /><br />
+            </div>
         )
     }
 }

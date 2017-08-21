@@ -27,16 +27,21 @@ class App extends Component {
         console.log('Fetch Error', err);
       });
   }
+
+
+  <img src="logo.svg" className="App-logo" alt="Hello" />
 */
   render() {
     
     return (
       <div className="App">
         <div className="App-header">
-          <img src="logo.svg" className="App-logo" alt="Hello" />
-          <h2>Welcome to Keylo</h2>
+          
+          <h2>Keylo Realtor Hubness of Awesome</h2>
+          Navbar | Navbar | Navbar | Navbar
         </div>
         <div>
+            
             <Realtor />
         </div>
       </div>      

@@ -2409,26 +2409,24 @@ module.exports = ReactUpdates;
 /* 28 */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.5.0' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var store = __webpack_require__(113)('wks');
-var uid = __webpack_require__(74);
-var Symbol = __webpack_require__(35).Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
+var store      = __webpack_require__(113)('wks')
+  , uid        = __webpack_require__(74)
+  , Symbol     = __webpack_require__(35).Symbol
+  , USE_SYMBOL = typeof Symbol == 'function';
 
-var $exports = module.exports = function (name) {
+var $exports = module.exports = function(name){
   return store[name] || (store[name] =
     USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : uid)('Symbol.' + name));
 };
 
 $exports.store = store;
-
 
 /***/ }),
 /* 30 */
@@ -3102,28 +3100,28 @@ module.exports = invariant;
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(35);
-var core = __webpack_require__(28);
-var ctx = __webpack_require__(107);
-var hide = __webpack_require__(46);
-var PROTOTYPE = 'prototype';
+var global    = __webpack_require__(35)
+  , core      = __webpack_require__(28)
+  , ctx       = __webpack_require__(107)
+  , hide      = __webpack_require__(46)
+  , PROTOTYPE = 'prototype';
 
-var $export = function (type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var IS_WRAP = type & $export.W;
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE];
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE];
-  var key, own, out;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , IS_WRAP   = type & $export.W
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE]
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+    , key, own, out;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && key in exports) continue;
+    if(own && key in exports)continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -3131,11 +3129,11 @@ var $export = function (type, name, source) {
     // bind timers to global for call from export context
     : IS_BIND && own ? ctx(out, global)
     // wrap global constructors for prevent change them in library
-    : IS_WRAP && target[key] == out ? (function (C) {
-      var F = function (a, b, c) {
-        if (this instanceof C) {
-          switch (arguments.length) {
-            case 0: return new C();
+    : IS_WRAP && target[key] == out ? (function(C){
+      var F = function(a, b, c){
+        if(this instanceof C){
+          switch(arguments.length){
+            case 0: return new C;
             case 1: return new C(a);
             case 2: return new C(a, b);
           } return new C(a, b, c);
@@ -3146,10 +3144,10 @@ var $export = function (type, name, source) {
     // make static versions for prototype methods
     })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
     // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
-    if (IS_PROTO) {
+    if(IS_PROTO){
       (exports.virtual || (exports.virtual = {}))[key] = out;
       // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
-      if (type & $export.R && expProto && !expProto[key]) hide(expProto, key, out);
+      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
     }
   }
 };
@@ -3161,9 +3159,8 @@ $export.P = 8;   // proto
 $export.B = 16;  // bind
 $export.W = 32;  // wrap
 $export.U = 64;  // safe
-$export.R = 128; // real proto method for `library`
+$export.R = 128; // real proto method for `library` 
 module.exports = $export;
-
 
 /***/ }),
 /* 35 */
@@ -3171,23 +3168,19 @@ module.exports = $export;
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
 
 /***/ }),
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(174);
-var defined = __webpack_require__(110);
-module.exports = function (it) {
+var IObject = __webpack_require__(174)
+  , defined = __webpack_require__(110);
+module.exports = function(it){
   return IObject(defined(it));
 };
-
 
 /***/ }),
 /* 37 */
@@ -3671,33 +3664,31 @@ module.exports = PooledClass;
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var anObject = __webpack_require__(47);
-var IE8_DOM_DEFINE = __webpack_require__(171);
-var toPrimitive = __webpack_require__(108);
-var dP = Object.defineProperty;
+var anObject       = __webpack_require__(47)
+  , IE8_DOM_DEFINE = __webpack_require__(171)
+  , toPrimitive    = __webpack_require__(108)
+  , dP             = Object.defineProperty;
 
-exports.f = __webpack_require__(48) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+exports.f = __webpack_require__(48) ? Object.defineProperty : function defineProperty(O, P, Attributes){
   anObject(O);
   P = toPrimitive(P, true);
   anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return dP(O, P, Attributes);
-  } catch (e) { /* empty */ }
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
-
 
 /***/ }),
 /* 41 */
 /***/ (function(module, exports) {
 
 var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
+module.exports = function(it, key){
   return hasOwnProperty.call(it, key);
 };
-
 
 /***/ }),
 /* 42 */
@@ -4180,49 +4171,45 @@ module.exports = DOMLazyTree;
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(40);
-var createDesc = __webpack_require__(60);
-module.exports = __webpack_require__(48) ? function (object, key, value) {
+var dP         = __webpack_require__(40)
+  , createDesc = __webpack_require__(60);
+module.exports = __webpack_require__(48) ? function(object, key, value){
   return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
+} : function(object, key, value){
   object[key] = value;
   return object;
 };
-
 
 /***/ }),
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(58);
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(59)(function () {
-  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !__webpack_require__(59)(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 
 /***/ }),
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(173);
-var enumBugKeys = __webpack_require__(114);
+var $keys       = __webpack_require__(173)
+  , enumBugKeys = __webpack_require__(114);
 
-module.exports = Object.keys || function keys(O) {
+module.exports = Object.keys || function keys(O){
   return $keys(O, enumBugKeys);
 };
-
 
 /***/ }),
 /* 50 */
@@ -4892,37 +4879,34 @@ var createPath = exports.createPath = function createPath(location) {
 /* 58 */
 /***/ (function(module, exports) {
 
-module.exports = function (it) {
+module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-
 
 /***/ }),
 /* 59 */
 /***/ (function(module, exports) {
 
-module.exports = function (exec) {
+module.exports = function(exec){
   try {
     return !!exec();
-  } catch (e) {
+  } catch(e){
     return true;
   }
 };
-
 
 /***/ }),
 /* 60 */
 /***/ (function(module, exports) {
 
-module.exports = function (bitmap, value) {
+module.exports = function(bitmap, value){
   return {
-    enumerable: !(bitmap & 1),
+    enumerable  : !(bitmap & 1),
     configurable: !(bitmap & 2),
-    writable: !(bitmap & 4),
-    value: value
+    writable    : !(bitmap & 4),
+    value       : value
   };
 };
-
 
 /***/ }),
 /* 61 */
@@ -4930,13 +4914,11 @@ module.exports = function (bitmap, value) {
 
 exports.f = {}.propertyIsEnumerable;
 
-
 /***/ }),
 /* 62 */
 /***/ (function(module, exports) {
 
 module.exports = {};
-
 
 /***/ }),
 /* 63 */
@@ -6317,12 +6299,11 @@ module.exports = ReactBrowserEventEmitter;
 /* 74 */
 /***/ (function(module, exports) {
 
-var id = 0;
-var px = Math.random();
-module.exports = function (key) {
+var id = 0
+  , px = Math.random();
+module.exports = function(key){
   return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
-
 
 /***/ }),
 /* 75 */
@@ -9784,25 +9765,24 @@ function updateLink (link, options, obj) {
 
 // optional / simple context binding
 var aFunction = __webpack_require__(354);
-module.exports = function (fn, that, length) {
+module.exports = function(fn, that, length){
   aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
       return fn.call(that, a);
     };
-    case 2: return function (a, b) {
+    case 2: return function(a, b){
       return fn.call(that, a, b);
     };
-    case 3: return function (a, b, c) {
+    case 3: return function(a, b, c){
       return fn.call(that, a, b, c);
     };
   }
-  return function (/* ...args */) {
+  return function(/* ...args */){
     return fn.apply(that, arguments);
   };
 };
-
 
 /***/ }),
 /* 108 */
@@ -9812,15 +9792,14 @@ module.exports = function (fn, that, length) {
 var isObject = __webpack_require__(58);
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
 // and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
+module.exports = function(it, S){
+  if(!isObject(it))return it;
   var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-
 
 /***/ }),
 /* 109 */
@@ -9828,56 +9807,51 @@ module.exports = function (it, S) {
 
 var toString = {}.toString;
 
-module.exports = function (it) {
+module.exports = function(it){
   return toString.call(it).slice(8, -1);
 };
-
 
 /***/ }),
 /* 110 */
 /***/ (function(module, exports) {
 
 // 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
+module.exports = function(it){
+  if(it == undefined)throw TypeError("Can't call method on  " + it);
   return it;
 };
-
 
 /***/ }),
 /* 111 */
 /***/ (function(module, exports) {
 
 // 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
+var ceil  = Math.ceil
+  , floor = Math.floor;
+module.exports = function(it){
   return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
 };
-
 
 /***/ }),
 /* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var shared = __webpack_require__(113)('keys');
-var uid = __webpack_require__(74);
-module.exports = function (key) {
+var shared = __webpack_require__(113)('keys')
+  , uid    = __webpack_require__(74);
+module.exports = function(key){
   return shared[key] || (shared[key] = uid(key));
 };
-
 
 /***/ }),
 /* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(35);
-var SHARED = '__core-js_shared__';
-var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
+var global = __webpack_require__(35)
+  , SHARED = '__core-js_shared__'
+  , store  = global[SHARED] || (global[SHARED] = {});
+module.exports = function(key){
   return store[key] || (store[key] = {});
 };
-
 
 /***/ }),
 /* 114 */
@@ -9888,13 +9862,11 @@ module.exports = (
   'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
 ).split(',');
 
-
 /***/ }),
 /* 115 */
 /***/ (function(module, exports) {
 
 exports.f = Object.getOwnPropertySymbols;
-
 
 /***/ }),
 /* 116 */
@@ -9902,10 +9874,9 @@ exports.f = Object.getOwnPropertySymbols;
 
 // 7.1.13 ToObject(argument)
 var defined = __webpack_require__(110);
-module.exports = function (it) {
+module.exports = function(it){
   return Object(defined(it));
 };
-
 
 /***/ }),
 /* 117 */
@@ -9940,27 +9911,26 @@ exports.default = typeof _symbol2.default === "function" && _typeof(_iterator2.d
 
 module.exports = true;
 
-
 /***/ }),
 /* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-var anObject = __webpack_require__(47);
-var dPs = __webpack_require__(362);
-var enumBugKeys = __webpack_require__(114);
-var IE_PROTO = __webpack_require__(112)('IE_PROTO');
-var Empty = function () { /* empty */ };
-var PROTOTYPE = 'prototype';
+var anObject    = __webpack_require__(47)
+  , dPs         = __webpack_require__(362)
+  , enumBugKeys = __webpack_require__(114)
+  , IE_PROTO    = __webpack_require__(112)('IE_PROTO')
+  , Empty       = function(){ /* empty */ }
+  , PROTOTYPE   = 'prototype';
 
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
-var createDict = function () {
+var createDict = function(){
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__(172)('iframe');
-  var i = enumBugKeys.length;
-  var lt = '<';
-  var gt = '>';
-  var iframeDocument;
+  var iframe = __webpack_require__(172)('iframe')
+    , i      = enumBugKeys.length
+    , lt     = '<'
+    , gt     = '>'
+    , iframeDocument;
   iframe.style.display = 'none';
   __webpack_require__(363).appendChild(iframe);
   iframe.src = 'javascript:'; // eslint-disable-line no-script-url
@@ -9971,15 +9941,15 @@ var createDict = function () {
   iframeDocument.write(lt + 'script' + gt + 'document.F=Object' + lt + '/script' + gt);
   iframeDocument.close();
   createDict = iframeDocument.F;
-  while (i--) delete createDict[PROTOTYPE][enumBugKeys[i]];
+  while(i--)delete createDict[PROTOTYPE][enumBugKeys[i]];
   return createDict();
 };
 
-module.exports = Object.create || function create(O, Properties) {
+module.exports = Object.create || function create(O, Properties){
   var result;
-  if (O !== null) {
+  if(O !== null){
     Empty[PROTOTYPE] = anObject(O);
-    result = new Empty();
+    result = new Empty;
     Empty[PROTOTYPE] = null;
     // add "__proto__" for Object.getPrototypeOf polyfill
     result[IE_PROTO] = O;
@@ -9992,14 +9962,13 @@ module.exports = Object.create || function create(O, Properties) {
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var def = __webpack_require__(40).f;
-var has = __webpack_require__(41);
-var TAG = __webpack_require__(29)('toStringTag');
+var def = __webpack_require__(40).f
+  , has = __webpack_require__(41)
+  , TAG = __webpack_require__(29)('toStringTag');
 
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, { configurable: true, value: tag });
+module.exports = function(it, tag, stat){
+  if(it && !has(it = stat ? it : it.prototype, TAG))def(it, TAG, {configurable: true, value: tag});
 };
-
 
 /***/ }),
 /* 121 */
@@ -10007,21 +9976,19 @@ module.exports = function (it, tag, stat) {
 
 exports.f = __webpack_require__(29);
 
-
 /***/ }),
 /* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var global = __webpack_require__(35);
-var core = __webpack_require__(28);
-var LIBRARY = __webpack_require__(118);
-var wksExt = __webpack_require__(121);
-var defineProperty = __webpack_require__(40).f;
-module.exports = function (name) {
+var global         = __webpack_require__(35)
+  , core           = __webpack_require__(28)
+  , LIBRARY        = __webpack_require__(118)
+  , wksExt         = __webpack_require__(121)
+  , defineProperty = __webpack_require__(40).f;
+module.exports = function(name){
   var $Symbol = core.Symbol || (core.Symbol = LIBRARY ? {} : global.Symbol || {});
-  if (name.charAt(0) != '_' && !(name in $Symbol)) defineProperty($Symbol, name, { value: wksExt.f(name) });
+  if(name.charAt(0) != '_' && !(name in $Symbol))defineProperty($Symbol, name, {value: wksExt.f(name)});
 };
-
 
 /***/ }),
 /* 123 */
@@ -15264,46 +15231,43 @@ module.exports = { "default": __webpack_require__(352), __esModule: true };
 /* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(48) && !__webpack_require__(59)(function () {
-  return Object.defineProperty(__webpack_require__(172)('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !__webpack_require__(48) && !__webpack_require__(59)(function(){
+  return Object.defineProperty(__webpack_require__(172)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-
 
 /***/ }),
 /* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(58);
-var document = __webpack_require__(35).document;
-// typeof document.createElement is 'object' in old IE
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
+var isObject = __webpack_require__(58)
+  , document = __webpack_require__(35).document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-
 
 /***/ }),
 /* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(41);
-var toIObject = __webpack_require__(36);
-var arrayIndexOf = __webpack_require__(356)(false);
-var IE_PROTO = __webpack_require__(112)('IE_PROTO');
+var has          = __webpack_require__(41)
+  , toIObject    = __webpack_require__(36)
+  , arrayIndexOf = __webpack_require__(356)(false)
+  , IE_PROTO     = __webpack_require__(112)('IE_PROTO');
 
-module.exports = function (object, names) {
-  var O = toIObject(object);
-  var i = 0;
-  var result = [];
-  var key;
-  for (key in O) if (key != IE_PROTO) has(O, key) && result.push(key);
+module.exports = function(object, names){
+  var O      = toIObject(object)
+    , i      = 0
+    , result = []
+    , key;
+  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
   // Don't enum bug & hidden keys
-  while (names.length > i) if (has(O, key = names[i++])) {
+  while(names.length > i)if(has(O, key = names[i++])){
     ~arrayIndexOf(result, key) || result.push(key);
   }
   return result;
 };
-
 
 /***/ }),
 /* 174 */
@@ -15311,23 +15275,20 @@ module.exports = function (object, names) {
 
 // fallback for non-array-like ES3 and non-enumerable old V8 strings
 var cof = __webpack_require__(109);
-// eslint-disable-next-line no-prototype-builtins
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
   return cof(it) == 'String' ? it.split('') : Object(it);
 };
-
 
 /***/ }),
 /* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
-var toInteger = __webpack_require__(111);
-var min = Math.min;
-module.exports = function (it) {
+var toInteger = __webpack_require__(111)
+  , min       = Math.min;
+module.exports = function(it){
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
 };
-
 
 /***/ }),
 /* 176 */
@@ -15335,23 +15296,22 @@ module.exports = function (it) {
 
 "use strict";
 
-var $at = __webpack_require__(360)(true);
+var $at  = __webpack_require__(360)(true);
 
 // 21.1.3.27 String.prototype[@@iterator]()
-__webpack_require__(177)(String, 'String', function (iterated) {
+__webpack_require__(177)(String, 'String', function(iterated){
   this._t = String(iterated); // target
   this._i = 0;                // next index
 // 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
+}, function(){
+  var O     = this._t
+    , index = this._i
+    , point;
+  if(index >= O.length)return {value: undefined, done: true};
   point = $at(O, index);
   this._i += point.length;
-  return { value: point, done: false };
+  return {value: point, done: false};
 });
-
 
 /***/ }),
 /* 177 */
@@ -15359,76 +15319,75 @@ __webpack_require__(177)(String, 'String', function (iterated) {
 
 "use strict";
 
-var LIBRARY = __webpack_require__(118);
-var $export = __webpack_require__(34);
-var redefine = __webpack_require__(178);
-var hide = __webpack_require__(46);
-var has = __webpack_require__(41);
-var Iterators = __webpack_require__(62);
-var $iterCreate = __webpack_require__(361);
-var setToStringTag = __webpack_require__(120);
-var getPrototypeOf = __webpack_require__(364);
-var ITERATOR = __webpack_require__(29)('iterator');
-var BUGGY = !([].keys && 'next' in [].keys()); // Safari has buggy iterators w/o `next`
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
+var LIBRARY        = __webpack_require__(118)
+  , $export        = __webpack_require__(34)
+  , redefine       = __webpack_require__(178)
+  , hide           = __webpack_require__(46)
+  , has            = __webpack_require__(41)
+  , Iterators      = __webpack_require__(62)
+  , $iterCreate    = __webpack_require__(361)
+  , setToStringTag = __webpack_require__(120)
+  , getPrototypeOf = __webpack_require__(364)
+  , ITERATOR       = __webpack_require__(29)('iterator')
+  , BUGGY          = !([].keys && 'next' in [].keys()) // Safari has buggy iterators w/o `next`
+  , FF_ITERATOR    = '@@iterator'
+  , KEYS           = 'keys'
+  , VALUES         = 'values';
 
-var returnThis = function () { return this; };
+var returnThis = function(){ return this; };
 
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED){
   $iterCreate(Constructor, NAME, next);
-  var getMethod = function (kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS: return function keys() { return new Constructor(this, kind); };
-      case VALUES: return function values() { return new Constructor(this, kind); };
-    } return function entries() { return new Constructor(this, kind); };
+  var getMethod = function(kind){
+    if(!BUGGY && kind in proto)return proto[kind];
+    switch(kind){
+      case KEYS: return function keys(){ return new Constructor(this, kind); };
+      case VALUES: return function values(){ return new Constructor(this, kind); };
+    } return function entries(){ return new Constructor(this, kind); };
   };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
+  var TAG        = NAME + ' Iterator'
+    , DEF_VALUES = DEFAULT == VALUES
+    , VALUES_BUG = false
+    , proto      = Base.prototype
+    , $native    = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT]
+    , $default   = $native || getMethod(DEFAULT)
+    , $entries   = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined
+    , $anyNative = NAME == 'Array' ? proto.entries || $native : $native
+    , methods, key, IteratorPrototype;
   // Fix native
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+  if($anyNative){
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base));
+    if(IteratorPrototype !== Object.prototype){
       // Set @@toStringTag to native iterators
       setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
+      if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
+  if(DEF_VALUES && $native && $native.name !== VALUES){
     VALUES_BUG = true;
-    $default = function values() { return $native.call(this); };
+    $default = function values(){ return $native.call(this); };
   }
   // Define iterator
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+  if((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])){
     hide(proto, ITERATOR, $default);
   }
   // Plug for library
   Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
+  Iterators[TAG]  = returnThis;
+  if(DEFAULT){
     methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
+      values:  DEF_VALUES ? $default : getMethod(VALUES),
+      keys:    IS_SET     ? $default : getMethod(KEYS),
       entries: $entries
     };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
+    if(FORCED)for(key in methods){
+      if(!(key in proto))redefine(proto, key, methods[key]);
     } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
   }
   return methods;
 };
-
 
 /***/ }),
 /* 178 */
@@ -15436,41 +15395,38 @@ module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCE
 
 module.exports = __webpack_require__(46);
 
-
 /***/ }),
 /* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = __webpack_require__(173);
-var hiddenKeys = __webpack_require__(114).concat('length', 'prototype');
+var $keys      = __webpack_require__(173)
+  , hiddenKeys = __webpack_require__(114).concat('length', 'prototype');
 
-exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
+exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O){
   return $keys(O, hiddenKeys);
 };
-
 
 /***/ }),
 /* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pIE = __webpack_require__(61);
-var createDesc = __webpack_require__(60);
-var toIObject = __webpack_require__(36);
-var toPrimitive = __webpack_require__(108);
-var has = __webpack_require__(41);
-var IE8_DOM_DEFINE = __webpack_require__(171);
-var gOPD = Object.getOwnPropertyDescriptor;
+var pIE            = __webpack_require__(61)
+  , createDesc     = __webpack_require__(60)
+  , toIObject      = __webpack_require__(36)
+  , toPrimitive    = __webpack_require__(108)
+  , has            = __webpack_require__(41)
+  , IE8_DOM_DEFINE = __webpack_require__(171)
+  , gOPD           = Object.getOwnPropertyDescriptor;
 
-exports.f = __webpack_require__(48) ? gOPD : function getOwnPropertyDescriptor(O, P) {
+exports.f = __webpack_require__(48) ? gOPD : function getOwnPropertyDescriptor(O, P){
   O = toIObject(O);
   P = toPrimitive(P, true);
-  if (IE8_DOM_DEFINE) try {
+  if(IE8_DOM_DEFINE)try {
     return gOPD(O, P);
-  } catch (e) { /* empty */ }
-  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+  } catch(e){ /* empty */ }
+  if(has(O, P))return createDesc(!pIE.f.call(O, P), O[P]);
 };
-
 
 /***/ }),
 /* 181 */
@@ -15621,23 +15577,22 @@ module.exports = { "default": __webpack_require__(387), __esModule: true };
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getKeys = __webpack_require__(49);
-var toIObject = __webpack_require__(36);
-var isEnum = __webpack_require__(61).f;
-module.exports = function (isEntries) {
-  return function (it) {
-    var O = toIObject(it);
-    var keys = getKeys(O);
-    var length = keys.length;
-    var i = 0;
-    var result = [];
-    var key;
-    while (length > i) if (isEnum.call(O, key = keys[i++])) {
+var getKeys   = __webpack_require__(49)
+  , toIObject = __webpack_require__(36)
+  , isEnum    = __webpack_require__(61).f;
+module.exports = function(isEntries){
+  return function(it){
+    var O      = toIObject(it)
+      , keys   = getKeys(O)
+      , length = keys.length
+      , i      = 0
+      , result = []
+      , key;
+    while(length > i)if(isEnum.call(O, key = keys[i++])){
       result.push(isEntries ? [key, O[key]] : O[key]);
     } return result;
   };
 };
-
 
 /***/ }),
 /* 184 */
@@ -33668,7 +33623,7 @@ exports = module.exports = __webpack_require__(105)(undefined);
 
 
 // module
-exports.push([module.i, "body {\r\n  margin: 0;\r\n  padding: 0;\r\n  font-family: sans-serif;\r\n}\r\n", ""]);
+exports.push([module.i, "body {\n  margin: 0;\n  padding: 0;\n  font-family: sans-serif;\n}\n", ""]);
 
 // exports
 
@@ -33835,6 +33790,9 @@ var App = function (_Component) {
             console.log('Fetch Error', err);
           });
       }
+    
+    
+      <img src="logo.svg" className="App-logo" alt="Hello" />
     */
     value: function render() {
 
@@ -33844,12 +33802,12 @@ var App = function (_Component) {
         _react2.default.createElement(
           'div',
           { className: 'App-header' },
-          _react2.default.createElement('img', { src: 'logo.svg', className: 'App-logo', alt: 'Hello' }),
           _react2.default.createElement(
             'h2',
             null,
-            'Welcome to Keylo'
-          )
+            'Keylo Realtor Hubness of Awesome'
+          ),
+          'Navbar | Navbar | Navbar | Navbar'
         ),
         _react2.default.createElement(
           'div',
@@ -33916,6 +33874,10 @@ var _RealtorList2 = _interopRequireDefault(_RealtorList);
 var _RealtorDetail = __webpack_require__(491);
 
 var _RealtorDetail2 = _interopRequireDefault(_RealtorDetail);
+
+var _Home = __webpack_require__(499);
+
+var _Home2 = _interopRequireDefault(_Home);
 
 __webpack_require__(493);
 
@@ -34030,35 +33992,54 @@ var Realtor = function (_Component) {
                 first = last = 0;
             }
 
-            return !this.state.selectedRealtorData ? _react2.default.createElement(
+            if (this.state.selectedRealtorData) {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'RealtorContainer' },
+                    _react2.default.createElement(_RealtorDetail2.default, {
+                        listings: this.state.selectedRealtorData }),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.realtorClear },
+                        'Back'
+                    )
+                );
+            }
+
+            if (last > 0) {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'RealtorContainer' },
+                    _react2.default.createElement(_Home2.default, null),
+                    _react2.default.createElement(_SearchBar2.default, {
+                        filterText: this.state.filterText,
+                        onFilterTextInput: this.handleFilterTextInput }),
+                    _react2.default.createElement(_RealtorList2.default, {
+                        realtors: rows,
+                        handler: this.realtorSelector }),
+                    _react2.default.createElement(_Pagination2.default, {
+                        first: first,
+                        last: last,
+                        total: total,
+                        current: this.state.currentPage,
+                        pages: pages,
+                        perPage: this.state.realtorsPerPage,
+                        pageHandler: this.handlePageChange,
+                        perPageHandler: this.handlePerPageChange })
+                );
+            }
+
+            return _react2.default.createElement(
                 'div',
                 { className: 'RealtorContainer' },
+                _react2.default.createElement(_Home2.default, null),
                 _react2.default.createElement(_SearchBar2.default, {
                     filterText: this.state.filterText,
                     onFilterTextInput: this.handleFilterTextInput }),
-                _react2.default.createElement(_RealtorList2.default, {
-                    realtors: rows,
-                    handler: this.realtorSelector }),
-                _react2.default.createElement(_Pagination2.default, {
-                    first: first,
-                    last: last,
-                    total: total,
-                    current: this.state.currentPage,
-                    pages: pages,
-                    perPage: this.state.realtorsPerPage,
-                    pageHandler: this.handlePageChange,
-                    perPageHandler: this.handlePerPageChange })
-            ) : _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_RealtorDetail2.default, {
-                    listings: this.state.selectedRealtorData }),
+                'No results to display.',
                 _react2.default.createElement('br', null),
-                _react2.default.createElement(
-                    'button',
-                    { onClick: this.realtorClear },
-                    'Back'
-                )
+                _react2.default.createElement('br', null)
             );
         }
     }]);
@@ -34108,15 +34089,15 @@ var Pagination = function Pagination(_ref) {
         React.createElement(
             "span",
             null,
-            React.createElement("br", null),
             "Showing ",
             first,
             " to ",
             last,
             " of ",
-            total
+            total,
+            React.createElement("br", null),
+            React.createElement("br", null)
         ),
-        React.createElement("br", null),
         React.createElement(
             _reactBootstrap.ButtonGroup,
             null,
@@ -34511,7 +34492,6 @@ var Accordion = function (_React$Component) {
 __webpack_require__(353);
 module.exports = __webpack_require__(28).Object.assign;
 
-
 /***/ }),
 /* 353 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -34519,18 +34499,16 @@ module.exports = __webpack_require__(28).Object.assign;
 // 19.1.3.1 Object.assign(target, source)
 var $export = __webpack_require__(34);
 
-$export($export.S + $export.F, 'Object', { assign: __webpack_require__(355) });
-
+$export($export.S + $export.F, 'Object', {assign: __webpack_require__(355)});
 
 /***/ }),
 /* 354 */
 /***/ (function(module, exports) {
 
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-
 
 /***/ }),
 /* 355 */
@@ -34539,39 +34517,37 @@ module.exports = function (it) {
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
-var getKeys = __webpack_require__(49);
-var gOPS = __webpack_require__(115);
-var pIE = __webpack_require__(61);
-var toObject = __webpack_require__(116);
-var IObject = __webpack_require__(174);
-var $assign = Object.assign;
+var getKeys  = __webpack_require__(49)
+  , gOPS     = __webpack_require__(115)
+  , pIE      = __webpack_require__(61)
+  , toObject = __webpack_require__(116)
+  , IObject  = __webpack_require__(174)
+  , $assign  = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(59)(function () {
-  var A = {};
-  var B = {};
-  // eslint-disable-next-line no-undef
-  var S = Symbol();
-  var K = 'abcdefghijklmnopqrst';
+module.exports = !$assign || __webpack_require__(59)(function(){
+  var A = {}
+    , B = {}
+    , S = Symbol()
+    , K = 'abcdefghijklmnopqrst';
   A[S] = 7;
-  K.split('').forEach(function (k) { B[k] = k; });
+  K.split('').forEach(function(k){ B[k] = k; });
   return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
-}) ? function assign(target, source) { // eslint-disable-line no-unused-vars
-  var T = toObject(target);
-  var aLen = arguments.length;
-  var index = 1;
-  var getSymbols = gOPS.f;
-  var isEnum = pIE.f;
-  while (aLen > index) {
-    var S = IObject(arguments[index++]);
-    var keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S);
-    var length = keys.length;
-    var j = 0;
-    var key;
-    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+}) ? function assign(target, source){ // eslint-disable-line no-unused-vars
+  var T     = toObject(target)
+    , aLen  = arguments.length
+    , index = 1
+    , getSymbols = gOPS.f
+    , isEnum     = pIE.f;
+  while(aLen > index){
+    var S      = IObject(arguments[index++])
+      , keys   = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S)
+      , length = keys.length
+      , j      = 0
+      , key;
+    while(length > j)if(isEnum.call(S, key = keys[j++]))T[key] = S[key];
   } return T;
 } : $assign;
-
 
 /***/ }),
 /* 356 */
@@ -34579,41 +34555,37 @@ module.exports = !$assign || __webpack_require__(59)(function () {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(36);
-var toLength = __webpack_require__(175);
-var toAbsoluteIndex = __webpack_require__(357);
-module.exports = function (IS_INCLUDES) {
-  return function ($this, el, fromIndex) {
-    var O = toIObject($this);
-    var length = toLength(O.length);
-    var index = toAbsoluteIndex(fromIndex, length);
-    var value;
+var toIObject = __webpack_require__(36)
+  , toLength  = __webpack_require__(175)
+  , toIndex   = __webpack_require__(357);
+module.exports = function(IS_INCLUDES){
+  return function($this, el, fromIndex){
+    var O      = toIObject($this)
+      , length = toLength(O.length)
+      , index  = toIndex(fromIndex, length)
+      , value;
     // Array#includes uses SameValueZero equality algorithm
-    // eslint-disable-next-line no-self-compare
-    if (IS_INCLUDES && el != el) while (length > index) {
+    if(IS_INCLUDES && el != el)while(length > index){
       value = O[index++];
-      // eslint-disable-next-line no-self-compare
-      if (value != value) return true;
-    // Array#indexOf ignores holes, Array#includes - not
-    } else for (;length > index; index++) if (IS_INCLUDES || index in O) {
-      if (O[index] === el) return IS_INCLUDES || index || 0;
+      if(value != value)return true;
+    // Array#toIndex ignores holes, Array#includes - not
+    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+      if(O[index] === el)return IS_INCLUDES || index || 0;
     } return !IS_INCLUDES && -1;
   };
 };
-
 
 /***/ }),
 /* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(111);
-var max = Math.max;
-var min = Math.min;
-module.exports = function (index, length) {
+var toInteger = __webpack_require__(111)
+  , max       = Math.max
+  , min       = Math.min;
+module.exports = function(index, length){
   index = toInteger(index);
   return index < 0 ? max(index + length, 0) : min(index, length);
 };
-
 
 /***/ }),
 /* 358 */
@@ -34629,22 +34601,21 @@ __webpack_require__(176);
 __webpack_require__(365);
 module.exports = __webpack_require__(121).f('iterator');
 
-
 /***/ }),
 /* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(111);
-var defined = __webpack_require__(110);
+var toInteger = __webpack_require__(111)
+  , defined   = __webpack_require__(110);
 // true  -> String#at
 // false -> String#codePointAt
-module.exports = function (TO_STRING) {
-  return function (that, pos) {
-    var s = String(defined(that));
-    var i = toInteger(pos);
-    var l = s.length;
-    var a, b;
-    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+module.exports = function(TO_STRING){
+  return function(that, pos){
+    var s = String(defined(that))
+      , i = toInteger(pos)
+      , l = s.length
+      , a, b;
+    if(i < 0 || i >= l)return TO_STRING ? '' : undefined;
     a = s.charCodeAt(i);
     return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff
       ? TO_STRING ? s.charAt(i) : a
@@ -34652,97 +34623,84 @@ module.exports = function (TO_STRING) {
   };
 };
 
-
 /***/ }),
 /* 361 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var create = __webpack_require__(119);
-var descriptor = __webpack_require__(60);
-var setToStringTag = __webpack_require__(120);
-var IteratorPrototype = {};
+var create         = __webpack_require__(119)
+  , descriptor     = __webpack_require__(60)
+  , setToStringTag = __webpack_require__(120)
+  , IteratorPrototype = {};
 
 // 25.1.2.1.1 %IteratorPrototype%[@@iterator]()
-__webpack_require__(46)(IteratorPrototype, __webpack_require__(29)('iterator'), function () { return this; });
+__webpack_require__(46)(IteratorPrototype, __webpack_require__(29)('iterator'), function(){ return this; });
 
-module.exports = function (Constructor, NAME, next) {
-  Constructor.prototype = create(IteratorPrototype, { next: descriptor(1, next) });
+module.exports = function(Constructor, NAME, next){
+  Constructor.prototype = create(IteratorPrototype, {next: descriptor(1, next)});
   setToStringTag(Constructor, NAME + ' Iterator');
 };
-
 
 /***/ }),
 /* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var dP = __webpack_require__(40);
-var anObject = __webpack_require__(47);
-var getKeys = __webpack_require__(49);
+var dP       = __webpack_require__(40)
+  , anObject = __webpack_require__(47)
+  , getKeys  = __webpack_require__(49);
 
-module.exports = __webpack_require__(48) ? Object.defineProperties : function defineProperties(O, Properties) {
+module.exports = __webpack_require__(48) ? Object.defineProperties : function defineProperties(O, Properties){
   anObject(O);
-  var keys = getKeys(Properties);
-  var length = keys.length;
-  var i = 0;
-  var P;
-  while (length > i) dP.f(O, P = keys[i++], Properties[P]);
+  var keys   = getKeys(Properties)
+    , length = keys.length
+    , i = 0
+    , P;
+  while(length > i)dP.f(O, P = keys[i++], Properties[P]);
   return O;
 };
-
 
 /***/ }),
 /* 363 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(35).document;
-module.exports = document && document.documentElement;
-
+module.exports = __webpack_require__(35).document && document.documentElement;
 
 /***/ }),
 /* 364 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(41);
-var toObject = __webpack_require__(116);
-var IE_PROTO = __webpack_require__(112)('IE_PROTO');
-var ObjectProto = Object.prototype;
+var has         = __webpack_require__(41)
+  , toObject    = __webpack_require__(116)
+  , IE_PROTO    = __webpack_require__(112)('IE_PROTO')
+  , ObjectProto = Object.prototype;
 
-module.exports = Object.getPrototypeOf || function (O) {
+module.exports = Object.getPrototypeOf || function(O){
   O = toObject(O);
-  if (has(O, IE_PROTO)) return O[IE_PROTO];
-  if (typeof O.constructor == 'function' && O instanceof O.constructor) {
+  if(has(O, IE_PROTO))return O[IE_PROTO];
+  if(typeof O.constructor == 'function' && O instanceof O.constructor){
     return O.constructor.prototype;
   } return O instanceof Object ? ObjectProto : null;
 };
-
 
 /***/ }),
 /* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(366);
-var global = __webpack_require__(35);
-var hide = __webpack_require__(46);
-var Iterators = __webpack_require__(62);
-var TO_STRING_TAG = __webpack_require__(29)('toStringTag');
+var global        = __webpack_require__(35)
+  , hide          = __webpack_require__(46)
+  , Iterators     = __webpack_require__(62)
+  , TO_STRING_TAG = __webpack_require__(29)('toStringTag');
 
-var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
-  'DOMTokenList,DataTransferItemList,FileList,HTMLAllCollection,HTMLCollection,HTMLFormElement,HTMLSelectElement,' +
-  'MediaList,MimeTypeArray,NamedNodeMap,NodeList,PaintRequestList,Plugin,PluginArray,SVGLengthList,SVGNumberList,' +
-  'SVGPathSegList,SVGPointList,SVGStringList,SVGTransformList,SourceBufferList,StyleSheetList,TextTrackCueList,' +
-  'TextTrackList,TouchList').split(',');
-
-for (var i = 0; i < DOMIterables.length; i++) {
-  var NAME = DOMIterables[i];
-  var Collection = global[NAME];
-  var proto = Collection && Collection.prototype;
-  if (proto && !proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+for(var collections = ['NodeList', 'DOMTokenList', 'MediaList', 'StyleSheetList', 'CSSRuleList'], i = 0; i < 5; i++){
+  var NAME       = collections[i]
+    , Collection = global[NAME]
+    , proto      = Collection && Collection.prototype;
+  if(proto && !proto[TO_STRING_TAG])hide(proto, TO_STRING_TAG, NAME);
   Iterators[NAME] = Iterators.Array;
 }
-
 
 /***/ }),
 /* 366 */
@@ -34750,30 +34708,30 @@ for (var i = 0; i < DOMIterables.length; i++) {
 
 "use strict";
 
-var addToUnscopables = __webpack_require__(367);
-var step = __webpack_require__(368);
-var Iterators = __webpack_require__(62);
-var toIObject = __webpack_require__(36);
+var addToUnscopables = __webpack_require__(367)
+  , step             = __webpack_require__(368)
+  , Iterators        = __webpack_require__(62)
+  , toIObject        = __webpack_require__(36);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
 // 22.1.3.29 Array.prototype.values()
 // 22.1.3.30 Array.prototype[@@iterator]()
-module.exports = __webpack_require__(177)(Array, 'Array', function (iterated, kind) {
+module.exports = __webpack_require__(177)(Array, 'Array', function(iterated, kind){
   this._t = toIObject(iterated); // target
   this._i = 0;                   // next index
   this._k = kind;                // kind
 // 22.1.5.2.1 %ArrayIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
+}, function(){
+  var O     = this._t
+    , kind  = this._k
+    , index = this._i++;
+  if(!O || index >= O.length){
     this._t = undefined;
     return step(1);
   }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
+  if(kind == 'keys'  )return step(0, index);
+  if(kind == 'values')return step(0, O[index]);
   return step(0, [index, O[index]]);
 }, 'values');
 
@@ -34784,22 +34742,19 @@ addToUnscopables('keys');
 addToUnscopables('values');
 addToUnscopables('entries');
 
-
 /***/ }),
 /* 367 */
 /***/ (function(module, exports) {
 
-module.exports = function () { /* empty */ };
-
+module.exports = function(){ /* empty */ };
 
 /***/ }),
 /* 368 */
 /***/ (function(module, exports) {
 
-module.exports = function (done, value) {
-  return { value: value, done: !!done };
+module.exports = function(done, value){
+  return {value: value, done: !!done};
 };
-
 
 /***/ }),
 /* 369 */
@@ -34817,7 +34772,6 @@ __webpack_require__(378);
 __webpack_require__(379);
 module.exports = __webpack_require__(28).Symbol;
 
-
 /***/ }),
 /* 371 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -34825,189 +34779,189 @@ module.exports = __webpack_require__(28).Symbol;
 "use strict";
 
 // ECMAScript 6 symbols shim
-var global = __webpack_require__(35);
-var has = __webpack_require__(41);
-var DESCRIPTORS = __webpack_require__(48);
-var $export = __webpack_require__(34);
-var redefine = __webpack_require__(178);
-var META = __webpack_require__(372).KEY;
-var $fails = __webpack_require__(59);
-var shared = __webpack_require__(113);
-var setToStringTag = __webpack_require__(120);
-var uid = __webpack_require__(74);
-var wks = __webpack_require__(29);
-var wksExt = __webpack_require__(121);
-var wksDefine = __webpack_require__(122);
-var keyOf = __webpack_require__(373);
-var enumKeys = __webpack_require__(374);
-var isArray = __webpack_require__(375);
-var anObject = __webpack_require__(47);
-var toIObject = __webpack_require__(36);
-var toPrimitive = __webpack_require__(108);
-var createDesc = __webpack_require__(60);
-var _create = __webpack_require__(119);
-var gOPNExt = __webpack_require__(376);
-var $GOPD = __webpack_require__(180);
-var $DP = __webpack_require__(40);
-var $keys = __webpack_require__(49);
-var gOPD = $GOPD.f;
-var dP = $DP.f;
-var gOPN = gOPNExt.f;
-var $Symbol = global.Symbol;
-var $JSON = global.JSON;
-var _stringify = $JSON && $JSON.stringify;
-var PROTOTYPE = 'prototype';
-var HIDDEN = wks('_hidden');
-var TO_PRIMITIVE = wks('toPrimitive');
-var isEnum = {}.propertyIsEnumerable;
-var SymbolRegistry = shared('symbol-registry');
-var AllSymbols = shared('symbols');
-var OPSymbols = shared('op-symbols');
-var ObjectProto = Object[PROTOTYPE];
-var USE_NATIVE = typeof $Symbol == 'function';
-var QObject = global.QObject;
+var global         = __webpack_require__(35)
+  , has            = __webpack_require__(41)
+  , DESCRIPTORS    = __webpack_require__(48)
+  , $export        = __webpack_require__(34)
+  , redefine       = __webpack_require__(178)
+  , META           = __webpack_require__(372).KEY
+  , $fails         = __webpack_require__(59)
+  , shared         = __webpack_require__(113)
+  , setToStringTag = __webpack_require__(120)
+  , uid            = __webpack_require__(74)
+  , wks            = __webpack_require__(29)
+  , wksExt         = __webpack_require__(121)
+  , wksDefine      = __webpack_require__(122)
+  , keyOf          = __webpack_require__(373)
+  , enumKeys       = __webpack_require__(374)
+  , isArray        = __webpack_require__(375)
+  , anObject       = __webpack_require__(47)
+  , toIObject      = __webpack_require__(36)
+  , toPrimitive    = __webpack_require__(108)
+  , createDesc     = __webpack_require__(60)
+  , _create        = __webpack_require__(119)
+  , gOPNExt        = __webpack_require__(376)
+  , $GOPD          = __webpack_require__(180)
+  , $DP            = __webpack_require__(40)
+  , $keys          = __webpack_require__(49)
+  , gOPD           = $GOPD.f
+  , dP             = $DP.f
+  , gOPN           = gOPNExt.f
+  , $Symbol        = global.Symbol
+  , $JSON          = global.JSON
+  , _stringify     = $JSON && $JSON.stringify
+  , PROTOTYPE      = 'prototype'
+  , HIDDEN         = wks('_hidden')
+  , TO_PRIMITIVE   = wks('toPrimitive')
+  , isEnum         = {}.propertyIsEnumerable
+  , SymbolRegistry = shared('symbol-registry')
+  , AllSymbols     = shared('symbols')
+  , OPSymbols      = shared('op-symbols')
+  , ObjectProto    = Object[PROTOTYPE]
+  , USE_NATIVE     = typeof $Symbol == 'function'
+  , QObject        = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
-var setSymbolDesc = DESCRIPTORS && $fails(function () {
+var setSymbolDesc = DESCRIPTORS && $fails(function(){
   return _create(dP({}, 'a', {
-    get: function () { return dP(this, 'a', { value: 7 }).a; }
+    get: function(){ return dP(this, 'a', {value: 7}).a; }
   })).a != 7;
-}) ? function (it, key, D) {
+}) ? function(it, key, D){
   var protoDesc = gOPD(ObjectProto, key);
-  if (protoDesc) delete ObjectProto[key];
+  if(protoDesc)delete ObjectProto[key];
   dP(it, key, D);
-  if (protoDesc && it !== ObjectProto) dP(ObjectProto, key, protoDesc);
+  if(protoDesc && it !== ObjectProto)dP(ObjectProto, key, protoDesc);
 } : dP;
 
-var wrap = function (tag) {
+var wrap = function(tag){
   var sym = AllSymbols[tag] = _create($Symbol[PROTOTYPE]);
   sym._k = tag;
   return sym;
 };
 
-var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function (it) {
+var isSymbol = USE_NATIVE && typeof $Symbol.iterator == 'symbol' ? function(it){
   return typeof it == 'symbol';
-} : function (it) {
+} : function(it){
   return it instanceof $Symbol;
 };
 
-var $defineProperty = function defineProperty(it, key, D) {
-  if (it === ObjectProto) $defineProperty(OPSymbols, key, D);
+var $defineProperty = function defineProperty(it, key, D){
+  if(it === ObjectProto)$defineProperty(OPSymbols, key, D);
   anObject(it);
   key = toPrimitive(key, true);
   anObject(D);
-  if (has(AllSymbols, key)) {
-    if (!D.enumerable) {
-      if (!has(it, HIDDEN)) dP(it, HIDDEN, createDesc(1, {}));
+  if(has(AllSymbols, key)){
+    if(!D.enumerable){
+      if(!has(it, HIDDEN))dP(it, HIDDEN, createDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
-      if (has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
-      D = _create(D, { enumerable: createDesc(0, false) });
+      if(has(it, HIDDEN) && it[HIDDEN][key])it[HIDDEN][key] = false;
+      D = _create(D, {enumerable: createDesc(0, false)});
     } return setSymbolDesc(it, key, D);
   } return dP(it, key, D);
 };
-var $defineProperties = function defineProperties(it, P) {
+var $defineProperties = function defineProperties(it, P){
   anObject(it);
-  var keys = enumKeys(P = toIObject(P));
-  var i = 0;
-  var l = keys.length;
-  var key;
-  while (l > i) $defineProperty(it, key = keys[i++], P[key]);
+  var keys = enumKeys(P = toIObject(P))
+    , i    = 0
+    , l = keys.length
+    , key;
+  while(l > i)$defineProperty(it, key = keys[i++], P[key]);
   return it;
 };
-var $create = function create(it, P) {
+var $create = function create(it, P){
   return P === undefined ? _create(it) : $defineProperties(_create(it), P);
 };
-var $propertyIsEnumerable = function propertyIsEnumerable(key) {
+var $propertyIsEnumerable = function propertyIsEnumerable(key){
   var E = isEnum.call(this, key = toPrimitive(key, true));
-  if (this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return false;
+  if(this === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return false;
   return E || !has(this, key) || !has(AllSymbols, key) || has(this, HIDDEN) && this[HIDDEN][key] ? E : true;
 };
-var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key) {
-  it = toIObject(it);
+var $getOwnPropertyDescriptor = function getOwnPropertyDescriptor(it, key){
+  it  = toIObject(it);
   key = toPrimitive(key, true);
-  if (it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key)) return;
+  if(it === ObjectProto && has(AllSymbols, key) && !has(OPSymbols, key))return;
   var D = gOPD(it, key);
-  if (D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key])) D.enumerable = true;
+  if(D && has(AllSymbols, key) && !(has(it, HIDDEN) && it[HIDDEN][key]))D.enumerable = true;
   return D;
 };
-var $getOwnPropertyNames = function getOwnPropertyNames(it) {
-  var names = gOPN(toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META) result.push(key);
+var $getOwnPropertyNames = function getOwnPropertyNames(it){
+  var names  = gOPN(toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(!has(AllSymbols, key = names[i++]) && key != HIDDEN && key != META)result.push(key);
   } return result;
 };
-var $getOwnPropertySymbols = function getOwnPropertySymbols(it) {
-  var IS_OP = it === ObjectProto;
-  var names = gOPN(IS_OP ? OPSymbols : toIObject(it));
-  var result = [];
-  var i = 0;
-  var key;
-  while (names.length > i) {
-    if (has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true)) result.push(AllSymbols[key]);
+var $getOwnPropertySymbols = function getOwnPropertySymbols(it){
+  var IS_OP  = it === ObjectProto
+    , names  = gOPN(IS_OP ? OPSymbols : toIObject(it))
+    , result = []
+    , i      = 0
+    , key;
+  while(names.length > i){
+    if(has(AllSymbols, key = names[i++]) && (IS_OP ? has(ObjectProto, key) : true))result.push(AllSymbols[key]);
   } return result;
 };
 
 // 19.4.1.1 Symbol([description])
-if (!USE_NATIVE) {
-  $Symbol = function Symbol() {
-    if (this instanceof $Symbol) throw TypeError('Symbol is not a constructor!');
+if(!USE_NATIVE){
+  $Symbol = function Symbol(){
+    if(this instanceof $Symbol)throw TypeError('Symbol is not a constructor!');
     var tag = uid(arguments.length > 0 ? arguments[0] : undefined);
-    var $set = function (value) {
-      if (this === ObjectProto) $set.call(OPSymbols, value);
-      if (has(this, HIDDEN) && has(this[HIDDEN], tag)) this[HIDDEN][tag] = false;
+    var $set = function(value){
+      if(this === ObjectProto)$set.call(OPSymbols, value);
+      if(has(this, HIDDEN) && has(this[HIDDEN], tag))this[HIDDEN][tag] = false;
       setSymbolDesc(this, tag, createDesc(1, value));
     };
-    if (DESCRIPTORS && setter) setSymbolDesc(ObjectProto, tag, { configurable: true, set: $set });
+    if(DESCRIPTORS && setter)setSymbolDesc(ObjectProto, tag, {configurable: true, set: $set});
     return wrap(tag);
   };
-  redefine($Symbol[PROTOTYPE], 'toString', function toString() {
+  redefine($Symbol[PROTOTYPE], 'toString', function toString(){
     return this._k;
   });
 
   $GOPD.f = $getOwnPropertyDescriptor;
-  $DP.f = $defineProperty;
+  $DP.f   = $defineProperty;
   __webpack_require__(179).f = gOPNExt.f = $getOwnPropertyNames;
-  __webpack_require__(61).f = $propertyIsEnumerable;
+  __webpack_require__(61).f  = $propertyIsEnumerable;
   __webpack_require__(115).f = $getOwnPropertySymbols;
 
-  if (DESCRIPTORS && !__webpack_require__(118)) {
+  if(DESCRIPTORS && !__webpack_require__(118)){
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
   }
 
-  wksExt.f = function (name) {
+  wksExt.f = function(name){
     return wrap(wks(name));
-  };
+  }
 }
 
-$export($export.G + $export.W + $export.F * !USE_NATIVE, { Symbol: $Symbol });
+$export($export.G + $export.W + $export.F * !USE_NATIVE, {Symbol: $Symbol});
 
-for (var es6Symbols = (
+for(var symbols = (
   // 19.4.2.2, 19.4.2.3, 19.4.2.4, 19.4.2.6, 19.4.2.8, 19.4.2.9, 19.4.2.10, 19.4.2.11, 19.4.2.12, 19.4.2.13, 19.4.2.14
   'hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables'
-).split(','), j = 0; es6Symbols.length > j;)wks(es6Symbols[j++]);
+).split(','), i = 0; symbols.length > i; )wks(symbols[i++]);
 
-for (var wellKnownSymbols = $keys(wks.store), k = 0; wellKnownSymbols.length > k;) wksDefine(wellKnownSymbols[k++]);
+for(var symbols = $keys(wks.store), i = 0; symbols.length > i; )wksDefine(symbols[i++]);
 
 $export($export.S + $export.F * !USE_NATIVE, 'Symbol', {
   // 19.4.2.1 Symbol.for(key)
-  'for': function (key) {
+  'for': function(key){
     return has(SymbolRegistry, key += '')
       ? SymbolRegistry[key]
       : SymbolRegistry[key] = $Symbol(key);
   },
   // 19.4.2.5 Symbol.keyFor(sym)
-  keyFor: function keyFor(key) {
-    if (isSymbol(key)) return keyOf(SymbolRegistry, key);
+  keyFor: function keyFor(key){
+    if(isSymbol(key))return keyOf(SymbolRegistry, key);
     throw TypeError(key + ' is not a symbol!');
   },
-  useSetter: function () { setter = true; },
-  useSimple: function () { setter = false; }
+  useSetter: function(){ setter = true; },
+  useSimple: function(){ setter = false; }
 });
 
 $export($export.S + $export.F * !USE_NATIVE, 'Object', {
@@ -35026,24 +34980,24 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
-$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function () {
+$JSON && $export($export.S + $export.F * (!USE_NATIVE || $fails(function(){
   var S = $Symbol();
   // MS Edge converts symbol values to JSON as {}
   // WebKit converts symbol values to JSON as null
   // V8 throws on boxed symbols
-  return _stringify([S]) != '[null]' || _stringify({ a: S }) != '{}' || _stringify(Object(S)) != '{}';
+  return _stringify([S]) != '[null]' || _stringify({a: S}) != '{}' || _stringify(Object(S)) != '{}';
 })), 'JSON', {
-  stringify: function stringify(it) {
-    if (it === undefined || isSymbol(it)) return; // IE8 returns string on undefined
-    var args = [it];
-    var i = 1;
-    var replacer, $replacer;
-    while (arguments.length > i) args.push(arguments[i++]);
+  stringify: function stringify(it){
+    if(it === undefined || isSymbol(it))return; // IE8 returns string on undefined
+    var args = [it]
+      , i    = 1
+      , replacer, $replacer;
+    while(arguments.length > i)args.push(arguments[i++]);
     replacer = args[1];
-    if (typeof replacer == 'function') $replacer = replacer;
-    if ($replacer || !isArray(replacer)) replacer = function (key, value) {
-      if ($replacer) value = $replacer.call(this, key, value);
-      if (!isSymbol(value)) return value;
+    if(typeof replacer == 'function')$replacer = replacer;
+    if($replacer || !isArray(replacer))replacer = function(key, value){
+      if($replacer)value = $replacer.call(this, key, value);
+      if(!isSymbol(value))return value;
     };
     args[1] = replacer;
     return _stringify.apply($JSON, args);
@@ -35059,102 +35013,98 @@ setToStringTag(Math, 'Math', true);
 // 24.3.3 JSON[@@toStringTag]
 setToStringTag(global.JSON, 'JSON', true);
 
-
 /***/ }),
 /* 372 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var META = __webpack_require__(74)('meta');
-var isObject = __webpack_require__(58);
-var has = __webpack_require__(41);
-var setDesc = __webpack_require__(40).f;
-var id = 0;
-var isExtensible = Object.isExtensible || function () {
+var META     = __webpack_require__(74)('meta')
+  , isObject = __webpack_require__(58)
+  , has      = __webpack_require__(41)
+  , setDesc  = __webpack_require__(40).f
+  , id       = 0;
+var isExtensible = Object.isExtensible || function(){
   return true;
 };
-var FREEZE = !__webpack_require__(59)(function () {
+var FREEZE = !__webpack_require__(59)(function(){
   return isExtensible(Object.preventExtensions({}));
 });
-var setMeta = function (it) {
-  setDesc(it, META, { value: {
+var setMeta = function(it){
+  setDesc(it, META, {value: {
     i: 'O' + ++id, // object ID
     w: {}          // weak collections IDs
-  } });
+  }});
 };
-var fastKey = function (it, create) {
+var fastKey = function(it, create){
   // return primitive with prefix
-  if (!isObject(it)) return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
-  if (!has(it, META)) {
+  if(!isObject(it))return typeof it == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return 'F';
+    if(!isExtensible(it))return 'F';
     // not necessary to add metadata
-    if (!create) return 'E';
+    if(!create)return 'E';
     // add missing metadata
     setMeta(it);
   // return object ID
   } return it[META].i;
 };
-var getWeak = function (it, create) {
-  if (!has(it, META)) {
+var getWeak = function(it, create){
+  if(!has(it, META)){
     // can't set metadata to uncaught frozen object
-    if (!isExtensible(it)) return true;
+    if(!isExtensible(it))return true;
     // not necessary to add metadata
-    if (!create) return false;
+    if(!create)return false;
     // add missing metadata
     setMeta(it);
   // return hash weak collections IDs
   } return it[META].w;
 };
 // add metadata on freeze-family methods calling
-var onFreeze = function (it) {
-  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+var onFreeze = function(it){
+  if(FREEZE && meta.NEED && isExtensible(it) && !has(it, META))setMeta(it);
   return it;
 };
 var meta = module.exports = {
-  KEY: META,
-  NEED: false,
-  fastKey: fastKey,
-  getWeak: getWeak,
+  KEY:      META,
+  NEED:     false,
+  fastKey:  fastKey,
+  getWeak:  getWeak,
   onFreeze: onFreeze
 };
-
 
 /***/ }),
 /* 373 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getKeys = __webpack_require__(49);
-var toIObject = __webpack_require__(36);
-module.exports = function (object, el) {
-  var O = toIObject(object);
-  var keys = getKeys(O);
-  var length = keys.length;
-  var index = 0;
-  var key;
-  while (length > index) if (O[key = keys[index++]] === el) return key;
+var getKeys   = __webpack_require__(49)
+  , toIObject = __webpack_require__(36);
+module.exports = function(object, el){
+  var O      = toIObject(object)
+    , keys   = getKeys(O)
+    , length = keys.length
+    , index  = 0
+    , key;
+  while(length > index)if(O[key = keys[index++]] === el)return key;
 };
-
 
 /***/ }),
 /* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // all enumerable object keys, includes symbols
-var getKeys = __webpack_require__(49);
-var gOPS = __webpack_require__(115);
-var pIE = __webpack_require__(61);
-module.exports = function (it) {
-  var result = getKeys(it);
-  var getSymbols = gOPS.f;
-  if (getSymbols) {
-    var symbols = getSymbols(it);
-    var isEnum = pIE.f;
-    var i = 0;
-    var key;
-    while (symbols.length > i) if (isEnum.call(it, key = symbols[i++])) result.push(key);
+var getKeys = __webpack_require__(49)
+  , gOPS    = __webpack_require__(115)
+  , pIE     = __webpack_require__(61);
+module.exports = function(it){
+  var result     = getKeys(it)
+    , getSymbols = gOPS.f;
+  if(getSymbols){
+    var symbols = getSymbols(it)
+      , isEnum  = pIE.f
+      , i       = 0
+      , key;
+    while(symbols.length > i)if(isEnum.call(it, key = symbols[i++]))result.push(key);
   } return result;
 };
-
 
 /***/ }),
 /* 375 */
@@ -35162,32 +35112,31 @@ module.exports = function (it) {
 
 // 7.2.2 IsArray(argument)
 var cof = __webpack_require__(109);
-module.exports = Array.isArray || function isArray(arg) {
+module.exports = Array.isArray || function isArray(arg){
   return cof(arg) == 'Array';
 };
-
 
 /***/ }),
 /* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = __webpack_require__(36);
-var gOPN = __webpack_require__(179).f;
-var toString = {}.toString;
+var toIObject = __webpack_require__(36)
+  , gOPN      = __webpack_require__(179).f
+  , toString  = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
   ? Object.getOwnPropertyNames(window) : [];
 
-var getWindowNames = function (it) {
+var getWindowNames = function(it){
   try {
     return gOPN(it);
-  } catch (e) {
+  } catch(e){
     return windowNames.slice();
   }
 };
 
-module.exports.f = function getOwnPropertyNames(it) {
+module.exports.f = function getOwnPropertyNames(it){
   return windowNames && toString.call(it) == '[object Window]' ? getWindowNames(it) : gOPN(toIObject(it));
 };
 
@@ -35204,13 +35153,11 @@ module.exports.f = function getOwnPropertyNames(it) {
 
 __webpack_require__(122)('asyncIterator');
 
-
 /***/ }),
 /* 379 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(122)('observable');
-
 
 /***/ }),
 /* 380 */
@@ -35225,15 +35172,13 @@ module.exports = { "default": __webpack_require__(381), __esModule: true };
 __webpack_require__(382);
 module.exports = __webpack_require__(28).Object.setPrototypeOf;
 
-
 /***/ }),
 /* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.3.19 Object.setPrototypeOf(O, proto)
 var $export = __webpack_require__(34);
-$export($export.S, 'Object', { setPrototypeOf: __webpack_require__(383).set });
-
+$export($export.S, 'Object', {setPrototypeOf: __webpack_require__(383).set});
 
 /***/ }),
 /* 383 */
@@ -35241,30 +35186,29 @@ $export($export.S, 'Object', { setPrototypeOf: __webpack_require__(383).set });
 
 // Works with __proto__ only. Old v8 can't work with null proto objects.
 /* eslint-disable no-proto */
-var isObject = __webpack_require__(58);
-var anObject = __webpack_require__(47);
-var check = function (O, proto) {
+var isObject = __webpack_require__(58)
+  , anObject = __webpack_require__(47);
+var check = function(O, proto){
   anObject(O);
-  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
+  if(!isObject(proto) && proto !== null)throw TypeError(proto + ": can't set as prototype!");
 };
 module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-    function (test, buggy, set) {
+    function(test, buggy, set){
       try {
         set = __webpack_require__(107)(Function.call, __webpack_require__(180).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
-      } catch (e) { buggy = true; }
-      return function setPrototypeOf(O, proto) {
+      } catch(e){ buggy = true; }
+      return function setPrototypeOf(O, proto){
         check(O, proto);
-        if (buggy) O.__proto__ = proto;
+        if(buggy)O.__proto__ = proto;
         else set(O, proto);
         return O;
       };
     }({}, false) : undefined),
   check: check
 };
-
 
 /***/ }),
 /* 384 */
@@ -35278,19 +35222,17 @@ module.exports = { "default": __webpack_require__(385), __esModule: true };
 
 __webpack_require__(386);
 var $Object = __webpack_require__(28).Object;
-module.exports = function create(P, D) {
+module.exports = function create(P, D){
   return $Object.create(P, D);
 };
-
 
 /***/ }),
 /* 386 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $export = __webpack_require__(34);
+var $export = __webpack_require__(34)
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
-$export($export.S, 'Object', { create: __webpack_require__(119) });
-
+$export($export.S, 'Object', {create: __webpack_require__(119)});
 
 /***/ }),
 /* 387 */
@@ -35299,21 +35241,19 @@ $export($export.S, 'Object', { create: __webpack_require__(119) });
 __webpack_require__(388);
 module.exports = __webpack_require__(28).Object.entries;
 
-
 /***/ }),
 /* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
-var $export = __webpack_require__(34);
-var $entries = __webpack_require__(183)(true);
+var $export  = __webpack_require__(34)
+  , $entries = __webpack_require__(183)(true);
 
 $export($export.S, 'Object', {
-  entries: function entries(it) {
+  entries: function entries(it){
     return $entries(it);
   }
 });
-
 
 /***/ }),
 /* 389 */
@@ -35419,21 +35359,19 @@ Alert.defaultProps = defaultProps;
 __webpack_require__(391);
 module.exports = __webpack_require__(28).Object.values;
 
-
 /***/ }),
 /* 391 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/tc39/proposal-object-values-entries
-var $export = __webpack_require__(34);
-var $values = __webpack_require__(183)(false);
+var $export = __webpack_require__(34)
+  , $values = __webpack_require__(183)(false);
 
 $export($export.S, 'Object', {
-  values: function values(it) {
+  values: function values(it){
     return $values(it);
   }
 });
-
 
 /***/ }),
 /* 392 */
@@ -37616,42 +37554,41 @@ __webpack_require__(176);
 __webpack_require__(413);
 module.exports = __webpack_require__(28).Array.from;
 
-
 /***/ }),
 /* 413 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ctx = __webpack_require__(107);
-var $export = __webpack_require__(34);
-var toObject = __webpack_require__(116);
-var call = __webpack_require__(414);
-var isArrayIter = __webpack_require__(415);
-var toLength = __webpack_require__(175);
-var createProperty = __webpack_require__(416);
-var getIterFn = __webpack_require__(417);
+var ctx            = __webpack_require__(107)
+  , $export        = __webpack_require__(34)
+  , toObject       = __webpack_require__(116)
+  , call           = __webpack_require__(414)
+  , isArrayIter    = __webpack_require__(415)
+  , toLength       = __webpack_require__(175)
+  , createProperty = __webpack_require__(416)
+  , getIterFn      = __webpack_require__(417);
 
-$export($export.S + $export.F * !__webpack_require__(419)(function (iter) { Array.from(iter); }), 'Array', {
+$export($export.S + $export.F * !__webpack_require__(419)(function(iter){ Array.from(iter); }), 'Array', {
   // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
-  from: function from(arrayLike /* , mapfn = undefined, thisArg = undefined */) {
-    var O = toObject(arrayLike);
-    var C = typeof this == 'function' ? this : Array;
-    var aLen = arguments.length;
-    var mapfn = aLen > 1 ? arguments[1] : undefined;
-    var mapping = mapfn !== undefined;
-    var index = 0;
-    var iterFn = getIterFn(O);
-    var length, result, step, iterator;
-    if (mapping) mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
+  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
+    var O       = toObject(arrayLike)
+      , C       = typeof this == 'function' ? this : Array
+      , aLen    = arguments.length
+      , mapfn   = aLen > 1 ? arguments[1] : undefined
+      , mapping = mapfn !== undefined
+      , index   = 0
+      , iterFn  = getIterFn(O)
+      , length, result, step, iterator;
+    if(mapping)mapfn = ctx(mapfn, aLen > 2 ? arguments[2] : undefined, 2);
     // if object isn't iterable or it's array with default iterator - use simple case
-    if (iterFn != undefined && !(C == Array && isArrayIter(iterFn))) {
-      for (iterator = iterFn.call(O), result = new C(); !(step = iterator.next()).done; index++) {
+    if(iterFn != undefined && !(C == Array && isArrayIter(iterFn))){
+      for(iterator = iterFn.call(O), result = new C; !(step = iterator.next()).done; index++){
         createProperty(result, index, mapping ? call(iterator, mapfn, [step.value, index], true) : step.value);
       }
     } else {
       length = toLength(O.length);
-      for (result = new C(length); length > index; index++) {
+      for(result = new C(length); length > index; index++){
         createProperty(result, index, mapping ? mapfn(O[index], index) : O[index]);
       }
     }
@@ -37667,31 +37604,29 @@ $export($export.S + $export.F * !__webpack_require__(419)(function (iter) { Arra
 
 // call something on iterator step with safe closing on error
 var anObject = __webpack_require__(47);
-module.exports = function (iterator, fn, value, entries) {
+module.exports = function(iterator, fn, value, entries){
   try {
     return entries ? fn(anObject(value)[0], value[1]) : fn(value);
   // 7.4.6 IteratorClose(iterator, completion)
-  } catch (e) {
+  } catch(e){
     var ret = iterator['return'];
-    if (ret !== undefined) anObject(ret.call(iterator));
+    if(ret !== undefined)anObject(ret.call(iterator));
     throw e;
   }
 };
-
 
 /***/ }),
 /* 415 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators = __webpack_require__(62);
-var ITERATOR = __webpack_require__(29)('iterator');
-var ArrayProto = Array.prototype;
+var Iterators  = __webpack_require__(62)
+  , ITERATOR   = __webpack_require__(29)('iterator')
+  , ArrayProto = Array.prototype;
 
-module.exports = function (it) {
+module.exports = function(it){
   return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
-
 
 /***/ }),
 /* 416 */
@@ -37699,47 +37634,45 @@ module.exports = function (it) {
 
 "use strict";
 
-var $defineProperty = __webpack_require__(40);
-var createDesc = __webpack_require__(60);
+var $defineProperty = __webpack_require__(40)
+  , createDesc      = __webpack_require__(60);
 
-module.exports = function (object, index, value) {
-  if (index in object) $defineProperty.f(object, index, createDesc(0, value));
+module.exports = function(object, index, value){
+  if(index in object)$defineProperty.f(object, index, createDesc(0, value));
   else object[index] = value;
 };
-
 
 /***/ }),
 /* 417 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var classof = __webpack_require__(418);
-var ITERATOR = __webpack_require__(29)('iterator');
-var Iterators = __webpack_require__(62);
-module.exports = __webpack_require__(28).getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR]
+var classof   = __webpack_require__(418)
+  , ITERATOR  = __webpack_require__(29)('iterator')
+  , Iterators = __webpack_require__(62);
+module.exports = __webpack_require__(28).getIteratorMethod = function(it){
+  if(it != undefined)return it[ITERATOR]
     || it['@@iterator']
     || Iterators[classof(it)];
 };
-
 
 /***/ }),
 /* 418 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // getting tag from 19.1.3.6 Object.prototype.toString()
-var cof = __webpack_require__(109);
-var TAG = __webpack_require__(29)('toStringTag');
-// ES3 wrong here
-var ARG = cof(function () { return arguments; }()) == 'Arguments';
+var cof = __webpack_require__(109)
+  , TAG = __webpack_require__(29)('toStringTag')
+  // ES3 wrong here
+  , ARG = cof(function(){ return arguments; }()) == 'Arguments';
 
 // fallback for IE11 Script Access Denied error
-var tryGet = function (it, key) {
+var tryGet = function(it, key){
   try {
     return it[key];
-  } catch (e) { /* empty */ }
+  } catch(e){ /* empty */ }
 };
 
-module.exports = function (it) {
+module.exports = function(it){
   var O, T, B;
   return it === undefined ? 'Undefined' : it === null ? 'Null'
     // @@toStringTag case
@@ -37750,34 +37683,31 @@ module.exports = function (it) {
     : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
 };
 
-
 /***/ }),
 /* 419 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ITERATOR = __webpack_require__(29)('iterator');
-var SAFE_CLOSING = false;
+var ITERATOR     = __webpack_require__(29)('iterator')
+  , SAFE_CLOSING = false;
 
 try {
   var riter = [7][ITERATOR]();
-  riter['return'] = function () { SAFE_CLOSING = true; };
-  // eslint-disable-next-line no-throw-literal
-  Array.from(riter, function () { throw 2; });
-} catch (e) { /* empty */ }
+  riter['return'] = function(){ SAFE_CLOSING = true; };
+  Array.from(riter, function(){ throw 2; });
+} catch(e){ /* empty */ }
 
-module.exports = function (exec, skipClosing) {
-  if (!skipClosing && !SAFE_CLOSING) return false;
+module.exports = function(exec, skipClosing){
+  if(!skipClosing && !SAFE_CLOSING)return false;
   var safe = false;
   try {
-    var arr = [7];
-    var iter = arr[ITERATOR]();
-    iter.next = function () { return { done: safe = true }; };
-    arr[ITERATOR] = function () { return iter; };
+    var arr  = [7]
+      , iter = arr[ITERATOR]();
+    iter.next = function(){ return {done: safe = true}; };
+    arr[ITERATOR] = function(){ return iter; };
     exec(arr);
-  } catch (e) { /* empty */ }
+  } catch(e){ /* empty */ }
   return safe;
 };
-
 
 /***/ }),
 /* 420 */
@@ -45546,6 +45476,8 @@ var _RealtorRow = __webpack_require__(490);
 
 var _RealtorRow2 = _interopRequireDefault(_RealtorRow);
 
+var _reactBootstrap = __webpack_require__(350);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RealtorList = function RealtorList(_ref) {
@@ -45554,43 +45486,33 @@ var RealtorList = function RealtorList(_ref) {
 
 
     return React.createElement(
-        "table",
-        { className: "Table" },
+        _reactBootstrap.Table,
+        { striped: true, bordered: true, condensed: true, hover: true },
         React.createElement(
-            "thead",
+            'thead',
             null,
             React.createElement(
-                "tr",
+                'tr',
                 null,
                 React.createElement(
-                    "th",
-                    { width: "50" },
-                    "ID"
+                    'th',
+                    { width: '33%' },
+                    'Name'
                 ),
                 React.createElement(
-                    "th",
-                    { width: "250" },
-                    "Name"
+                    'th',
+                    { width: '34%' },
+                    'Phone'
                 ),
                 React.createElement(
-                    "th",
-                    null,
-                    "Phone"
-                ),
-                React.createElement(
-                    "th",
-                    null,
-                    "GUID"
-                ),
-                React.createElement(
-                    "th",
-                    null,
-                    "Update At"
+                    'th',
+                    { width: '33%' },
+                    'Update At'
                 )
             )
         ),
         React.createElement(
-            "tbody",
+            'tbody',
             null,
             realtors.map(function (realtor, i) {
                 return React.createElement(_RealtorRow2.default, _extends({ key: i
@@ -45645,14 +45567,9 @@ var RealtorRow = function RealtorRow(_ref) {
 
     return React.createElement(
         "tr",
-        { className: "Row", onClick: function onClick() {
+        { onClick: function onClick() {
                 return handler(guid);
             } },
-        React.createElement(
-            "td",
-            null,
-            id
-        ),
         React.createElement(
             "td",
             null,
@@ -45667,11 +45584,6 @@ var RealtorRow = function RealtorRow(_ref) {
                 phonetype1
             ),
             "\xA0"
-        ),
-        React.createElement(
-            "td",
-            null,
-            guid
         ),
         React.createElement(
             "td",
@@ -45700,39 +45612,41 @@ var _RealtorDetailRow = __webpack_require__(492);
 
 var _RealtorDetailRow2 = _interopRequireDefault(_RealtorDetailRow);
 
+var _reactBootstrap = __webpack_require__(350);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RealtorDetail = function RealtorDetail(_ref) {
     var listings = _ref.listings;
 
     return React.createElement(
-        "table",
-        { className: "Table" },
+        _reactBootstrap.Table,
+        { striped: true, bordered: true, condensed: true, hover: true },
         React.createElement(
-            "thead",
+            'thead',
             null,
             React.createElement(
-                "tr",
+                'tr',
                 null,
                 React.createElement(
-                    "th",
+                    'th',
                     null,
-                    "Name"
+                    'Name'
                 ),
                 React.createElement(
-                    "th",
+                    'th',
                     null,
-                    "MLSNumber"
+                    'MLSNumber'
                 ),
                 React.createElement(
-                    "th",
+                    'th',
                     null,
-                    "Price"
+                    'Price'
                 )
             )
         ),
         React.createElement(
-            "tbody",
+            'tbody',
             null,
             listings.map(function (listing, i) {
                 return React.createElement(_RealtorDetailRow2.default, _extends({ key: i
@@ -45828,7 +45742,7 @@ exports = module.exports = __webpack_require__(105)(undefined);
 
 
 // module
-exports.push([module.i, ".Table {\r\n  width: 100%;\r\n  margin-top: 1.5em;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.RealtorContainer {\r\n  width: 80%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.SearchBar {\r\n  margin-top: 1.5em;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\nth {\r\n    text-align: center;\r\n    background-color: #61DAFB;\r\n    cursor: default;\r\n}\r\n\r\ntr:nth-child(even) {\r\n  background-color: #f0f0f0;   \r\n}\r\n\r\ntr:hover {\r\n  background-color: #61DAFB;\r\n  cursor: pointer;\r\n}\r\n\r\n.Pagination {\r\n  width: 80%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.Page {\r\n  text-align: left;\r\n  background-color: #A730FD;\r\n  position: relative;\r\n  width: 50px;\r\n  padding: 8px 16px;\r\n  float: left;\r\n}\r\n\r\n.Pages {\r\n  text-align: left;\r\n  position: relative;\r\n  float: left;\r\n}\r\n\r\n", ""]);
+exports.push([module.i, ".RealtorContainer {\r\n  width: 80%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n.SearchBar {\r\n  margin-top: 1.5em;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  margin-bottom: 1.5em;\r\n}\r\n\r\nth {\r\n    margin-top: 1.5em;\r\n}\r\n/*\r\ntr:nth-child(even) {\r\n  background-color: #f0f0f0;   \r\n}\r\n*/\r\ntr:hover {\r\n  cursor: pointer;\r\n}\r\n\r\n.Pagination {\r\n  width: 80%;\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n}\r\n\r\n", ""]);
 
 // exports
 
@@ -45837,7 +45751,7 @@ exports.push([module.i, ".Table {\r\n  width: 100%;\r\n  margin-top: 1.5em;\r\n 
 /* 495 */
 /***/ (function(module, exports) {
 
-module.exports = [{"id":1,"name":"Mark Imhoff","guid":"399ff3ef-78dd-4b0d-bec4-5f3050bbb4c9","individualid":1676965,"phonetype1":"250-883-1995","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.homesalesvictoria.com","websitetype2":"https://www.facebook.com/TheMarkImhoffGroup/","websitetype3":"https://www.linkedin.com/in/the-mark-imhoff-group-4b546647/","websitetype4":"https://twitter.com/MarkImhoffGroup","websitetype5":"","email1":"400625966","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1171728.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mark","lastname":"Imhoff","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":2,"name":"Victoria Cao","guid":"de3cb3aa-e802-4e34-a428-1ad3de340ce2","individualid":1966645,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402591165","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1254616.jpg","position":"","permitfreetextemail":0,"firstname":"Victoria","lastname":"Cao","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":3,"name":"Louisa Feary","guid":"ef01aff2-bc20-4e01-86ee-9d0636ca7527","individualid":2023266,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400276380","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Louisa","lastname":"Feary","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":4,"name":"Joel Reinboldt","guid":"7dd1f739-a5be-4138-a863-b6417bcd991d","individualid":1833237,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402321639","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Joel","lastname":"Reinboldt","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":5,"name":"Chris James Markham","guid":"db1adf46-8452-48b1-a8a9-86e359d3b89a","individualid":1998451,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155578","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Chris James","lastname":"Markham","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":6,"name":"Chris Markham","guid":"24d1d11d-d02d-42c7-954f-dc78319d62ab","individualid":1437199,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.century21.ca/chris.markham","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155576","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031128.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Markham","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":7,"name":"Treza Sbaraglia","guid":"71393bce-e72b-4120-b35e-2427239c90f9","individualid":1958804,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.treza.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400279678","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Treza","lastname":"Sbaraglia","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":8,"name":"Stephen Foster","guid":"b2b55018-bae2-4ccc-8534-6b3d6c40253d","individualid":1567834,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.stephenfoster.ca","websitetype2":"https://www.facebook.com/stephenfosterpropertygroup/","websitetype3":"https://ca.linkedin.com/in/stephenbfoster","websitetype4":"https://twitter.com/StephenBFoster","websitetype5":"","email1":"400768817","email2":"","email3":"","email4":"","photo":"","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Stephen","lastname":"Foster","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":9,"name":"Ron C. Neal","guid":"0c6ec41a-c366-4c7c-a2d0-e7e909e9dc8c","individualid":1437318,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.ronneal.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401155597","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437318.jpg","position":"","permitfreetextemail":0,"firstname":"Ron","lastname":"Neal","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":10,"name":"Scott Douglas","guid":"c95b9cf4-9369-48a0-b6da-cdca5427c69c","individualid":2018667,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398479724","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Douglas","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":11,"name":"Tony Zarsadias","guid":"ef25e22f-1220-4e08-85f9-17c960da9482","individualid":1527328,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.thecondogroup.com/","websitetype2":"http://www.facebook.com/condogroup","websitetype3":"","websitetype4":"https://twitter.com/condogroup","websitetype5":"","email1":"398239689","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1527328.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tony","lastname":"Zarsadias","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":12,"name":"Ray Murray","guid":"f18d5309-1458-46bd-a2ef-5941eb3ff151","individualid":1953852,"phonetype1":"250-686-3789","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sheppardmurray.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400525204","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Ray","lastname":"Murray","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":13,"name":"Scott Kral","guid":"a9b25c28-98de-4df5-a6f3-bd1353e7c4fd","individualid":1631099,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400058070","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1631099.jpg","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Kral","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":14,"name":"Robert Garry","guid":"1c9f4071-d52b-4d11-93f5-f408f3d041e6","individualid":1436897,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.robgarryrealestate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399198387","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099276.jpg","position":"","permitfreetextemail":0,"firstname":"Robert","lastname":"Garry","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:09","updated_at":"2017-08-12 00:41:09"},{"id":15,"name":"Sam S Cavaleri","guid":"372c45a9-f434-48dc-986f-e040cf08b697","individualid":1427220,"phonetype1":"604-290-4079","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.samcavaleri.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"391141691","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Sam","lastname":"Cavaleri","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":16,"name":"Andrew Holenchuk","guid":"dce24372-d288-437d-b162-33c11a1ea8ab","individualid":1629948,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-663-2121","websitetype1":"http://www.VictoriaProperties.com","websitetype2":"http://www.facebook.com/VictoriaPropertyGroup","websitetype3":"https://www.linkedin.com/in/andrewholenchuk","websitetype4":"https://twitter.com/AndrewHolenchuk","websitetype5":"","email1":"400379382","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1162410.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Andrew","lastname":"Holenchuk","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":17,"name":"Tory Thompson","guid":"4b6f93c6-b018-43f0-9e53-1a3d6eceee14","individualid":1534300,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.victoriaproperties.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400019461","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1143796.jpg","position":"","permitfreetextemail":0,"firstname":"Tory","lastname":"Thompson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":18,"name":"Kelly Grymaloski","guid":"b1286f7c-e5fc-46ec-a789-8bb49d682d50","individualid":2016120,"phonetype1":"250-893-9185","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"","websitetype1":"http://www.ComeSellwithMe.ca","websitetype2":"https://www.facebook.com/ComeSELLwithME/","websitetype3":"https://ca.linkedin.com/in/kellygcomesellwithme?","websitetype4":"https://twitter.com/KellygSellwthMe","websitetype5":"","email1":"400769822","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1297381.jpg","position":"","permitfreetextemail":0,"firstname":"Kelly","lastname":"Grymaloski","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":19,"name":"Harry Fowler","guid":"693166bf-da69-4552-9243-72cadf404165","individualid":1436874,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401609836","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436874.jpg","position":"","permitfreetextemail":0,"firstname":"Harry","lastname":"Fowler","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":20,"name":"Guy Effler","guid":"e3b905d8-55cc-4723-8a3b-b380bdc37c32","individualid":1559588,"phonetype1":"250-812-4910","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://bc.onepercentrealty.com/agentdetails.cfm?rid=247","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398957144","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1559588.jpg","position":"","permitfreetextemail":0,"firstname":"Guy","lastname":"Effler","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":21,"name":"Chuck Meagher","guid":"c118d61f-f0ef-4b48-85cd-cef5486996a4","individualid":1437216,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.virealestategroup.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401212836","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030783.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Chuck","lastname":"Meagher","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":22,"name":"Jeff Bishop","guid":"9d8d9f9a-41d0-404a-90aa-8962860e6627","individualid":1623056,"phonetype1":"250-661-1200","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jeffreycbishop.com","websitetype2":"","websitetype3":"https://ca.linkedin.com/in/jeff-bishop-dfh?","websitetype4":"","websitetype5":"","email1":"399135710","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1161061.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jeff","lastname":"Bishop","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":23,"name":"Paul Askew","guid":"59b63ba4-0558-494f-a4f1-d0d2a6eeaa43","individualid":1436595,"phonetype1":"250-380-8824","phonetype2":"","phonetype3":"250-744-3301","phonetype4":"250-744-3904","phonetype5":"800-663-2121","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399431620","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099167.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Paul","lastname":"Askew","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":24,"name":"Clayton Morris","guid":"0c5058e6-1b45-41b9-9b01-13f0787ce168","individualid":1962045,"phonetype1":"250-686-9814","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.claytonmorris.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400871228","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1251731.jpg","position":"","permitfreetextemail":0,"firstname":"Clayton","lastname":"Morris","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":25,"name":"Sue Daniels","guid":"e07dbaeb-cea2-4fab-a308-f76dc52274e8","individualid":1436768,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400357470","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099135.jpg","position":"","permitfreetextemail":0,"firstname":"Sue","lastname":"Daniels","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":26,"name":"Jason Leslie","guid":"e368ab88-f76d-45f0-8de5-62b58d8ba1e9","individualid":1467987,"phonetype1":"250-478-9600","phonetype2":"","phonetype3":"250-478-9600","phonetype4":"250-478-6060","phonetype5":"250-478-9600","websitetype1":"http://www.realestatevi.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402115092","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1125401.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jason","lastname":"Leslie","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":27,"name":"Robert Buckle","guid":"cc2b3357-66d3-4e77-8c0a-cba2cd3943f8","individualid":1436690,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399914394","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030813.gif","position":"","permitfreetextemail":0,"firstname":"Robert","lastname":"Buckle","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":28,"name":"Mark Berg","guid":"979cc677-30ba-4551-88cc-271c3e9e5577","individualid":1873568,"phonetype1":"250-415-6781","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.markbergrealestate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402477780","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1218869.jpg","position":"","permitfreetextemail":0,"firstname":"Mark","lastname":"Berg","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":29,"name":"Dana Berg","guid":"c7ffd5f8-6d2b-4aab-af9d-b30708968675","individualid":1891926,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402477775","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Dana","lastname":"Berg","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":30,"name":"Andrew Hobbs","guid":"53afd8e6-66d3-40f8-8162-677e05b2c2a2","individualid":1794339,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.thecondogroup.com/","websitetype2":"http://www.facebook.com/condogroup","websitetype3":"","websitetype4":"https://twitter.com/condogroup","websitetype5":"","email1":"398239677","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1794339.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Andrew","lastname":"Hobbs","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":31,"name":"Chris Gill","guid":"65fe4263-93c2-4d25-b2f8-01d2831c50a5","individualid":1619525,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.thecondogroup.com","websitetype2":"http://www.facebook.com/condogroup","websitetype3":"","websitetype4":"https://twitter.com/condogroup","websitetype5":"","email1":"398239661","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1619525.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Chris","lastname":"Gill","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":32,"name":"Justin Cownden","guid":"0853d04e-a16a-4918-b8e6-096da157c80f","individualid":1561333,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.justinsells.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400037390","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1147686.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Justin","lastname":"Cownden","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":33,"name":"Karie Seiss","guid":"fac57809-cabc-46de-9733-abd09c9c17a7","individualid":1981988,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398085893","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Karie","lastname":"Seiss","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":34,"name":"Laurie Abram","guid":"7881379b-dffb-47b8-9c71-0feb3a423d89","individualid":1436572,"phonetype1":"250-812-1771","phonetype2":"","phonetype3":"250-385-2033","phonetype4":"888-824-3716","phonetype5":"","websitetype1":"http://www.laurieabram.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399914353","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436572.jpg","position":"","permitfreetextemail":0,"firstname":"Laurie","lastname":"Abram","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":35,"name":"Wendy Thompson","guid":"aafb902c-784e-44f3-be47-74bd7826d7fc","individualid":1964503,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"https://www.victoriamasteronmain.com  https://wendy.livevictoriabc.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401662762","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1253179.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Wendy","lastname":"Thompson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":36,"name":"Kim Mohns","guid":"22aa7b6a-a236-4e6f-92f5-c5250b736f24","individualid":1570987,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://kim.livevictoriabc.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399431635","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1151526.jpg","position":"","permitfreetextemail":0,"firstname":"Kim","lastname":"Mohns","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":37,"name":"Ivan Delano","guid":"cb708e1f-c2f8-4df5-bb54-c4d8f9af0a2e","individualid":1436781,"phonetype1":"250-744-8506","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.IvanDelano.com","websitetype2":"https://www.facebook.com/victoriaforsale?ref=hl","websitetype3":"","websitetype4":"https://twitter.com/homezen","websitetype5":"","email1":"402422325","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436781.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Ivan","lastname":"Delano","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":38,"name":"John Byrne","guid":"d1e51de1-9103-4c27-84c7-3d341f495caa","individualid":1757361,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandjohn.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401675601","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1183678.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"John","lastname":"Byrne","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":39,"name":"Chris Barrington Foote","guid":"b024a4fc-4b9f-449d-b4e4-c384e27290f8","individualid":1621446,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandjohn.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400988111","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1621446.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Chris","lastname":"Barrington Foote","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":40,"name":"Shelley Saldat","guid":"7673b6a9-7b9b-4c82-971d-5b20e627feed","individualid":1437444,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401315132","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437444.jpg","position":"","permitfreetextemail":0,"firstname":"Shelley","lastname":"Saldat","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":41,"name":"Roy L. Stevenson","guid":"c7f0d096-b768-4dce-b5ed-7b37c339c5ab","individualid":1437270,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.realtorroy.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401318503","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031101.jpg","position":"","permitfreetextemail":0,"firstname":"Roy","lastname":"Stevenson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":42,"name":"Ian Jules","guid":"8618bb96-360c-4907-aad9-89cba604a366","individualid":1901696,"phonetype1":"250-885-1451","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.victoriarealestate.tv","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401155587","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1217755.jpg","position":"","permitfreetextemail":0,"firstname":"Ian","lastname":"Jules","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":43,"name":"Richard Gadoury","guid":"71256964-7962-415c-ba2a-ef97fc01d0bd","individualid":1883851,"phonetype1":"778-977-2600","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-665-5303","websitetype1":"http://www.richardgadoury.com","websitetype2":"https://www.facebook.com/pages/Richard-Gadoury-Victoria-Realty-Pemberton-Holmes/139448936066574?fref","websitetype3":"https://www.linkedin.com/profile/view?id=112337732&trk=nav_responsive_tab_profile_pic","websitetype4":"https://twitter.com/Richard1Gadoury","websitetype5":"","email1":"402015926","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1208017.jpg","position":"","permitfreetextemail":0,"firstname":"Richard","lastname":"Gadoury","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":44,"name":"Glen Myles","guid":"2b9018b5-097f-4669-819d-5b56887091fa","individualid":1437312,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401318490","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030834.gif","position":"","permitfreetextemail":0,"firstname":"Glen","lastname":"Myles","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":45,"name":"Deb Scott","guid":"0c70fc77-9b50-4b41-be1b-14d6415339e1","individualid":1640361,"phonetype1":"250-385-2033","phonetype2":"","phonetype3":"","phonetype4":"250-385-3763","phonetype5":"888-886-1286","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400200180","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1164820.jpg","position":"","permitfreetextemail":0,"firstname":"Deb","lastname":"Scott","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":46,"name":"Alex Burns","guid":"bd1c5c20-ff74-4e5a-ae35-1d048b057659","individualid":1646859,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.VictoriaRealEstate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398633388","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1166770.jpg","position":"","permitfreetextemail":0,"firstname":"Alex","lastname":"Burns","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":47,"name":"Maurice Connor","guid":"640f12cd-5023-46f3-9a63-7f72b68d7b4b","individualid":1956978,"phonetype1":"250-812-0139","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401287482","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1248317.jpg","position":"","permitfreetextemail":0,"firstname":"Maurice","lastname":"Connor","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":48,"name":"Robert Young","guid":"8a4dd19a-40c2-4ec1-b1d7-a5aa95271d44","individualid":1437591,"phonetype1":"250-385-6900","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.robertyoung.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400779490","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Robert","lastname":"Young","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":49,"name":"Geoff Field","guid":"4644902a-6634-4016-819d-39929ae140d1","individualid":1436862,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.geofffield.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402318172","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099171.jpg","position":"","permitfreetextemail":0,"firstname":"Geoff","lastname":"Field","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":50,"name":"Glen Glowinski","guid":"f2fb2c33-2883-4634-ba5a-cc2d45f1cf10","individualid":1436914,"phonetype1":"250-217-1205","phonetype2":"","phonetype3":"","phonetype4":"250-386-8180","phonetype5":"","websitetype1":"http://www.gotoglen.com","websitetype2":"https://www.facebook.com/GoToGlenG","websitetype3":"","websitetype4":"https://twitter.com/GoToGlenG","websitetype5":"","email1":"399395631","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030420.jpg","position":"","permitfreetextemail":0,"firstname":"Glen","lastname":"Glowinski","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":51,"name":"Josh Ray","guid":"0bf3307c-4113-412d-a521-af650af479ea","individualid":1922873,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.joshray.ca","websitetype2":"https://www.facebook.com/josh.ray.96","websitetype3":"http://www.linkedin.com/profile/view?id=130852975&goback=%2Enmp_*1_*1_*1_*1_*1_*1_*1_*1_*1&trk=spm_p","websitetype4":"https://twitter.com/josh_ray15","websitetype5":"","email1":"397981764","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1922873.jpg","position":"","permitfreetextemail":0,"firstname":"Josh","lastname":"Ray","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":52,"name":"Mike Nugent","guid":"db2dac43-8112-4d22-b572-f0f7b20cd62c","individualid":1437333,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.mnugent.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400273131","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030650.jpg","position":"","permitfreetextemail":0,"firstname":"Mike","lastname":"Nugent","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":53,"name":"Bruce Hatter","guid":"188d0bc2-cbab-49fc-9b2f-6dc6f7dce69b","individualid":1436984,"phonetype1":"250-812-9851","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.hatterking.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401209235","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030970.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Bruce","lastname":"Hatter","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":54,"name":"Shane King","guid":"ff70db54-df4a-4d9a-8678-b0f1d86371bd","individualid":1786737,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.hatterking.com","websitetype2":"https://www.facebook.com/HatterKingRealEstateTeam/?fref=ts","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401209245","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1786737.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Shane","lastname":"King","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":55,"name":"Thomas Hu","guid":"3aa0f179-fdbf-44aa-beaf-04b87997ffea","individualid":2033064,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401802515","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1310196.jpg","position":"","permitfreetextemail":0,"firstname":"Thomas","lastname":"Hu","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":56,"name":"Dave Vogel","guid":"ab9018cc-fcb0-4e8b-847b-4d66a7400a04","individualid":1437529,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.accessrealtyltd.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399367967","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Dave","lastname":"Vogel","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":57,"name":"Jasmine Parsons","guid":"4529288d-dea7-4587-94b9-416ae1ed82f3","individualid":1663789,"phonetype1":"250-727-8437","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399887409","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1168594.jpg","position":"","permitfreetextemail":0,"firstname":"Jasmine","lastname":"Parsons","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":58,"name":"Karen Love","guid":"e688c088-9321-4391-91ff-089e66cd659b","individualid":1437163,"phonetype1":"250-386-8875","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.karenlove.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397449509","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031221.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Karen","lastname":"Love","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":59,"name":"Robyn Wildman","guid":"3bb286cb-7d40-4869-933c-8242f53bae6c","individualid":1947346,"phonetype1":"250-818-8522","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.karenlove.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397760079","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1242388.jpg","position":"","permitfreetextemail":0,"firstname":"Robyn","lastname":"Wildman","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":60,"name":"Tracy Menzies","guid":"e984428f-a88b-4454-af34-785776487d9a","individualid":1930265,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-655-5303","websitetype1":"http://www.tracymenzies.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400646291","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1231210.jpg","position":"","permitfreetextemail":0,"firstname":"Tracy","lastname":"Menzies","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":61,"name":"Roger Jones","guid":"bb92e76d-9d92-486a-a210-92e484ddb0b1","individualid":1437070,"phonetype1":"250-361-9838","phonetype2":"","phonetype3":"","phonetype4":"250-361-9509","phonetype5":"","websitetype1":"http://www.jonescompany.net","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401986792","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437070.jpg","position":"","permitfreetextemail":0,"firstname":"Roger","lastname":"Jones","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":62,"name":"Bowman Rutledge","guid":"b1720f3a-1868-43a1-87e1-7ca24645651b","individualid":1995588,"phonetype1":"250-208-8878","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.rogersrutledge.com","websitetype2":"https://www.facebook.com/rogersrutledge/","websitetype3":"https://www.linkedin.com/in/bowman-rutledge-5b116bbb?trk=hp-identity-name","websitetype4":"https://twitter.com/Bowman_Rutledge","websitetype5":"","email1":"402698831","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1995588.jpg","position":"","permitfreetextemail":0,"firstname":"Bowman","lastname":"Rutledge","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":63,"name":"Andy Rogers","guid":"28a212b6-be3f-4261-84d3-9e26ba7cf4c3","individualid":1952233,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.rogersrutledge.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400592971","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1952233.jpg","position":"","permitfreetextemail":0,"firstname":"Andy","lastname":"Rogers","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":64,"name":"Tracie L McTavish","guid":"8d94ad53-81f8-4209-9be2-5c5dafad53ec","individualid":1429718,"phonetype1":"604-682-2088","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"394870207","email2":"","email3":"","email4":"","photo":"","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tracie","lastname":"McTavish","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":65,"name":"Phil Hahn","guid":"d2a2a5ac-3b0b-47c0-9fce-60861e479a0c","individualid":1677211,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.islandhousesellers.com","websitetype2":"https://www.facebook.com/IslandHouseSellers","websitetype3":"","websitetype4":"https://twitter.com/islandhousesale","websitetype5":"","email1":"401555357","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1103959.jpg","position":"","permitfreetextemail":0,"firstname":"Phil","lastname":"Hahn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":66,"name":"Kris Emberley","guid":"c872d04e-a53f-4f5c-b4d8-0978a2e4e31a","individualid":1990466,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399828503","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Kris","lastname":"Emberley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":67,"name":"Rebecca Miller","guid":"82eed843-b9f1-4f34-939c-74b5ec2043c3","individualid":1883852,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.rebeccamiller.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399907545","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1208016.jpg","position":"","permitfreetextemail":0,"firstname":"Rebecca","lastname":"Miller","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":68,"name":"Darien Verbrugge","guid":"6900c730-d130-466c-94a9-c018918581d9","individualid":1944847,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398934151","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Darien","lastname":"Verbrugge","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":69,"name":"IRINA REZNIK","guid":"70d56f74-4f9e-4b87-a934-b8f5c1e94381","individualid":1848767,"phonetype1":"647-932-0015","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"https://www.listmenow.ca/info","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"396991840","email2":"","email3":"","email4":"","photo":"","position":"Broker","permitfreetextemail":0,"firstname":"IRINA","lastname":"REZNIK","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":70,"name":"Sandra Govender","guid":"5f43adc4-46e5-4fda-b1c0-8cbcf936d5e0","individualid":1863747,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"250-592-6600","phonetype5":"800-263-4753","websitetype1":"http://www.SandraGovender.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399741336","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1201349.jpg","position":"","permitfreetextemail":0,"firstname":"Sandra","lastname":"Govender","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":71,"name":"Sonya Conn","guid":"96caa680-dae6-46a5-96af-b79b54d3f508","individualid":1864925,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399876394","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1201628.jpg","position":"","permitfreetextemail":0,"firstname":"Sonya","lastname":"Conn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":72,"name":"Yuan Chen","guid":"4957ba5d-7d78-45b6-b0fd-4aaf9a1b6fa5","individualid":1763332,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400448004","email2":"","email3":"","email4":"","photo":"","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Yuan","lastname":"Chen","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":73,"name":"Marko Juras","guid":"e4d03776-3363-4dea-a7bd-d2758b46bcfe","individualid":1893657,"phonetype1":"250-380-8297","phonetype2":"","phonetype3":"","phonetype4":"778-430-2228","phonetype5":"","websitetype1":"http://www.markojuras.com","websitetype2":"http://www.facebook.com/MarkoJurasVictoria","websitetype3":"http://ca.linkedin.com/pub/marko-juras/16/b52/25a","websitetype4":"https://twitter.com/MarkoJuras","websitetype5":"","email1":"398428032","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1893657.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Marko","lastname":"Juras","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":74,"name":"Leslie Manson","guid":"4cccd358-c530-460d-8e69-c42d75bcd3b9","individualid":1437194,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.lesliemanson.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402403814","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031398.jpg","position":"","permitfreetextemail":0,"firstname":"Leslie","lastname":"Manson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":75,"name":"Sylvia Therrien","guid":"f9e512ea-25ec-457b-a215-0015dbc90dad","individualid":1437494,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sylviatherrien.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400962374","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031133.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Sylvia","lastname":"Therrien","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":76,"name":"Marc Owen-Flood","guid":"34b21e1c-6661-45e5-b6b2-233ad1d046bc","individualid":1437345,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.owen-flood.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399990647","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030541.gif","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Marc","lastname":"Owen-Flood","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":77,"name":"Danielle Moreau","guid":"77040a84-941a-4c2d-9b8f-1469d4849d38","individualid":1956870,"phonetype1":"778-966-1316","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.movetovictoria.com","websitetype2":"http://www.facebook.com/lesstalkmoreauaction","websitetype3":"http://ca.linkedin.com/pub/danielle-moreau/27/b04/51b","websitetype4":"https://twitter.com/DMoreauRealtor","websitetype5":"","email1":"401508985","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1248244.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Danielle","lastname":"Moreau","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":78,"name":"Blake Moreau","guid":"c2373992-ffd6-4d7c-a087-a29b6accda57","individualid":1437295,"phonetype1":"250-881-0423","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.movetovictoria.com","websitetype2":"https://www.facebook.com/DanielleMoreauRealtor/?fref=ts","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400822259","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031441.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Blake","lastname":"Moreau","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":79,"name":"Charlie DePape","guid":"fc7d981d-a1c6-41fe-80d5-eb4b8391eec1","individualid":1910359,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.charliedepape.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399224882","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1910359.jpg","position":"","permitfreetextemail":0,"firstname":"Charlie","lastname":"DePape","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":80,"name":"Kim Eng","guid":"e0fb41b2-538d-4350-b485-989361dc62db","individualid":1436836,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402342593","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Kim","lastname":"Eng","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":81,"name":"Anna Clemente","guid":"2896699c-529c-4538-a497-6938a288a095","individualid":1561649,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.clementepropertygroup.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399828496","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1147873.jpg","position":"","permitfreetextemail":0,"firstname":"Anna","lastname":"Clemente","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":82,"name":"Tony Clemente","guid":"c06920a1-de66-491b-9be0-6e4764a003d3","individualid":1760695,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://Clementepropertygroup.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400073442","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1184426.jpg","position":"","permitfreetextemail":0,"firstname":"Tony","lastname":"Clemente","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":83,"name":"Lorne Tuplin","guid":"6371ac41-c894-4c51-a337-8b662b57f3e1","individualid":1437516,"phonetype1":"250-217-4600","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"877-478-9600","websitetype1":"http://www.lornetuplin.com  www.houseseek.com","websitetype2":"https://www.facebook.com/AllClassService/","websitetype3":"https://www.linkedin.com/in/lotnetuplin?trk=nav_responsive_tab_profile","websitetype4":"","websitetype5":"","email1":"401846001","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031211.jpg","position":"","permitfreetextemail":0,"firstname":"Lorne","lastname":"Tuplin","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":84,"name":"Geoffrey McLean","guid":"c8a9046a-8b18-4c09-a7a1-0024393a7202","individualid":1436963,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.geoffmclean.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399487138","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031177.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Geoffrey","lastname":"McLean","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":85,"name":"John Vernon","guid":"045dd287-924b-45cc-aa5c-229963d45456","individualid":1437527,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.johnvernon.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401618030","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437527.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"John","lastname":"Vernon","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":86,"name":"Dave Hillmer","guid":"8dcd0127-9c4c-47c9-b414-5aae95951ee8","individualid":1437008,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.VictoriaListings.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400296031","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030719.gif","position":"","permitfreetextemail":0,"firstname":"Dave","lastname":"Hillmer","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":87,"name":"Colin Gareau","guid":"dca8ea7d-53c9-40b0-8902-f2581c0fea89","individualid":1585245,"phonetype1":"250-812-3451","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.colingareau.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401635497","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1585245.jpg","position":"","permitfreetextemail":0,"firstname":"Colin","lastname":"Gareau","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":88,"name":"Jeff Shaw","guid":"b3d9977f-6b4f-424f-9a78-76517cb9ed6b","individualid":1811435,"phonetype1":"250-382-6636","phonetype2":"","phonetype3":"250-382-6636","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399795516","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1191963.jpg","position":"","permitfreetextemail":0,"firstname":"Jeff","lastname":"Shaw","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":89,"name":"Steve Duben","guid":"c9e14797-c075-4fba-afb0-468f3a5c46cc","individualid":1436815,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399849628","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436815.jpg","position":"","permitfreetextemail":0,"firstname":"Steve","lastname":"Duben","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":90,"name":"Tasha Medve","guid":"8cfcf2ad-5eaa-46ae-920d-ad184c4e6d08","individualid":1952034,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.modernrev.com","websitetype2":"http://www.facebook.com/modernrealestatevictoria","websitetype3":"","websitetype4":"http://www.twitter.com/modernrevyyj","websitetype5":"","email1":"399133452","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1245757.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tasha","lastname":"Medve","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":91,"name":"Saira Waters","guid":"e4c1a58e-cc5b-41ed-bb5e-5c8fafc82c5a","individualid":1872699,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-432-4611","websitetype1":"http://www.modernrev.com","websitetype2":"https://www.facebook.com/ModernRealEstateVictoria","websitetype3":"http://ca.linkedin.com/in/sairawaters/","websitetype4":"http://www.twitter.com/sairawaters","websitetype5":"","email1":"400125860","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1203530.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Saira","lastname":"Waters","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":92,"name":"Tom Croft","guid":"466deef0-78f8-4816-85e7-347289c689f0","individualid":1436758,"phonetype1":"778-432-4611","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-461-5353","websitetype1":"http://www.modernrev.com","websitetype2":"https://www.facebook.com/","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399063023","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031299.jpg","position":"","permitfreetextemail":0,"firstname":"Tom","lastname":"Croft","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":93,"name":"Lew Poulin","guid":"bc1c953a-74b4-463d-8565-ca9661b5b8ae","individualid":1437387,"phonetype1":"250-383-5913","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.lewpoulin.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399146005","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030988.jpg","position":"","permitfreetextemail":0,"firstname":"Lew","lastname":"Poulin","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":94,"name":"Glynis MacLeod","guid":"9b6a20ca-73d0-4822-ae5a-3f40151e43eb","individualid":1903311,"phonetype1":"250-661-7232","phonetype2":"","phonetype3":"250-661-7232","phonetype4":"250-380-3939","phonetype5":"","websitetype1":"http://glynismacleod.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398700748","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1903311.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Glynis","lastname":"MacLeod","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":95,"name":"Kieren Rasura","guid":"cb6c7656-035c-4113-a09a-8ce029ee615d","individualid":1989885,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399510751","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Kieren","lastname":"Rasura","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":96,"name":"Scott Garman","guid":"59512cf5-8bb1-4b5a-b220-e06e08126ca3","individualid":1771675,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.garmangroup.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400699218","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1186395.jpg","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Garman","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":97,"name":"Mike Garman","guid":"61e45796-b5c8-4067-a5e3-7f4d738af52f","individualid":1942109,"phonetype1":"250-213-8129","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.garmangroup.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400102653","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1238759.jpg","position":"","permitfreetextemail":0,"firstname":"Mike","lastname":"Garman","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:10","updated_at":"2017-08-12 00:41:10"},{"id":98,"name":"Michelle Harrison","guid":"ae602edc-8309-46df-a764-92ce034d877e","individualid":1942045,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://Garmangroup.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399907539","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1238677.jpg","position":"","permitfreetextemail":0,"firstname":"Michelle","lastname":"Harrison","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":99,"name":"Gregory T Lee","guid":"8528eb6f-5b8c-46b3-945c-e300c57645a5","individualid":1432949,"phonetype1":"604-626-1668","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"392086005","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Gregory","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":100,"name":"Conrad Nyren","guid":"bc0fc65f-da3b-4061-8a2e-9896e9baca21","individualid":1983692,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399097380","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Conrad","lastname":"Nyren","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":101,"name":"Sophia Briggs","guid":"59a1c8ef-c363-4952-9f4a-aad7ebe9b6ea","individualid":1662725,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sothebysrealty.ca/agents.html?aid=230","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400596712","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1168244.jpg","position":"","permitfreetextemail":0,"firstname":"Sophia","lastname":"Briggs","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":102,"name":"Nancy Stratton","guid":"13ac78d6-5f99-4ba5-a0b1-51fd2bca30b5","individualid":1479412,"phonetype1":"250-857-5482","phonetype2":"","phonetype3":"","phonetype4":"250-380-3933","phonetype5":"","websitetype1":"http://sothebysrealty.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400596726","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1479412.jpg","position":"","permitfreetextemail":0,"firstname":"Nancy","lastname":"Stratton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":103,"name":"James Smith","guid":"0977e210-1cae-4352-9918-13835e9d4c4e","individualid":1569115,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jamessmithrealtor.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399345958","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1150575.jpg","position":"","permitfreetextemail":0,"firstname":"James","lastname":"Smith","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":104,"name":"Alison Wedekind","guid":"691e0e40-f4af-4012-8b01-f84612278b22","individualid":2027243,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398260661","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Alison","lastname":"Wedekind","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":105,"name":"Jot Home","guid":"faae6ef6-786e-42e8-86a2-7ff8e2ff21dd","individualid":1437023,"phonetype1":"250-744-0753","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jothome.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400302852","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030571.jpg","position":"","permitfreetextemail":0,"firstname":"Jot","lastname":"Home","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":106,"name":"Jason Binab","guid":"63187690-70ff-47c8-9552-fd3efe31c0b0","individualid":1537172,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.binabpropertygroup.com","websitetype2":"http://www.facebook.com/public/Jason-Binab","websitetype3":"http://ca.linkedin.com/pub/jason-binab/5/695/37b","websitetype4":"https://twitter.com/jasonbinab","websitetype5":"","email1":"400973772","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1145158.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jason","lastname":"Binab","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":107,"name":"Sarah Binab","guid":"5e8c3ef3-93c4-44b4-bbba-922af7ac1ad7","individualid":1764650,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399907530","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1185130.jpg","position":"","permitfreetextemail":0,"firstname":"Sarah","lastname":"Binab","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":108,"name":"Ray Kong","guid":"0d0a615b-75d5-48a8-9a4f-ca326f419438","individualid":1437103,"phonetype1":"250-858-0099","phonetype2":"","phonetype3":"250-858-0099","phonetype4":"","phonetype5":"","websitetype1":"http://www.OnePercentRealtyVictoria.ca","websitetype2":"https://www.facebook.com/onepercentvictoria/","websitetype3":"","websitetype4":"https://twitter.com/RayCKong","websitetype5":"","email1":"400671846","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1107606.jpg","position":"","permitfreetextemail":0,"firstname":"Ray","lastname":"Kong","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":109,"name":"Jim LeBlanc","guid":"f61bb41a-726c-42bf-ba37-f37e13528952","individualid":1473979,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.luxurybchomes.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399934822","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1473979.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jim","lastname":"LeBlanc","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":110,"name":"Scott Piercy","guid":"89cbfa9b-ff4a-4072-90c3-b0824183eec4","individualid":1617124,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.luxurybchomes.com","websitetype2":"https://www.facebook.com/LuxuryBCHomes","websitetype3":"http://ca.linkedin.com/pub/scott-piercy/2/882/819","websitetype4":"","websitetype5":"","email1":"401613369","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1160011.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Scott","lastname":"Piercy","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":111,"name":"Jenn Raappana","guid":"c3c734d5-3a23-45e4-a355-0ff87cc2ecda","individualid":1469547,"phonetype1":"250-474-4800","phonetype2":"","phonetype3":"","phonetype4":"250-474-7733","phonetype5":"","websitetype1":"http://www.jennraappana.com","websitetype2":"https://www.facebook.com/Mike-and-Jenn-Real-Estate-225796140811415/","websitetype3":"","websitetype4":"https://twitter.com/MikeAndJennRLP","websitetype5":"","email1":"400432627","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1126525.jpg","position":"","permitfreetextemail":0,"firstname":"Jenn","lastname":"Raappana","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":112,"name":"Mike Hartshorne","guid":"178b9b8a-c616-47b8-a919-cda3a75bf78e","individualid":1620825,"phonetype1":"250-474-4800","phonetype2":"","phonetype3":"","phonetype4":"250-474-7733","phonetype5":"","websitetype1":"http://www.mikeandjenn.ca","websitetype2":"https://www.facebook.com/Mike-and-Jenn-Real-Estate-225796140811415/","websitetype3":"","websitetype4":"https://twitter.com/MikeAndJennRLP","websitetype5":"","email1":"401155580","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1160705.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mike","lastname":"Hartshorne","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":113,"name":"Sarah Williamson","guid":"045214be-5716-4363-be84-34ce1fa72945","individualid":1622844,"phonetype1":"250-474-4800","phonetype2":"","phonetype3":"","phonetype4":"250-474-7733","phonetype5":"","websitetype1":"http://www.mikeandjenn.ca","websitetype2":"https://www.facebook.com/Mike-and-Jenn-Real-Estate-225796140811415/","websitetype3":"","websitetype4":"https://twitter.com/MikeAndJennRLP","websitetype5":"","email1":"401092872","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1161054.jpg","position":"","permitfreetextemail":0,"firstname":"Sarah","lastname":"Williamson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":114,"name":"Henry Van Der Vlugt","guid":"f47662fd-b0b7-4832-87c6-a2b0bb35c128","individualid":1437522,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401795416","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Henry","lastname":"Van Der Vlugt","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":115,"name":"Blair Veenstra","guid":"613b20dc-ed3c-4c61-b6b0-e9b4e977a021","individualid":1741134,"phonetype1":"250-889-3926","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.housesellinggroup.com","websitetype2":"https://www.facebook.com/HSGVic","websitetype3":"http://ca.linkedin.com/in/blairveenstra","websitetype4":"https://twitter.com/HSGVicRealtors","websitetype5":"","email1":"399709974","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1179380.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Blair","lastname":"Veenstra","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":116,"name":"Sandra Hoff","guid":"1e0230c7-3ac8-48ed-87ad-3ab4cc7b6ced","individualid":1520184,"phonetype1":"250-478-4800","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sandrahoff.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400353618","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1137273.jpg","position":"","permitfreetextemail":0,"firstname":"Sandra","lastname":"Hoff","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":117,"name":"Darren Day","guid":"9e7de8b9-96b7-4e13-b4d6-bf359bfb9314","individualid":1436776,"phonetype1":"250-708-2000","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"866-303-2010","websitetype1":"http://www.darrendayrealestate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400455672","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436776.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Darren","lastname":"Day","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":118,"name":"Matt Eide","guid":"565a7067-ced2-4567-88e5-2874ba022e3e","individualid":1937862,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.matteide.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400498881","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1236162.jpg","position":"","permitfreetextemail":0,"firstname":"Matt","lastname":"Eide","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":119,"name":"Victoria Salter","guid":"10a3669e-c911-4a6d-9642-571bf16a12a1","individualid":2024451,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401203938","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Victoria","lastname":"Salter","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":120,"name":"Sonya Lee","guid":"7e010589-4d88-45c8-b42c-2f660ba89630","individualid":1437138,"phonetype1":"250-744-3301","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"","websitetype1":"http://www.sonyalee.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399133448","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Sonya","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":121,"name":"Margaret Leck","guid":"95060032-c36d-4854-96ee-1899fb4fad25","individualid":1437134,"phonetype1":"250-413-7171","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://margaretleck.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402340057","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437134.jpg","position":"","permitfreetextemail":0,"firstname":"Margaret","lastname":"Leck","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":122,"name":"Michele F. Holmes","guid":"4f4b9061-da54-472d-822c-963a7afb8551","individualid":1437020,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"877-656-0911","websitetype1":"http://www.holmesrealty.com","websitetype2":"http://www.facebook.com/holmesrealtycanada","websitetype3":"","websitetype4":"http://www.twitter.com/holmesrealty","websitetype5":"","email1":"400125837","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030774.jpg","position":"","permitfreetextemail":0,"firstname":"Michele","lastname":"Holmes","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":123,"name":"Tony Joe","guid":"efa1a5b5-2730-4021-909d-15a282a8a191","individualid":1437058,"phonetype1":"250-370-7788","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-663-2121","websitetype1":"http://www.primeteam.ca","websitetype2":"https://www.facebook.com/TonyJoeAndAssociates","websitetype3":"http://www.linkedin.com/profile/view?id=49242221&trk=wvmp-profile","websitetype4":"https://twitter.com/tonyjoevictoria","websitetype5":"","email1":"400525188","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031169.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tony","lastname":"Joe","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":124,"name":"Kerry Davies","guid":"c24278ae-4633-4ae7-beac-b4c058386ec4","individualid":1436771,"phonetype1":"250-370-7788","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.kerrydavies.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399873628","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436771.jpg","position":"","permitfreetextemail":0,"firstname":"Kerry","lastname":"Davies","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":125,"name":"Neil Rawnsley","guid":"0b08d9f7-c1e3-40f1-add2-bbf7acebe432","individualid":1437398,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401318486","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031286.jpg","position":"","permitfreetextemail":0,"firstname":"Neil","lastname":"Rawnsley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":126,"name":"Damian Kruz","guid":"10ccaf99-f615-4d2f-b689-e63accc40ecf","individualid":1739551,"phonetype1":"250-216-6501","phonetype2":"","phonetype3":"","phonetype4":"250-477-1150","phonetype5":"888-477-1105","websitetype1":"http://damiankruz.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400652799","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1178852.jpg","position":"","permitfreetextemail":0,"firstname":"Damian","lastname":"Kruz","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":127,"name":"Amber Simpson","guid":"da39f5af-b86f-4b24-93e7-65fe859b2da7","individualid":1675968,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.ambershouse.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400645329","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1171485.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Amber","lastname":"Simpson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":128,"name":"Beverly Carey","guid":"662495c2-8487-48e0-b09a-cfba6a1fa155","individualid":1436712,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402640396","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031481.jpg","position":"","permitfreetextemail":0,"firstname":"Beverly","lastname":"Carey","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":129,"name":"Jerry Bola","guid":"bb9d15d6-66d7-4889-9725-0dcdb382328b","individualid":1436653,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jerrybola.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402061261","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436653.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jerry","lastname":"Bola","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":130,"name":"Brenda L. Russell","guid":"8dfccf2b-4d97-46eb-9ead-165626c31718","individualid":1436704,"phonetype1":"250-744-4556","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-550-0585","websitetype1":"http://www.brendarussell.ca","websitetype2":"https://www.facebook.com/brendarussellrealestatevictoria","websitetype3":"https://www.linkedin.com/in/brendarussell","websitetype4":"https://twitter.com/brussell6","websitetype5":"","email1":"399510757","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031298.jpg","position":"","permitfreetextemail":0,"firstname":"Brenda","lastname":"Russell","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":131,"name":"Tara Hearn","guid":"f1273635-913a-42f9-b544-2c8082df858b","individualid":1884943,"phonetype1":"","phonetype2":"","phonetype3":"250-477-1100","phonetype4":"250-477-1150","phonetype5":"","websitetype1":"http://www.tarahearn.com","websitetype2":"https://www.facebook.com/TaraHearnRealEstate","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155508","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1884943.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tara","lastname":"Hearn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":132,"name":"Tiffany Self","guid":"ed94382b-d245-4382-9d7a-7a81b95100e4","individualid":1503269,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://victoriahomesandland.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401022467","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Tiffany","lastname":"Self","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":133,"name":"Mikko Ikonen","guid":"8b9081be-0d6c-4bca-842d-71c4350c9afe","individualid":1437036,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sellingthecity.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399510739","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1026967.jpg","position":"","permitfreetextemail":0,"firstname":"Mikko","lastname":"Ikonen","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":134,"name":"Timothy Taylor","guid":"be52407a-dff9-44d3-b05a-e70297dd5eea","individualid":1437489,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.naicommercial.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401528125","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031467.jpg","position":"","permitfreetextemail":0,"firstname":"Timothy","lastname":"Taylor","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":135,"name":"Chris Scott","guid":"be77e1b9-3267-4311-9682-be4bfd2aea5d","individualid":1686436,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400302875","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1173595.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Scott","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":136,"name":"Aaron Hambley","guid":"05dda201-cbbb-45fd-af83-6e1cd2b3353e","individualid":1536095,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.adhambley.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402370298","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1144678.jpg","position":"","permitfreetextemail":0,"firstname":"Aaron","lastname":"Hambley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":137,"name":"Darron Hambley","guid":"9133e6de-fa2a-4caf-9751-ca2205bf3e02","individualid":1629166,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.adhambley.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398730552","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1162219.jpg","position":"","permitfreetextemail":0,"firstname":"Darron","lastname":"Hambley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":138,"name":"Travis Lee","guid":"17bd0140-8aed-448c-b07b-40a4d5f8288f","individualid":1437139,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.uptownplace.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399709905","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Travis","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":139,"name":"Tracy Keenan-Whyte","guid":"2e0cd62a-ebc4-4ad6-ac2d-ea536d77b78c","individualid":1972793,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.macrealty.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400676074","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1259797.jpg","position":"","permitfreetextemail":0,"firstname":"Tracy","lastname":"Keenan-Whyte","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":140,"name":"Lisa Redding","guid":"11ff676e-e68b-41ba-84cb-bee502092ffc","individualid":1747740,"phonetype1":"250-882-0868","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.lisaredding.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400357498","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Lisa","lastname":"Redding","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":141,"name":"Zeljko Mlinar","guid":"e8c101cc-9866-4e9c-843d-c158463956c0","individualid":1471886,"phonetype1":"604-506-0450","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.vancouverhomesellers.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"392322512","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1128377.jpg","position":"","permitfreetextemail":0,"firstname":"Zeljko","lastname":"Mlinar","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":142,"name":"Matt Bourque","guid":"8bcc797a-7e21-4aad-8aec-c982305eae75","individualid":1647034,"phonetype1":"250-418-1695","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://mattbourque.net","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400322842","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1647034.jpg","position":"","permitfreetextemail":0,"firstname":"Matt","lastname":"Bourque","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":143,"name":"Colleen Milne","guid":"fe139327-c17c-47d8-9f5a-8034e9623186","individualid":1437286,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399828518","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1102536.jpg","position":"","permitfreetextemail":0,"firstname":"Colleen","lastname":"Milne","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":144,"name":"Chris Troke","guid":"3ff6ec53-b199-42f2-823a-ff229632c104","individualid":1437514,"phonetype1":"250-886-5540","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.envisioninc.ca","websitetype2":"https://www.facebook.com/envisionlanddesigns/","websitetype3":"https://www.linkedin.com/company/15241717","websitetype4":"https://twitter.com/envisioninc3d","websitetype5":"","email1":"400302859","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031366.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Troke","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":145,"name":"Scott Loughton","guid":"f7eadd4f-4602-455d-b59b-07d3783f0508","individualid":1637147,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400600003","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1164290.jpg","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Loughton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":146,"name":"Pam Whyte","guid":"be7ea588-511c-4eca-8c16-a75502716d5e","individualid":1437564,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.pamwhyte.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400480306","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099086.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Pam","lastname":"Whyte","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":147,"name":"Mike Van Nerum","guid":"c1f9659e-b362-474b-9855-9e1d6edab709","individualid":1437523,"phonetype1":"250-213-5676","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"888-477-1105","websitetype1":"http://www.mikevannerum.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155614","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437523.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mike","lastname":"Van Nerum","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":148,"name":"Brett Jones","guid":"65f6c924-96ce-4f53-9947-3c4940ad3deb","individualid":1437069,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"888-886-1286","websitetype1":"http://www.brettjones.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400874238","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437069.jpg","position":"","permitfreetextemail":0,"firstname":"Brett","lastname":"Jones","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":149,"name":"Gary McInnis","guid":"3e3cc057-346c-4a46-9e14-11802413e365","individualid":1436959,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.garymcinnis.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399546136","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436959.jpg","position":"","permitfreetextemail":0,"firstname":"Gary","lastname":"McInnis","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":150,"name":"Kathleen McInnis","guid":"862473e2-a205-4987-a03d-f56f51d4334d","individualid":1535853,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400628910","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1535853.jpg","position":"","permitfreetextemail":0,"firstname":"Kathleen","lastname":"McInnis","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":151,"name":"Karl Leong","guid":"c2ce48cd-9d27-4706-80ff-02620810f46e","individualid":1437142,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.preferredhomes.ca","websitetype2":"https://www.facebook.com/PreferredHomesTeam","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398828663","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031175.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Karl","lastname":"Leong","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":152,"name":"Mark Roozendaal","guid":"79cfb236-9872-42e8-9eeb-b8f182d9d224","individualid":1747741,"phonetype1":"250-220-5061","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"800-663-2121","websitetype1":"http://www.PreferredHomes.ca","websitetype2":"https://www.facebook.com/PreferredHomesTeam","websitetype3":"http://ca.linkedin.com/in/markroozendaal/","websitetype4":"","websitetype5":"","email1":"400964493","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1747741.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mark","lastname":"Roozendaal","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":153,"name":"Scott Marchant","guid":"a4bf30ac-e6d2-48bc-80e7-5871d3cc9d1b","individualid":1437197,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://preferredhomes.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401019191","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1114466.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Scott","lastname":"Marchant","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":154,"name":"Rodney Henderson","guid":"3e6c9047-e12b-4bfb-9bd8-fc0fea6507df","individualid":1824868,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.binabpropertygroup.com","websitetype2":"https://www.facebook.com/VictoriaHouseListings/","websitetype3":"http://www.linkedin.com/in/rodney-henderson-1b465713","websitetype4":"","websitetype5":"","email1":"398283199","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1194375.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Rodney","lastname":"Henderson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":155,"name":"Dane Kingsbury","guid":"5d3882ae-5c1b-44ca-a04c-2eee5b6b9b48","individualid":1689909,"phonetype1":"250-885-1252","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.KingsburyRealEstate.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398909634","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1689909.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Dane","lastname":"Kingsbury","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":156,"name":"Murray K. Lawson","guid":"1a6d5465-821a-4247-8990-1d114ba4032c","individualid":1437130,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.surf4housing.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401369331","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031010.jpg","position":"","permitfreetextemail":0,"firstname":"Murray","lastname":"Lawson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":157,"name":"Deborah Piper","guid":"126acc71-796a-43de-97b7-41954d58c2f8","individualid":1880238,"phonetype1":"250-477-5353","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.deborahpiper.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397776313","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1206135.jpg","position":"","permitfreetextemail":0,"firstname":"Deborah","lastname":"Piper","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":158,"name":"Bobby Ross","guid":"b528e821-9bf5-4129-9b86-ccf117817594","individualid":1532931,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.bobbyrossinvictoria.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401123247","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1142865.jpg","position":"","permitfreetextemail":0,"firstname":"Bobby","lastname":"Ross","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":159,"name":"Adrian Langereis","guid":"48f064dd-f87f-4363-b80f-10155167f531","individualid":1571599,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://realtiivictoria.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399345945","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1151777.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Adrian","lastname":"Langereis","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":160,"name":"Douglas King","guid":"93d91e1e-7eb4-47dc-a2e0-393903c67c93","individualid":2029946,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399175317","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Douglas","lastname":"King","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":161,"name":"Mandy Lee","guid":"e2332952-23a6-48a9-bb25-baa5cf31b69f","individualid":1980181,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402253731","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Mandy","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":162,"name":"Layne Britton","guid":"4d3678c4-2009-42db-ad31-76439dea5934","individualid":1998697,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397976741","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Layne","lastname":"Britton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":163,"name":"Gina Sundberg","guid":"e484e3f0-b6d4-4beb-b4f0-67b386837995","individualid":1437475,"phonetype1":"250-812-4999","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-485-7695","websitetype1":"http://www.ginasundberg.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400993361","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031319.jpg","position":"","permitfreetextemail":0,"firstname":"Gina","lastname":"Sundberg","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":164,"name":"Connie Brown","guid":"76c45844-6595-42a8-8c06-84687e39314e","individualid":1436679,"phonetype1":"","phonetype2":"","phonetype3":"250-361-8383","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandconniebrown.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401155566","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1122046.jpg","position":"","permitfreetextemail":0,"firstname":"Connie","lastname":"Brown","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":165,"name":"Chris Brown","guid":"85d7b83c-5a62-4752-8982-120f2e7e90ce","individualid":1688025,"phonetype1":"","phonetype2":"","phonetype3":"250-893-3000","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandconniebrown.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402594782","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1173900.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Brown","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":166,"name":"Greg Phillips","guid":"67800d12-ede2-409e-b300-c6155ed37023","individualid":1637149,"phonetype1":"250-516-6013","phonetype2":"","phonetype3":"","phonetype4":"250-385-3763","phonetype5":"888-886-1286","websitetype1":"http://www.gregphillips.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401837796","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1164287.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Greg","lastname":"Phillips","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":167,"name":"Suzy Hahn","guid":"ff6ac2b4-59f5-4067-ab28-f02946c63128","individualid":1436933,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.suzyhahn.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400682235","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436933.jpg","position":"","permitfreetextemail":0,"firstname":"Suzy","lastname":"Hahn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":168,"name":"April Prinz","guid":"65f8a2cb-912d-4d87-be16-c28f4dc8ebd1","individualid":1437391,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.AprilPrinz.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400645325","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030898.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"April","lastname":"Prinz","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":169,"name":"Thaddeus Monckton","guid":"0378f616-5dce-417b-9bcb-a37784fff7b2","individualid":1871699,"phonetype1":"","phonetype2":"","phonetype3":"250-386-8875","phonetype4":"250-386-8180","phonetype5":"866-880-8575","websitetype1":"http://www.ThaddeusMonckton.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400845259","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1871699.JPG","position":"","permitfreetextemail":0,"firstname":"Thaddeus","lastname":"Monckton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":170,"name":"Richard Severs","guid":"f9502f37-78d4-4f93-b238-4cb5ab8ccaa2","individualid":1437463,"phonetype1":"250-216-3178","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.richardsevers.pcspro.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400019454","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030850.jpg","position":"","permitfreetextemail":0,"firstname":"Richard","lastname":"Severs","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":171,"name":"Robyn Hamilton","guid":"0e4fdab3-5078-4ea8-95cf-2a67193dbf0d","individualid":1436969,"phonetype1":"250-384-8124","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.RobynHamilton.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400296038","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030549.jpg","position":"","permitfreetextemail":0,"firstname":"Robyn","lastname":"Hamilton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":172,"name":"Noah Dobson","guid":"a45c94f3-b780-4c40-923f-8c4db4ad1ee8","individualid":1436801,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.noahdobson.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400421683","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099248.jpg","position":"","permitfreetextemail":0,"firstname":"Noah","lastname":"Dobson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":173,"name":"Tugo Rados","guid":"85bfdab8-8373-476f-aaf2-d7d5187944a7","individualid":1958941,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400603160","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Tugo","lastname":"Rados","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:11","updated_at":"2017-08-12 00:41:11"},{"id":174,"name":"Thomas Krumpic","guid":"192946bb-ee3a-49da-97a6-ce7b07d89259","individualid":1437111,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399435420","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Thomas","lastname":"Krumpic","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:12","updated_at":"2017-08-12 00:41:12"},{"id":175,"name":"GORDON HALKETT","guid":"f38d5e4c-958d-419e-b668-4495309a052a","individualid":1435873,"phonetype1":"250-760-1066","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397078690","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1026746.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"GORDON","lastname":"HALKETT","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:12","updated_at":"2017-08-12 00:41:12"},{"id":176,"name":"Jenny Wu","guid":"9bc44d8c-0ae0-4a53-a9c4-8822aba40611","individualid":1950646,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://jennywubc.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402534722","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1244782.jpg","position":"","permitfreetextemail":0,"firstname":"Jenny","lastname":"Wu","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-12 00:41:12","updated_at":"2017-08-12 00:41:12"}]
+module.exports = [{"id":1,"name":"Mark Imhoff","guid":"840d8642-fb01-43a1-8c30-5b2aa2a7a317","individualid":1676965,"phonetype1":"250-883-1995","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.homesalesvictoria.com","websitetype2":"https://www.facebook.com/TheMarkImhoffGroup/","websitetype3":"https://www.linkedin.com/in/the-mark-imhoff-group-4b546647/","websitetype4":"https://twitter.com/MarkImhoffGroup","websitetype5":"","email1":"400625966","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1171728.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mark","lastname":"Imhoff","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":2,"name":"Victoria Cao","guid":"e60f11cc-b289-4b77-ab66-34c8e8344c58","individualid":1966645,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402591165","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1254616.jpg","position":"","permitfreetextemail":0,"firstname":"Victoria","lastname":"Cao","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":3,"name":"Louisa Feary","guid":"6538ef94-7324-488f-84a9-8516a3862760","individualid":2023266,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400276380","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Louisa","lastname":"Feary","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":4,"name":"Joel Reinboldt","guid":"23639f51-d0be-4b32-af96-e29ecfd296e7","individualid":1833237,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402321639","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Joel","lastname":"Reinboldt","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":5,"name":"Chris James Markham","guid":"7e2a8d5e-14ef-4f73-8b65-712c955a4add","individualid":1998451,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155578","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Chris James","lastname":"Markham","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":6,"name":"Chris Markham","guid":"1facd9ca-b179-41c5-97c0-dc0ba47fb4a9","individualid":1437199,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.century21.ca/chris.markham","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155576","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031128.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Markham","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":7,"name":"Treza Sbaraglia","guid":"f6bc49db-c29a-470f-aa85-e31c2495e672","individualid":1958804,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.treza.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400279678","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Treza","lastname":"Sbaraglia","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":8,"name":"Stephen Foster","guid":"2fcb6cf1-6095-4c96-976f-fa283d2ac8ee","individualid":1567834,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.stephenfoster.ca","websitetype2":"https://www.facebook.com/stephenfosterpropertygroup/","websitetype3":"https://ca.linkedin.com/in/stephenbfoster","websitetype4":"https://twitter.com/StephenBFoster","websitetype5":"","email1":"400768817","email2":"","email3":"","email4":"","photo":"","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Stephen","lastname":"Foster","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":9,"name":"Ron C. Neal","guid":"eb789368-1f55-4daf-80e6-378eaaad039f","individualid":1437318,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.ronneal.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401155597","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437318.jpg","position":"","permitfreetextemail":0,"firstname":"Ron","lastname":"Neal","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":10,"name":"Scott Douglas","guid":"2ebf5729-6ec7-4c99-af1c-fc761a967e1b","individualid":2018667,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398479724","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Douglas","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":11,"name":"Tony Zarsadias","guid":"b874febf-abac-4a9d-a3ed-b07c7dfac4cc","individualid":1527328,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.thecondogroup.com/","websitetype2":"http://www.facebook.com/condogroup","websitetype3":"","websitetype4":"https://twitter.com/condogroup","websitetype5":"","email1":"398239689","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1527328.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tony","lastname":"Zarsadias","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:11","updated_at":"2017-08-11 13:34:11"},{"id":12,"name":"Ray Murray","guid":"fc3f33eb-0e05-4563-a980-426f8c05891a","individualid":1953852,"phonetype1":"250-686-3789","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sheppardmurray.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400525204","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Ray","lastname":"Murray","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":13,"name":"Scott Kral","guid":"b40f7f22-055a-4adf-8cea-772260b8b5dd","individualid":1631099,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400058070","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1631099.jpg","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Kral","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":14,"name":"Robert Garry","guid":"ace85708-75f2-4b02-a8ce-e29e3c63acbd","individualid":1436897,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.robgarryrealestate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399198387","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099276.jpg","position":"","permitfreetextemail":0,"firstname":"Robert","lastname":"Garry","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":15,"name":"Sam S Cavaleri","guid":"0e237c4c-c5e3-4117-bee5-db791d52b013","individualid":1427220,"phonetype1":"604-290-4079","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.samcavaleri.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"391141691","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Sam","lastname":"Cavaleri","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":16,"name":"Andrew Holenchuk","guid":"e876b30e-149b-4e7e-8fde-6f922d8e16bf","individualid":1629948,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-663-2121","websitetype1":"http://www.VictoriaProperties.com","websitetype2":"http://www.facebook.com/VictoriaPropertyGroup","websitetype3":"https://www.linkedin.com/in/andrewholenchuk","websitetype4":"https://twitter.com/AndrewHolenchuk","websitetype5":"","email1":"400379382","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1162410.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Andrew","lastname":"Holenchuk","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":17,"name":"Tory Thompson","guid":"d2d89ca5-d1c5-44df-bc01-eea1b2035bc0","individualid":1534300,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.victoriaproperties.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400019461","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1143796.jpg","position":"","permitfreetextemail":0,"firstname":"Tory","lastname":"Thompson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":18,"name":"Kelly Grymaloski","guid":"9c0f97d8-0760-489a-b18a-6a3735ee8c14","individualid":2016120,"phonetype1":"250-893-9185","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"","websitetype1":"http://www.ComeSellwithMe.ca","websitetype2":"https://www.facebook.com/ComeSELLwithME/","websitetype3":"https://ca.linkedin.com/in/kellygcomesellwithme?","websitetype4":"https://twitter.com/KellygSellwthMe","websitetype5":"","email1":"400769822","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1297381.jpg","position":"","permitfreetextemail":0,"firstname":"Kelly","lastname":"Grymaloski","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":19,"name":"Harry Fowler","guid":"a589ad1b-cb2c-4444-87f0-71541c6bf853","individualid":1436874,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401609836","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436874.jpg","position":"","permitfreetextemail":0,"firstname":"Harry","lastname":"Fowler","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":20,"name":"Guy Effler","guid":"3f828ef1-cb97-4fa9-a21c-c81561db4f71","individualid":1559588,"phonetype1":"250-812-4910","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://bc.onepercentrealty.com/agentdetails.cfm?rid=247","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398957144","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1559588.jpg","position":"","permitfreetextemail":0,"firstname":"Guy","lastname":"Effler","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":21,"name":"Chuck Meagher","guid":"bafb687f-3418-440e-8106-62b177360b70","individualid":1437216,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.virealestategroup.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401212836","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030783.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Chuck","lastname":"Meagher","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":22,"name":"Jeff Bishop","guid":"b5d5b566-3b10-4397-bee7-d6d6ece319af","individualid":1623056,"phonetype1":"250-661-1200","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jeffreycbishop.com","websitetype2":"","websitetype3":"https://ca.linkedin.com/in/jeff-bishop-dfh?","websitetype4":"","websitetype5":"","email1":"399135710","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1161061.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jeff","lastname":"Bishop","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":23,"name":"Paul Askew","guid":"3fd5ec07-e49c-48f2-b43f-c2b1420e9d59","individualid":1436595,"phonetype1":"250-380-8824","phonetype2":"","phonetype3":"250-744-3301","phonetype4":"250-744-3904","phonetype5":"800-663-2121","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399431620","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099167.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Paul","lastname":"Askew","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":24,"name":"Clayton Morris","guid":"b1137765-c4c7-4ef8-845c-ae124e0e1f0a","individualid":1962045,"phonetype1":"250-686-9814","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.claytonmorris.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400871228","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1251731.jpg","position":"","permitfreetextemail":0,"firstname":"Clayton","lastname":"Morris","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":25,"name":"Sue Daniels","guid":"47785c62-3a01-4905-99b5-e2b5fc811f33","individualid":1436768,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400357470","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099135.jpg","position":"","permitfreetextemail":0,"firstname":"Sue","lastname":"Daniels","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":26,"name":"Jason Leslie","guid":"7da7bb19-54ee-4464-a6e5-8499fb84b307","individualid":1467987,"phonetype1":"250-478-9600","phonetype2":"","phonetype3":"250-478-9600","phonetype4":"250-478-6060","phonetype5":"250-478-9600","websitetype1":"http://www.realestatevi.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402115092","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1125401.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jason","lastname":"Leslie","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":27,"name":"Robert Buckle","guid":"0993a824-663a-4aa1-8438-56d0b4c63273","individualid":1436690,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399914394","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030813.gif","position":"","permitfreetextemail":0,"firstname":"Robert","lastname":"Buckle","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":28,"name":"Mark Berg","guid":"312a8428-16b8-4a19-8531-fbd4d68947ad","individualid":1873568,"phonetype1":"250-415-6781","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.markbergrealestate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402477780","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1218869.jpg","position":"","permitfreetextemail":0,"firstname":"Mark","lastname":"Berg","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":29,"name":"Dana Berg","guid":"4be52294-7b98-4c16-bece-25e1394af853","individualid":1891926,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402477775","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Dana","lastname":"Berg","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":30,"name":"Andrew Hobbs","guid":"bc12beb5-3c0d-4100-805f-b4b781ef6089","individualid":1794339,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.thecondogroup.com/","websitetype2":"http://www.facebook.com/condogroup","websitetype3":"","websitetype4":"https://twitter.com/condogroup","websitetype5":"","email1":"398239677","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1794339.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Andrew","lastname":"Hobbs","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":31,"name":"Chris Gill","guid":"ed2c206e-8550-46d4-af90-ec26d12948ae","individualid":1619525,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.thecondogroup.com","websitetype2":"http://www.facebook.com/condogroup","websitetype3":"","websitetype4":"https://twitter.com/condogroup","websitetype5":"","email1":"398239661","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1619525.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Chris","lastname":"Gill","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":32,"name":"Justin Cownden","guid":"92a51aef-0665-492d-972d-6d95654cb634","individualid":1561333,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.justinsells.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400037390","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1147686.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Justin","lastname":"Cownden","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":33,"name":"Karie Seiss","guid":"877159a1-66ac-4818-8f25-bfeb4b7b018a","individualid":1981988,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398085893","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Karie","lastname":"Seiss","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":34,"name":"Laurie Abram","guid":"b9939e99-8a1c-4f66-b7f3-55f5505dbed5","individualid":1436572,"phonetype1":"250-812-1771","phonetype2":"","phonetype3":"250-385-2033","phonetype4":"888-824-3716","phonetype5":"","websitetype1":"http://www.laurieabram.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399914353","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436572.jpg","position":"","permitfreetextemail":0,"firstname":"Laurie","lastname":"Abram","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":35,"name":"Wendy Thompson","guid":"0017c303-0b88-402c-8dca-bab7c5c829b8","individualid":1964503,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"https://www.victoriamasteronmain.com  https://wendy.livevictoriabc.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401662762","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1253179.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Wendy","lastname":"Thompson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":36,"name":"Kim Mohns","guid":"a74d1fc2-3a63-4aeb-96a4-eee667b8e56a","individualid":1570987,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://kim.livevictoriabc.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399431635","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1151526.jpg","position":"","permitfreetextemail":0,"firstname":"Kim","lastname":"Mohns","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":37,"name":"Ivan Delano","guid":"d43feeca-3b4c-4e1e-90da-0dbb970883ff","individualid":1436781,"phonetype1":"250-744-8506","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.IvanDelano.com","websitetype2":"https://www.facebook.com/victoriaforsale?ref=hl","websitetype3":"","websitetype4":"https://twitter.com/homezen","websitetype5":"","email1":"402422325","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436781.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Ivan","lastname":"Delano","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":38,"name":"John Byrne","guid":"e5288d0e-22df-44ba-89cf-f02251762a78","individualid":1757361,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandjohn.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401675601","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1183678.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"John","lastname":"Byrne","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":39,"name":"Chris Barrington Foote","guid":"e4d49ffc-a95a-4a39-b17a-ec2782ac406d","individualid":1621446,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandjohn.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400988111","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1621446.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Chris","lastname":"Barrington Foote","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":40,"name":"Shelley Saldat","guid":"c26d63b4-6094-447b-8e6b-a5cc81b222d6","individualid":1437444,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401315132","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437444.jpg","position":"","permitfreetextemail":0,"firstname":"Shelley","lastname":"Saldat","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":41,"name":"Roy L. Stevenson","guid":"4eb973ee-7066-4b4d-bd66-c829df76394d","individualid":1437270,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.realtorroy.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401318503","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031101.jpg","position":"","permitfreetextemail":0,"firstname":"Roy","lastname":"Stevenson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":42,"name":"Ian Jules","guid":"16f12a24-028c-4680-85ef-18452258c92c","individualid":1901696,"phonetype1":"250-885-1451","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.victoriarealestate.tv","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401155587","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1217755.jpg","position":"","permitfreetextemail":0,"firstname":"Ian","lastname":"Jules","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":43,"name":"Richard Gadoury","guid":"be0e3cda-6f01-49f1-9055-3c02253fd10f","individualid":1883851,"phonetype1":"778-977-2600","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-665-5303","websitetype1":"http://www.richardgadoury.com","websitetype2":"https://www.facebook.com/pages/Richard-Gadoury-Victoria-Realty-Pemberton-Holmes/139448936066574?fref","websitetype3":"https://www.linkedin.com/profile/view?id=112337732&trk=nav_responsive_tab_profile_pic","websitetype4":"https://twitter.com/Richard1Gadoury","websitetype5":"","email1":"402015926","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1208017.jpg","position":"","permitfreetextemail":0,"firstname":"Richard","lastname":"Gadoury","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":44,"name":"Glen Myles","guid":"a84061fb-cb2e-44f5-b7ea-4558d477eb42","individualid":1437312,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401318490","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030834.gif","position":"","permitfreetextemail":0,"firstname":"Glen","lastname":"Myles","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":45,"name":"Deb Scott","guid":"cee3638b-8625-483a-a997-5f658be30016","individualid":1640361,"phonetype1":"250-385-2033","phonetype2":"","phonetype3":"","phonetype4":"250-385-3763","phonetype5":"888-886-1286","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400200180","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1164820.jpg","position":"","permitfreetextemail":0,"firstname":"Deb","lastname":"Scott","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":46,"name":"Alex Burns","guid":"378efb67-9510-4b83-b93b-95531225d623","individualid":1646859,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.VictoriaRealEstate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398633388","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1166770.jpg","position":"","permitfreetextemail":0,"firstname":"Alex","lastname":"Burns","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":47,"name":"Maurice Connor","guid":"946005cf-45e1-4427-b4de-7a53f3079ed6","individualid":1956978,"phonetype1":"250-812-0139","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401287482","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1248317.jpg","position":"","permitfreetextemail":0,"firstname":"Maurice","lastname":"Connor","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":48,"name":"Robert Young","guid":"1b4e2493-eaec-48ae-a6d4-017777c01fa8","individualid":1437591,"phonetype1":"250-385-6900","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.robertyoung.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400779490","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Robert","lastname":"Young","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":49,"name":"Geoff Field","guid":"c08c81e5-864f-4484-9674-2cc65c032b41","individualid":1436862,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.geofffield.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402318172","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099171.jpg","position":"","permitfreetextemail":0,"firstname":"Geoff","lastname":"Field","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":50,"name":"Glen Glowinski","guid":"e7648126-500f-44be-829b-490870bcdf94","individualid":1436914,"phonetype1":"250-217-1205","phonetype2":"","phonetype3":"","phonetype4":"250-386-8180","phonetype5":"","websitetype1":"http://www.gotoglen.com","websitetype2":"https://www.facebook.com/GoToGlenG","websitetype3":"","websitetype4":"https://twitter.com/GoToGlenG","websitetype5":"","email1":"399395631","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030420.jpg","position":"","permitfreetextemail":0,"firstname":"Glen","lastname":"Glowinski","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":51,"name":"Josh Ray","guid":"53e01b54-9711-4e12-9f70-54f61f0cc47b","individualid":1922873,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.joshray.ca","websitetype2":"https://www.facebook.com/josh.ray.96","websitetype3":"http://www.linkedin.com/profile/view?id=130852975&goback=%2Enmp_*1_*1_*1_*1_*1_*1_*1_*1_*1&trk=spm_p","websitetype4":"https://twitter.com/josh_ray15","websitetype5":"","email1":"397981764","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1922873.jpg","position":"","permitfreetextemail":0,"firstname":"Josh","lastname":"Ray","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":52,"name":"Mike Nugent","guid":"64fb66f9-5b5c-4c1a-865d-7771781e02cb","individualid":1437333,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.mnugent.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400273131","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030650.jpg","position":"","permitfreetextemail":0,"firstname":"Mike","lastname":"Nugent","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":53,"name":"Bruce Hatter","guid":"f79948b6-884f-4210-afb6-414afc3c73ee","individualid":1436984,"phonetype1":"250-812-9851","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.hatterking.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401209235","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030970.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Bruce","lastname":"Hatter","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":54,"name":"Shane King","guid":"e88e1687-5b34-4836-90cd-3d8a82278f5e","individualid":1786737,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.hatterking.com","websitetype2":"https://www.facebook.com/HatterKingRealEstateTeam/?fref=ts","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401209245","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1786737.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Shane","lastname":"King","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":55,"name":"Thomas Hu","guid":"0c7c17e4-a62a-47c2-b0c4-8385d6743114","individualid":2033064,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401802515","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1310196.jpg","position":"","permitfreetextemail":0,"firstname":"Thomas","lastname":"Hu","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":56,"name":"Dave Vogel","guid":"a1761515-f1ad-4624-a2dc-3dea106cd7a0","individualid":1437529,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.accessrealtyltd.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399367967","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Dave","lastname":"Vogel","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":57,"name":"Jasmine Parsons","guid":"a95a9b2f-24fe-4413-b579-bf36816d8d1f","individualid":1663789,"phonetype1":"250-727-8437","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399887409","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1168594.jpg","position":"","permitfreetextemail":0,"firstname":"Jasmine","lastname":"Parsons","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":58,"name":"Karen Love","guid":"45cb7c1f-5915-45e7-9478-2a6baa3a98d1","individualid":1437163,"phonetype1":"250-386-8875","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.karenlove.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397449509","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031221.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Karen","lastname":"Love","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":59,"name":"Robyn Wildman","guid":"9ebfe6eb-fb96-4fd1-af5c-3fdd87c20b3c","individualid":1947346,"phonetype1":"250-818-8522","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.karenlove.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397760079","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1242388.jpg","position":"","permitfreetextemail":0,"firstname":"Robyn","lastname":"Wildman","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":60,"name":"Tracy Menzies","guid":"2cf94486-6dad-4766-8f1d-4ec6c0e2dec9","individualid":1930265,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-655-5303","websitetype1":"http://www.tracymenzies.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400646291","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1231210.jpg","position":"","permitfreetextemail":0,"firstname":"Tracy","lastname":"Menzies","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":61,"name":"Roger Jones","guid":"02e6147e-5431-4fe9-ba5a-0a584b2cfbfe","individualid":1437070,"phonetype1":"250-361-9838","phonetype2":"","phonetype3":"","phonetype4":"250-361-9509","phonetype5":"","websitetype1":"http://www.jonescompany.net","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401986792","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437070.jpg","position":"","permitfreetextemail":0,"firstname":"Roger","lastname":"Jones","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":62,"name":"Bowman Rutledge","guid":"bcd78bcc-0259-4514-88a9-4870cf6fc47a","individualid":1995588,"phonetype1":"250-208-8878","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.rogersrutledge.com","websitetype2":"https://www.facebook.com/rogersrutledge/","websitetype3":"https://www.linkedin.com/in/bowman-rutledge-5b116bbb?trk=hp-identity-name","websitetype4":"https://twitter.com/Bowman_Rutledge","websitetype5":"","email1":"402698831","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1995588.jpg","position":"","permitfreetextemail":0,"firstname":"Bowman","lastname":"Rutledge","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":63,"name":"Andy Rogers","guid":"88a40409-eea7-47de-bb86-5d73c7f0dceb","individualid":1952233,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.rogersrutledge.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400592971","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1952233.jpg","position":"","permitfreetextemail":0,"firstname":"Andy","lastname":"Rogers","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":64,"name":"Tracie L McTavish","guid":"efa230bc-56b5-4bf7-acfc-36e4db8ae3d3","individualid":1429718,"phonetype1":"604-682-2088","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"394870207","email2":"","email3":"","email4":"","photo":"","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tracie","lastname":"McTavish","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":65,"name":"Phil Hahn","guid":"a5457746-d3b5-43a7-be26-ca7f4245edba","individualid":1677211,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.islandhousesellers.com","websitetype2":"https://www.facebook.com/IslandHouseSellers","websitetype3":"","websitetype4":"https://twitter.com/islandhousesale","websitetype5":"","email1":"401555357","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1103959.jpg","position":"","permitfreetextemail":0,"firstname":"Phil","lastname":"Hahn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":66,"name":"Kris Emberley","guid":"05ab39a6-c8f5-43d1-938c-be2b8173f132","individualid":1990466,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399828503","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Kris","lastname":"Emberley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":67,"name":"Rebecca Miller","guid":"4d125490-98ff-44e6-88f6-08aaa551c3fe","individualid":1883852,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.rebeccamiller.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399907545","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1208016.jpg","position":"","permitfreetextemail":0,"firstname":"Rebecca","lastname":"Miller","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":68,"name":"Darien Verbrugge","guid":"5053f170-fb29-4b19-bfee-55e4a48e107d","individualid":1944847,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398934151","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Darien","lastname":"Verbrugge","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":69,"name":"IRINA REZNIK","guid":"a9f869fd-2d51-44a5-834e-491bfe3bd245","individualid":1848767,"phonetype1":"647-932-0015","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"https://www.listmenow.ca/info","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"396991840","email2":"","email3":"","email4":"","photo":"","position":"Broker","permitfreetextemail":0,"firstname":"IRINA","lastname":"REZNIK","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":70,"name":"Sandra Govender","guid":"876453dc-6c4a-4b33-b470-f7f27ab5734b","individualid":1863747,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"250-592-6600","phonetype5":"800-263-4753","websitetype1":"http://www.SandraGovender.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399741336","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1201349.jpg","position":"","permitfreetextemail":0,"firstname":"Sandra","lastname":"Govender","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":71,"name":"Sonya Conn","guid":"a7dfb440-e955-423e-97b6-ec3a748e05f0","individualid":1864925,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399876394","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1201628.jpg","position":"","permitfreetextemail":0,"firstname":"Sonya","lastname":"Conn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":72,"name":"Yuan Chen","guid":"8067463d-7460-4c33-a350-416c054d9386","individualid":1763332,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400448004","email2":"","email3":"","email4":"","photo":"","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Yuan","lastname":"Chen","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":73,"name":"Marko Juras","guid":"95981dd8-af27-4423-83a5-f9e26146f09d","individualid":1893657,"phonetype1":"250-380-8297","phonetype2":"","phonetype3":"","phonetype4":"778-430-2228","phonetype5":"","websitetype1":"http://www.markojuras.com","websitetype2":"http://www.facebook.com/MarkoJurasVictoria","websitetype3":"http://ca.linkedin.com/pub/marko-juras/16/b52/25a","websitetype4":"https://twitter.com/MarkoJuras","websitetype5":"","email1":"398428032","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1893657.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Marko","lastname":"Juras","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":74,"name":"Leslie Manson","guid":"e5817758-796d-41a2-b0c0-8a07a6c018be","individualid":1437194,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.lesliemanson.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402403814","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031398.jpg","position":"","permitfreetextemail":0,"firstname":"Leslie","lastname":"Manson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":75,"name":"Sylvia Therrien","guid":"9ff6a69f-9024-4b2b-885d-fb3c4887bcbb","individualid":1437494,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sylviatherrien.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400962374","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031133.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Sylvia","lastname":"Therrien","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":76,"name":"Marc Owen-Flood","guid":"0ac08e25-b1b6-4cfe-bca6-0afd75e3de3f","individualid":1437345,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.owen-flood.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399990647","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030541.gif","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Marc","lastname":"Owen-Flood","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":77,"name":"Danielle Moreau","guid":"01bac81e-07da-46ad-9638-e6e9d1e4e23d","individualid":1956870,"phonetype1":"778-966-1316","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.movetovictoria.com","websitetype2":"http://www.facebook.com/lesstalkmoreauaction","websitetype3":"http://ca.linkedin.com/pub/danielle-moreau/27/b04/51b","websitetype4":"https://twitter.com/DMoreauRealtor","websitetype5":"","email1":"401508985","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1248244.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Danielle","lastname":"Moreau","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":78,"name":"Blake Moreau","guid":"34b883e1-35bd-4af2-9119-a3814222492d","individualid":1437295,"phonetype1":"250-881-0423","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.movetovictoria.com","websitetype2":"https://www.facebook.com/DanielleMoreauRealtor/?fref=ts","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400822259","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031441.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Blake","lastname":"Moreau","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":79,"name":"Charlie DePape","guid":"b3e1db7e-ed75-4a28-88d9-cfa0f0d5eda3","individualid":1910359,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.charliedepape.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399224882","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1910359.jpg","position":"","permitfreetextemail":0,"firstname":"Charlie","lastname":"DePape","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":80,"name":"Kim Eng","guid":"cc4460b2-f155-4976-8e8e-3c2a5e1070da","individualid":1436836,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402342593","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Kim","lastname":"Eng","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":81,"name":"Anna Clemente","guid":"59476851-fb55-47ba-93b1-0f7bb9c0f631","individualid":1561649,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.clementepropertygroup.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399828496","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1147873.jpg","position":"","permitfreetextemail":0,"firstname":"Anna","lastname":"Clemente","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":82,"name":"Tony Clemente","guid":"f00d06c0-8649-44f5-9e21-f299bd57c7f8","individualid":1760695,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://Clementepropertygroup.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400073442","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1184426.jpg","position":"","permitfreetextemail":0,"firstname":"Tony","lastname":"Clemente","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":83,"name":"Lorne Tuplin","guid":"1180a5f6-a363-471a-84ec-cc3d883f5acd","individualid":1437516,"phonetype1":"250-217-4600","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"877-478-9600","websitetype1":"http://www.lornetuplin.com  www.houseseek.com","websitetype2":"https://www.facebook.com/AllClassService/","websitetype3":"https://www.linkedin.com/in/lotnetuplin?trk=nav_responsive_tab_profile","websitetype4":"","websitetype5":"","email1":"401846001","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031211.jpg","position":"","permitfreetextemail":0,"firstname":"Lorne","lastname":"Tuplin","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":84,"name":"Geoffrey McLean","guid":"7af82360-8cbd-46ab-b18e-3421dce545c6","individualid":1436963,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.geoffmclean.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399487138","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031177.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Geoffrey","lastname":"McLean","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":85,"name":"John Vernon","guid":"d7861c9e-1d72-4a7c-9e4e-12923650be7a","individualid":1437527,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.johnvernon.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401618030","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437527.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"John","lastname":"Vernon","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":86,"name":"Dave Hillmer","guid":"a37d20ba-f91f-41ad-97eb-95015a0664de","individualid":1437008,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.VictoriaListings.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400296031","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030719.gif","position":"","permitfreetextemail":0,"firstname":"Dave","lastname":"Hillmer","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":87,"name":"Colin Gareau","guid":"10988559-952e-4682-9f0e-e207b5117c44","individualid":1585245,"phonetype1":"250-812-3451","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.colingareau.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401635497","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1585245.jpg","position":"","permitfreetextemail":0,"firstname":"Colin","lastname":"Gareau","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":88,"name":"Jeff Shaw","guid":"4671fadf-a7bf-4f94-a8c8-df01c0ba7cb4","individualid":1811435,"phonetype1":"250-382-6636","phonetype2":"","phonetype3":"250-382-6636","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399795516","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1191963.jpg","position":"","permitfreetextemail":0,"firstname":"Jeff","lastname":"Shaw","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":89,"name":"Steve Duben","guid":"0063a1f6-6bf5-4d22-9013-da3d7dc41140","individualid":1436815,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399849628","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436815.jpg","position":"","permitfreetextemail":0,"firstname":"Steve","lastname":"Duben","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":90,"name":"Tasha Medve","guid":"b3afff8d-0c09-4a77-ad22-fe65000d3097","individualid":1952034,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.modernrev.com","websitetype2":"http://www.facebook.com/modernrealestatevictoria","websitetype3":"","websitetype4":"http://www.twitter.com/modernrevyyj","websitetype5":"","email1":"399133452","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1245757.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tasha","lastname":"Medve","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":91,"name":"Saira Waters","guid":"817f6f55-57d1-45af-b8cb-b1ce904326c3","individualid":1872699,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-432-4611","websitetype1":"http://www.modernrev.com","websitetype2":"https://www.facebook.com/ModernRealEstateVictoria","websitetype3":"http://ca.linkedin.com/in/sairawaters/","websitetype4":"http://www.twitter.com/sairawaters","websitetype5":"","email1":"400125860","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1203530.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Saira","lastname":"Waters","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":92,"name":"Tom Croft","guid":"87e1ce4a-6916-4e52-9158-2d80765113c0","individualid":1436758,"phonetype1":"778-432-4611","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-461-5353","websitetype1":"http://www.modernrev.com","websitetype2":"https://www.facebook.com/","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399063023","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031299.jpg","position":"","permitfreetextemail":0,"firstname":"Tom","lastname":"Croft","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":93,"name":"Lew Poulin","guid":"69606028-ffbd-4813-82ae-1841b9e57a8d","individualid":1437387,"phonetype1":"250-383-5913","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.lewpoulin.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399146005","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030988.jpg","position":"","permitfreetextemail":0,"firstname":"Lew","lastname":"Poulin","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":94,"name":"Glynis MacLeod","guid":"f1ca85c8-345e-420c-98e8-f3df32d3e5e2","individualid":1903311,"phonetype1":"250-661-7232","phonetype2":"","phonetype3":"250-661-7232","phonetype4":"250-380-3939","phonetype5":"","websitetype1":"http://glynismacleod.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398700748","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1903311.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Glynis","lastname":"MacLeod","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":95,"name":"Kieren Rasura","guid":"ea5bfa97-d01c-4515-8e53-e3d99a76f1b1","individualid":1989885,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399510751","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Kieren","lastname":"Rasura","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":96,"name":"Scott Garman","guid":"8f522c95-5a74-4149-a5d0-2151efe63e75","individualid":1771675,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.garmangroup.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400699218","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1186395.jpg","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Garman","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":97,"name":"Mike Garman","guid":"8f3c95ce-318c-406a-ae58-00b5d5ab7aa5","individualid":1942109,"phonetype1":"250-213-8129","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.garmangroup.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400102653","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1238759.jpg","position":"","permitfreetextemail":0,"firstname":"Mike","lastname":"Garman","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":98,"name":"Michelle Harrison","guid":"ca676068-31bb-4185-9892-cb6285ec7a42","individualid":1942045,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://Garmangroup.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399907539","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1238677.jpg","position":"","permitfreetextemail":0,"firstname":"Michelle","lastname":"Harrison","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":99,"name":"Gregory T Lee","guid":"84daafcc-589e-4f9d-a91f-fbd26855c5b6","individualid":1432949,"phonetype1":"604-626-1668","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"392086005","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Gregory","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":100,"name":"Conrad Nyren","guid":"ff3dc10d-dc2a-4475-baeb-12cd9459a236","individualid":1983692,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399097380","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Conrad","lastname":"Nyren","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":101,"name":"Sophia Briggs","guid":"8dbab312-bf2f-4e32-8a4b-8fc3402ec7fe","individualid":1662725,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sothebysrealty.ca/agents.html?aid=230","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400596712","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1168244.jpg","position":"","permitfreetextemail":0,"firstname":"Sophia","lastname":"Briggs","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":102,"name":"Nancy Stratton","guid":"936ab6ab-69b5-4757-83c1-f87a56e75905","individualid":1479412,"phonetype1":"250-857-5482","phonetype2":"","phonetype3":"","phonetype4":"250-380-3933","phonetype5":"","websitetype1":"http://sothebysrealty.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400596726","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1479412.jpg","position":"","permitfreetextemail":0,"firstname":"Nancy","lastname":"Stratton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":103,"name":"James Smith","guid":"b8a396bd-e750-4f65-8ee3-0d2639a69b6b","individualid":1569115,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jamessmithrealtor.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399345958","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1150575.jpg","position":"","permitfreetextemail":0,"firstname":"James","lastname":"Smith","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":104,"name":"Alison Wedekind","guid":"b293723d-4469-47c5-9984-f93686f9be47","individualid":2027243,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398260661","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Alison","lastname":"Wedekind","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":105,"name":"Jot Home","guid":"361e98c5-5c9a-40a5-bf49-ad231656b48a","individualid":1437023,"phonetype1":"250-744-0753","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jothome.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400302852","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030571.jpg","position":"","permitfreetextemail":0,"firstname":"Jot","lastname":"Home","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":106,"name":"Jason Binab","guid":"7be7cf4c-e37b-4d6d-9613-77e316be4b5b","individualid":1537172,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.binabpropertygroup.com","websitetype2":"http://www.facebook.com/public/Jason-Binab","websitetype3":"http://ca.linkedin.com/pub/jason-binab/5/695/37b","websitetype4":"https://twitter.com/jasonbinab","websitetype5":"","email1":"400973772","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1145158.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jason","lastname":"Binab","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":107,"name":"Sarah Binab","guid":"8bbd1028-9002-4470-8ed4-08e63a8098e1","individualid":1764650,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399907530","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1185130.jpg","position":"","permitfreetextemail":0,"firstname":"Sarah","lastname":"Binab","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":108,"name":"Ray Kong","guid":"e2bb4fcc-4bf0-4831-9cc2-3bda0c62426c","individualid":1437103,"phonetype1":"250-858-0099","phonetype2":"","phonetype3":"250-858-0099","phonetype4":"","phonetype5":"","websitetype1":"http://www.OnePercentRealtyVictoria.ca","websitetype2":"https://www.facebook.com/onepercentvictoria/","websitetype3":"","websitetype4":"https://twitter.com/RayCKong","websitetype5":"","email1":"400671846","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1107606.jpg","position":"","permitfreetextemail":0,"firstname":"Ray","lastname":"Kong","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":109,"name":"Jim LeBlanc","guid":"d4fc6a67-386d-4cc0-bbf7-6a5ac7f070fb","individualid":1473979,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.luxurybchomes.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399934822","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1473979.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jim","lastname":"LeBlanc","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":110,"name":"Scott Piercy","guid":"9f52e8ac-2b0b-4917-8d27-d87a256363e2","individualid":1617124,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.luxurybchomes.com","websitetype2":"https://www.facebook.com/LuxuryBCHomes","websitetype3":"http://ca.linkedin.com/pub/scott-piercy/2/882/819","websitetype4":"","websitetype5":"","email1":"401613369","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1160011.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Scott","lastname":"Piercy","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":111,"name":"Jenn Raappana","guid":"6fd29730-6837-4d76-8705-32b1cdb26054","individualid":1469547,"phonetype1":"250-474-4800","phonetype2":"","phonetype3":"","phonetype4":"250-474-7733","phonetype5":"","websitetype1":"http://www.jennraappana.com","websitetype2":"https://www.facebook.com/Mike-and-Jenn-Real-Estate-225796140811415/","websitetype3":"","websitetype4":"https://twitter.com/MikeAndJennRLP","websitetype5":"","email1":"400432627","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1126525.jpg","position":"","permitfreetextemail":0,"firstname":"Jenn","lastname":"Raappana","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":112,"name":"Mike Hartshorne","guid":"2689424e-ee3f-4509-8fb4-afa661654962","individualid":1620825,"phonetype1":"250-474-4800","phonetype2":"","phonetype3":"","phonetype4":"250-474-7733","phonetype5":"","websitetype1":"http://www.mikeandjenn.ca","websitetype2":"https://www.facebook.com/Mike-and-Jenn-Real-Estate-225796140811415/","websitetype3":"","websitetype4":"https://twitter.com/MikeAndJennRLP","websitetype5":"","email1":"401155580","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1160705.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mike","lastname":"Hartshorne","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":113,"name":"Sarah Williamson","guid":"e5d68162-de75-4f42-882f-7bb48f6a7b5a","individualid":1622844,"phonetype1":"250-474-4800","phonetype2":"","phonetype3":"","phonetype4":"250-474-7733","phonetype5":"","websitetype1":"http://www.mikeandjenn.ca","websitetype2":"https://www.facebook.com/Mike-and-Jenn-Real-Estate-225796140811415/","websitetype3":"","websitetype4":"https://twitter.com/MikeAndJennRLP","websitetype5":"","email1":"401092872","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1161054.jpg","position":"","permitfreetextemail":0,"firstname":"Sarah","lastname":"Williamson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":114,"name":"Henry Van Der Vlugt","guid":"40b0315c-954c-439b-bc51-7ff4430bc873","individualid":1437522,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401795416","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Henry","lastname":"Van Der Vlugt","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":115,"name":"Blair Veenstra","guid":"579e4298-0777-434f-b507-be0a7a322f55","individualid":1741134,"phonetype1":"250-889-3926","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.housesellinggroup.com","websitetype2":"https://www.facebook.com/HSGVic","websitetype3":"http://ca.linkedin.com/in/blairveenstra","websitetype4":"https://twitter.com/HSGVicRealtors","websitetype5":"","email1":"399709974","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1179380.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Blair","lastname":"Veenstra","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":116,"name":"Sandra Hoff","guid":"1ec23d23-0477-44e0-9196-bb361d7be0fd","individualid":1520184,"phonetype1":"250-478-4800","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sandrahoff.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400353618","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1137273.jpg","position":"","permitfreetextemail":0,"firstname":"Sandra","lastname":"Hoff","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":117,"name":"Darren Day","guid":"0a948c9b-4353-4736-9482-3a09b7bb9f7d","individualid":1436776,"phonetype1":"250-708-2000","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"866-303-2010","websitetype1":"http://www.darrendayrealestate.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400455672","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436776.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Darren","lastname":"Day","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":118,"name":"Matt Eide","guid":"0660df09-8ef8-4404-bbaa-e0e05eb43370","individualid":1937862,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.matteide.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400498881","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1236162.jpg","position":"","permitfreetextemail":0,"firstname":"Matt","lastname":"Eide","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":119,"name":"Victoria Salter","guid":"93651d17-235a-434b-b42a-1447264f75c3","individualid":2024451,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401203938","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Victoria","lastname":"Salter","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":120,"name":"Sonya Lee","guid":"69a43111-eb34-4a1c-99eb-25aaf83c352d","individualid":1437138,"phonetype1":"250-744-3301","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"","websitetype1":"http://www.sonyalee.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399133448","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Sonya","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":121,"name":"Margaret Leck","guid":"e49e0c1d-20bb-43c2-8cfc-1a65ce10ff52","individualid":1437134,"phonetype1":"250-413-7171","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://margaretleck.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402340057","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437134.jpg","position":"","permitfreetextemail":0,"firstname":"Margaret","lastname":"Leck","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:12","updated_at":"2017-08-11 13:34:12"},{"id":122,"name":"Michele F. Holmes","guid":"658359c5-c79e-4b5d-946f-51dbcc2330b8","individualid":1437020,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"877-656-0911","websitetype1":"http://www.holmesrealty.com","websitetype2":"http://www.facebook.com/holmesrealtycanada","websitetype3":"","websitetype4":"http://www.twitter.com/holmesrealty","websitetype5":"","email1":"400125837","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030774.jpg","position":"","permitfreetextemail":0,"firstname":"Michele","lastname":"Holmes","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":123,"name":"Tony Joe","guid":"b9d8f295-4807-40f3-8014-f5c3659e43ff","individualid":1437058,"phonetype1":"250-370-7788","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-663-2121","websitetype1":"http://www.primeteam.ca","websitetype2":"https://www.facebook.com/TonyJoeAndAssociates","websitetype3":"http://www.linkedin.com/profile/view?id=49242221&trk=wvmp-profile","websitetype4":"https://twitter.com/tonyjoevictoria","websitetype5":"","email1":"400525188","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031169.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tony","lastname":"Joe","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":124,"name":"Kerry Davies","guid":"feb80924-bc1e-47b6-aa91-3bf9f468352c","individualid":1436771,"phonetype1":"250-370-7788","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.kerrydavies.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399873628","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436771.jpg","position":"","permitfreetextemail":0,"firstname":"Kerry","lastname":"Davies","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":125,"name":"Neil Rawnsley","guid":"e9f2fdd7-0682-4e55-8b69-8750bdb97300","individualid":1437398,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401318486","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031286.jpg","position":"","permitfreetextemail":0,"firstname":"Neil","lastname":"Rawnsley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":126,"name":"Damian Kruz","guid":"fb871c47-cad8-4cf9-b244-2d78346e0516","individualid":1739551,"phonetype1":"250-216-6501","phonetype2":"","phonetype3":"","phonetype4":"250-477-1150","phonetype5":"888-477-1105","websitetype1":"http://damiankruz.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400652799","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1178852.jpg","position":"","permitfreetextemail":0,"firstname":"Damian","lastname":"Kruz","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":127,"name":"Amber Simpson","guid":"c59693a6-bdd3-4b0d-ac26-28795fce759c","individualid":1675968,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.ambershouse.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400645329","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1171485.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Amber","lastname":"Simpson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":128,"name":"Beverly Carey","guid":"518f1d2a-624e-4765-8160-ca749a5c23ed","individualid":1436712,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402640396","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031481.jpg","position":"","permitfreetextemail":0,"firstname":"Beverly","lastname":"Carey","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":129,"name":"Jerry Bola","guid":"83b40b0f-0e50-4c09-b40b-af8b15837028","individualid":1436653,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.jerrybola.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402061261","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436653.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Jerry","lastname":"Bola","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":130,"name":"Brenda L. Russell","guid":"468f20a2-afe6-4029-bfd1-7efe5e54d9d2","individualid":1436704,"phonetype1":"250-744-4556","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-550-0585","websitetype1":"http://www.brendarussell.ca","websitetype2":"https://www.facebook.com/brendarussellrealestatevictoria","websitetype3":"https://www.linkedin.com/in/brendarussell","websitetype4":"https://twitter.com/brussell6","websitetype5":"","email1":"399510757","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031298.jpg","position":"","permitfreetextemail":0,"firstname":"Brenda","lastname":"Russell","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":131,"name":"Tara Hearn","guid":"cadcbb5a-b7b3-4b50-82fe-ae616e9f9484","individualid":1884943,"phonetype1":"","phonetype2":"","phonetype3":"250-477-1100","phonetype4":"250-477-1150","phonetype5":"","websitetype1":"http://www.tarahearn.com","websitetype2":"https://www.facebook.com/TaraHearnRealEstate","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155508","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1884943.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Tara","lastname":"Hearn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":132,"name":"Tiffany Self","guid":"47184e46-1e85-434c-b11c-e32a8e2755ce","individualid":1503269,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://victoriahomesandland.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401022467","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Tiffany","lastname":"Self","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":133,"name":"Mikko Ikonen","guid":"cb6f0fde-bfb7-451c-bbb3-5f14a514fd00","individualid":1437036,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.sellingthecity.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399510739","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1026967.jpg","position":"","permitfreetextemail":0,"firstname":"Mikko","lastname":"Ikonen","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":134,"name":"Timothy Taylor","guid":"36dbae6c-50b9-4e5a-9d07-494a4114127e","individualid":1437489,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.naicommercial.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401528125","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031467.jpg","position":"","permitfreetextemail":0,"firstname":"Timothy","lastname":"Taylor","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":135,"name":"Chris Scott","guid":"cadc8260-1327-4ded-9ef3-ff9ad053140e","individualid":1686436,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400302875","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1173595.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Scott","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":136,"name":"Aaron Hambley","guid":"dbbae840-4963-4c73-8f77-fe623dc38ad4","individualid":1536095,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.adhambley.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402370298","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1144678.jpg","position":"","permitfreetextemail":0,"firstname":"Aaron","lastname":"Hambley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":137,"name":"Darron Hambley","guid":"5b5bcb68-513e-4b8e-b3a8-1c226b27ad46","individualid":1629166,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.adhambley.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398730552","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1162219.jpg","position":"","permitfreetextemail":0,"firstname":"Darron","lastname":"Hambley","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":138,"name":"Travis Lee","guid":"fd026613-3d26-4d91-b6b6-d3940a83636d","individualid":1437139,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.uptownplace.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399709905","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Travis","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":139,"name":"Tracy Keenan-Whyte","guid":"2abca923-2136-4a32-8915-fc1f46c1c31a","individualid":1972793,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.macrealty.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400676074","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1259797.jpg","position":"","permitfreetextemail":0,"firstname":"Tracy","lastname":"Keenan-Whyte","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":140,"name":"Lisa Redding","guid":"2124983c-1014-45f6-8db7-a013a75efb46","individualid":1747740,"phonetype1":"250-882-0868","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.lisaredding.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400357498","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Lisa","lastname":"Redding","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":141,"name":"Zeljko Mlinar","guid":"3457bda5-4737-4a19-a5b8-5fa73d757113","individualid":1471886,"phonetype1":"604-506-0450","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.vancouverhomesellers.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"392322512","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1128377.jpg","position":"","permitfreetextemail":0,"firstname":"Zeljko","lastname":"Mlinar","corporationdisplaytypeid":0,"permitshowlistinglink":0,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":142,"name":"Matt Bourque","guid":"9160cf48-258e-430c-8ec4-29b4407e2086","individualid":1647034,"phonetype1":"250-418-1695","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://mattbourque.net","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400322842","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1647034.jpg","position":"","permitfreetextemail":0,"firstname":"Matt","lastname":"Bourque","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":143,"name":"Colleen Milne","guid":"ad01bfaa-33e2-4107-a1fd-95b105629b9e","individualid":1437286,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399828518","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1102536.jpg","position":"","permitfreetextemail":0,"firstname":"Colleen","lastname":"Milne","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":144,"name":"Chris Troke","guid":"daf5622d-e285-49e0-93c4-81e2ae604636","individualid":1437514,"phonetype1":"250-886-5540","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.envisioninc.ca","websitetype2":"https://www.facebook.com/envisionlanddesigns/","websitetype3":"https://www.linkedin.com/company/15241717","websitetype4":"https://twitter.com/envisioninc3d","websitetype5":"","email1":"400302859","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031366.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Troke","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":145,"name":"Scott Loughton","guid":"18cce04c-b2bc-4355-964e-4e781e88bafe","individualid":1637147,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400600003","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1164290.jpg","position":"","permitfreetextemail":0,"firstname":"Scott","lastname":"Loughton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":146,"name":"Pam Whyte","guid":"110cea79-35da-4aec-8bd8-468ba8acae8a","individualid":1437564,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.pamwhyte.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400480306","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099086.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Pam","lastname":"Whyte","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":147,"name":"Mike Van Nerum","guid":"f29509e5-4be3-4291-84ac-ad74ad594b01","individualid":1437523,"phonetype1":"250-213-5676","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"888-477-1105","websitetype1":"http://www.mikevannerum.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400155614","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437523.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mike","lastname":"Van Nerum","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":148,"name":"Brett Jones","guid":"54de5ede-7cbe-46f1-bf15-e1b4c9b1282a","individualid":1437069,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"888-886-1286","websitetype1":"http://www.brettjones.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400874238","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1437069.jpg","position":"","permitfreetextemail":0,"firstname":"Brett","lastname":"Jones","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":149,"name":"Gary McInnis","guid":"3848308f-68db-41c9-92bf-b721f0bd6974","individualid":1436959,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.garymcinnis.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399546136","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436959.jpg","position":"","permitfreetextemail":0,"firstname":"Gary","lastname":"McInnis","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":150,"name":"Kathleen McInnis","guid":"b3337e45-9997-4838-8143-c5d9db9eb418","individualid":1535853,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400628910","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1535853.jpg","position":"","permitfreetextemail":0,"firstname":"Kathleen","lastname":"McInnis","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":151,"name":"Karl Leong","guid":"7c17395c-869a-474a-9806-1bfd415584c6","individualid":1437142,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.preferredhomes.ca","websitetype2":"https://www.facebook.com/PreferredHomesTeam","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398828663","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031175.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Karl","lastname":"Leong","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":152,"name":"Mark Roozendaal","guid":"fc6806c7-02d4-404e-b7f6-0c42b0739ed1","individualid":1747741,"phonetype1":"250-220-5061","phonetype2":"","phonetype3":"","phonetype4":"250-744-3904","phonetype5":"800-663-2121","websitetype1":"http://www.PreferredHomes.ca","websitetype2":"https://www.facebook.com/PreferredHomesTeam","websitetype3":"http://ca.linkedin.com/in/markroozendaal/","websitetype4":"","websitetype5":"","email1":"400964493","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1747741.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Mark","lastname":"Roozendaal","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":153,"name":"Scott Marchant","guid":"aa5c9dbb-7766-4261-8769-4f4ba22140c7","individualid":1437197,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://preferredhomes.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401019191","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1114466.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Scott","lastname":"Marchant","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":154,"name":"Rodney Henderson","guid":"7f5c0a32-86e4-4bcd-b5ae-4cae7075c0c4","individualid":1824868,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.binabpropertygroup.com","websitetype2":"https://www.facebook.com/VictoriaHouseListings/","websitetype3":"http://www.linkedin.com/in/rodney-henderson-1b465713","websitetype4":"","websitetype5":"","email1":"398283199","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1194375.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Rodney","lastname":"Henderson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":155,"name":"Dane Kingsbury","guid":"0544ee75-2eec-4014-a2d9-d506dfa2e7ec","individualid":1689909,"phonetype1":"250-885-1252","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.KingsburyRealEstate.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"398909634","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1689909.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Dane","lastname":"Kingsbury","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":156,"name":"Murray K. Lawson","guid":"16c4421a-8d06-46d6-a2e0-3a6f3927208d","individualid":1437130,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.surf4housing.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401369331","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031010.jpg","position":"","permitfreetextemail":0,"firstname":"Murray","lastname":"Lawson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":157,"name":"Deborah Piper","guid":"53b478a4-97dd-43a9-95c2-85eda5fed8b1","individualid":1880238,"phonetype1":"250-477-5353","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.deborahpiper.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397776313","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1206135.jpg","position":"","permitfreetextemail":0,"firstname":"Deborah","lastname":"Piper","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":158,"name":"Bobby Ross","guid":"c4ee9f90-4c9c-412d-b074-e14261b7c56d","individualid":1532931,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.bobbyrossinvictoria.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401123247","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1142865.jpg","position":"","permitfreetextemail":0,"firstname":"Bobby","lastname":"Ross","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":159,"name":"Adrian Langereis","guid":"f8a7c740-984c-43b0-8d82-1db1359340cd","individualid":1571599,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://realtiivictoria.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399345945","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1151777.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Adrian","lastname":"Langereis","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":160,"name":"Douglas King","guid":"32ff9724-d204-4f81-b337-d7c892ca9557","individualid":2029946,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399175317","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Douglas","lastname":"King","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":161,"name":"Mandy Lee","guid":"c1773977-d86e-46c1-ac42-bbe7021d68cc","individualid":1980181,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402253731","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Mandy","lastname":"Lee","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":162,"name":"Layne Britton","guid":"d3ef1ae8-e943-4578-bf41-661cdb5939cf","individualid":1998697,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397976741","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Layne","lastname":"Britton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":163,"name":"Gina Sundberg","guid":"a61ff592-b598-4d9d-ae75-ee70abb7009f","individualid":1437475,"phonetype1":"250-812-4999","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"800-485-7695","websitetype1":"http://www.ginasundberg.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400993361","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1031319.jpg","position":"","permitfreetextemail":0,"firstname":"Gina","lastname":"Sundberg","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":164,"name":"Connie Brown","guid":"a745012c-690a-41a5-9910-1a7655e23bbb","individualid":1436679,"phonetype1":"","phonetype2":"","phonetype3":"250-361-8383","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandconniebrown.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401155566","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1122046.jpg","position":"","permitfreetextemail":0,"firstname":"Connie","lastname":"Brown","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":165,"name":"Chris Brown","guid":"45f7a05c-fe3c-48ce-aea8-78320eca1554","individualid":1688025,"phonetype1":"","phonetype2":"","phonetype3":"250-893-3000","phonetype4":"","phonetype5":"","websitetype1":"http://www.chrisandconniebrown.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402594782","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1173900.jpg","position":"","permitfreetextemail":0,"firstname":"Chris","lastname":"Brown","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":166,"name":"Greg Phillips","guid":"12533348-166f-444a-8d2a-cfc14430632a","individualid":1637149,"phonetype1":"250-516-6013","phonetype2":"","phonetype3":"","phonetype4":"250-385-3763","phonetype5":"888-886-1286","websitetype1":"http://www.gregphillips.ca","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"401837796","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1164287.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"Greg","lastname":"Phillips","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":167,"name":"Suzy Hahn","guid":"dff29172-785f-431b-8ec2-6fe09133c739","individualid":1436933,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.suzyhahn.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400682235","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1436933.jpg","position":"","permitfreetextemail":0,"firstname":"Suzy","lastname":"Hahn","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":168,"name":"April Prinz","guid":"b4e0dbc9-ccba-49c6-b825-f0a40fe7dab3","individualid":1437391,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.AprilPrinz.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400645325","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030898.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"April","lastname":"Prinz","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":169,"name":"Thaddeus Monckton","guid":"749d5eec-1da9-4c0a-84e3-9dd295600e5d","individualid":1871699,"phonetype1":"","phonetype2":"","phonetype3":"250-386-8875","phonetype4":"250-386-8180","phonetype5":"866-880-8575","websitetype1":"http://www.ThaddeusMonckton.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400845259","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1871699.JPG","position":"","permitfreetextemail":0,"firstname":"Thaddeus","lastname":"Monckton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":170,"name":"Richard Severs","guid":"36ea3727-12e0-4045-80ef-c99ee7f82234","individualid":1437463,"phonetype1":"250-216-3178","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.richardsevers.pcspro.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400019454","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030850.jpg","position":"","permitfreetextemail":0,"firstname":"Richard","lastname":"Severs","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":171,"name":"Robyn Hamilton","guid":"2901180b-4e51-4b59-97ed-efaadd43faed","individualid":1436969,"phonetype1":"250-384-8124","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.RobynHamilton.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400296038","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1030549.jpg","position":"","permitfreetextemail":0,"firstname":"Robyn","lastname":"Hamilton","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":172,"name":"Noah Dobson","guid":"7141efa1-ceb3-49bd-b5c7-08cefdb2c2f8","individualid":1436801,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://www.noahdobson.com","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400421683","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1099248.jpg","position":"","permitfreetextemail":0,"firstname":"Noah","lastname":"Dobson","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":173,"name":"Tugo Rados","guid":"ea8db7b0-524b-4c7b-af83-9636bc666fbe","individualid":1958941,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"400603160","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Tugo","lastname":"Rados","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":174,"name":"Thomas Krumpic","guid":"a6d9945f-1c1f-42c4-8eef-a90eadde4589","individualid":1437111,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"399435420","email2":"","email3":"","email4":"","photo":"","position":"","permitfreetextemail":0,"firstname":"Thomas","lastname":"Krumpic","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":175,"name":"GORDON HALKETT","guid":"3fc76a58-ec29-42c5-9194-a68e8162a36c","individualid":1435873,"phonetype1":"250-760-1066","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"397078690","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1026746.jpg","position":"Personal Real Estate Corporation","permitfreetextemail":0,"firstname":"GORDON","lastname":"HALKETT","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"},{"id":176,"name":"Jenny Wu","guid":"1aff8d69-7292-4a73-9b90-3097e1db18f6","individualid":1950646,"phonetype1":"","phonetype2":"","phonetype3":"","phonetype4":"","phonetype5":"","websitetype1":"http://jennywubc.com/","websitetype2":"","websitetype3":"","websitetype4":"","websitetype5":"","email1":"402534722","email2":"","email3":"","email4":"","photo":"https://cdn.realtor.ca/individual/lowres/1244782.jpg","position":"","permitfreetextemail":0,"firstname":"Jenny","lastname":"Wu","corporationdisplaytypeid":0,"permitshowlistinglink":1,"active":1,"created_at":"2017-08-11 13:34:13","updated_at":"2017-08-11 13:34:13"}]
 
 /***/ }),
 /* 496 */
@@ -45879,7 +45793,7 @@ exports = module.exports = __webpack_require__(105)(undefined);
 
 
 // module
-exports.push([module.i, ".App {\r\n  text-align: center;\r\n  margin-bottom: 15em;\r\n  font-family: 'Michroma', Verdana, Geneva, Tahoma, sans-serif;\r\n}\r\n\r\n.App-logo {\r\n  -webkit-animation: App-logo-spin infinite 20s linear;\r\n          animation: App-logo-spin infinite 20s linear;\r\n  height: 80px;\r\n}\r\n\r\n.App-header {\r\n  background-color: #222;\r\n  height: 150px;\r\n  padding: 20px;\r\n  color: white;\r\n}\r\n\r\n.App-intro {\r\n  font-size: large;\r\n}\r\n\r\nul\r\n{\r\nlist-style-type: none;\r\n}\r\n\r\n\r\n@-webkit-keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n\r\n\r\n@keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n", ""]);
+exports.push([module.i, ".App {\r\n  text-align: center;\r\n  margin-bottom: 15em;\r\n}\r\n\r\n.App-logo {\r\n  -webkit-animation: App-logo-spin infinite 20s linear;\r\n          animation: App-logo-spin infinite 20s linear;\r\n  height: 80px;\r\n}\r\n\r\n.App-header {\r\n  margin-top: 2em;\r\n  margin-bottom: 6em;\r\n  font-family: \"Oswald\";\r\n  background-color: #D61E1E;\r\n  padding: 20px;\r\n  color: white;\r\n  box-shadow: 0px 5px 5px #666666;\r\n}\r\n\r\n.App-intro {\r\n  font-size: large;\r\n}\r\n\r\n@-webkit-keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n\r\n@keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n", ""]);
 
 // exports
 
@@ -45991,6 +45905,371 @@ function unregister() {
   }
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 499 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(500);
+
+var _reactBootstrap = __webpack_require__(350);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Home = function (_Component) {
+    _inherits(Home, _Component);
+
+    function Home(props) {
+        _classCallCheck(this, Home);
+
+        var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
+
+        _this.state = {
+            minPrice: 0,
+            maxPrice: 1,
+            minBaths: 0,
+            maxBaths: 1,
+            minBeds: 0,
+            maxBeds: 1
+        };
+
+        _this.numberWithCommas = _this.numberWithCommas.bind(_this);
+        return _this;
+    }
+
+    _createClass(Home, [{
+        key: 'numberWithCommas',
+        value: function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    }, {
+        key: 'priceSelect',
+        value: function priceSelect() {}
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var priceTiers = [0, 25000, 50000, 75000, 100000, 125000, 150000, 175000, 200000, 225000, 250000, 275000, 300000, 325000, 350000, 375000, 400000, 425000, 450000, 475000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1100000, 1200000, 1300000, 1400000, 1500000, 1600000, 1700000, 1800000, 1900000, 2000000, 2500000, 3000000, 4000000, 5000000, 7500000, 10000000];
+
+            return _react2.default.createElement(
+                'div',
+                { width: '80%' },
+                _react2.default.createElement('br', null),
+                _react2.default.createElement('br', null),
+                _react2.default.createElement(
+                    'form',
+                    null,
+                    _react2.default.createElement(
+                        _reactBootstrap.FormGroup,
+                        { controlId: 'formControlsSelect' },
+                        _react2.default.createElement(
+                            _reactBootstrap.Grid,
+                            null,
+                            _react2.default.createElement(
+                                _reactBootstrap.Row,
+                                { className: 'show-grid' },
+                                _react2.default.createElement(
+                                    _reactBootstrap.Col,
+                                    { xs: 12, md: 2 },
+                                    _react2.default.createElement(
+                                        _reactBootstrap.ControlLabel,
+                                        null,
+                                        'Minimum Price'
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactBootstrap.FormControl,
+                                        { onChange: this.priceSelect(), componentClass: 'select', placeholder: 'select', value: priceTiers[this.state.minPrice] },
+                                        priceTiers.map(function (price, i) {
+                                            return _react2.default.createElement(
+                                                'option',
+                                                { key: i, value: price },
+                                                '$',
+                                                _this2.numberWithCommas(price)
+                                            );
+                                        })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Col,
+                                    { xs: 12, md: 2 },
+                                    _react2.default.createElement(
+                                        _reactBootstrap.ControlLabel,
+                                        null,
+                                        'Maximum Price'
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactBootstrap.FormControl,
+                                        { onSelect: this.priceSelect(), componentClass: 'select', placeholder: 'select', value: priceTiers[this.state.maxPrice] },
+                                        priceTiers.map(function (price, i) {
+                                            return _react2.default.createElement(
+                                                'option',
+                                                { key: i, value: price },
+                                                '$',
+                                                _this2.numberWithCommas(price)
+                                            );
+                                        })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Col,
+                                    { xs: 12, md: 2 },
+                                    _react2.default.createElement(
+                                        _reactBootstrap.ControlLabel,
+                                        null,
+                                        'Minimum Rooms'
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactBootstrap.FormControl,
+                                        { componentClass: 'select', placeholder: 'select' },
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '0' },
+                                            '0'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '1' },
+                                            '1'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '2' },
+                                            '2'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '3' },
+                                            '3'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '4' },
+                                            '4'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '5' },
+                                            '5'
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Col,
+                                    { xs: 12, md: 2 },
+                                    _react2.default.createElement(
+                                        _reactBootstrap.ControlLabel,
+                                        null,
+                                        'Maximum Rooms'
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactBootstrap.FormControl,
+                                        { componentClass: 'select', placeholder: 'select' },
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '0' },
+                                            '0'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '1' },
+                                            '1'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '2' },
+                                            '2'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '3' },
+                                            '3'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '4' },
+                                            '4'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '5' },
+                                            '5'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: 'any' },
+                                            'No max'
+                                        ),
+                                        '                                        '
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Col,
+                                    { xs: 12, md: 2 },
+                                    _react2.default.createElement(
+                                        _reactBootstrap.ControlLabel,
+                                        null,
+                                        'Minimum Bathrooms'
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactBootstrap.FormControl,
+                                        { componentClass: 'select', placeholder: 'select' },
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '0' },
+                                            '0'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '1' },
+                                            '1'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '2' },
+                                            '2'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '3' },
+                                            '3'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '4' },
+                                            '4'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '5' },
+                                            '5'
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    _reactBootstrap.Col,
+                                    { xs: 12, md: 2 },
+                                    _react2.default.createElement(
+                                        _reactBootstrap.ControlLabel,
+                                        null,
+                                        'Maximum Bathrooms'
+                                    ),
+                                    _react2.default.createElement(
+                                        _reactBootstrap.FormControl,
+                                        { componentClass: 'select', placeholder: 'select' },
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '0' },
+                                            '0'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '1' },
+                                            '1'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '2' },
+                                            '2'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '3' },
+                                            '3'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '4' },
+                                            '4'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: '5' },
+                                            '5'
+                                        ),
+                                        _react2.default.createElement(
+                                            'option',
+                                            { value: 'any' },
+                                            'No max'
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Home;
+}(_react.Component);
+
+exports.default = Home;
+
+/***/ }),
+/* 500 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(501);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(106)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/autoprefixer-loader/index.js!./Home.css", function() {
+			var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/autoprefixer-loader/index.js!./Home.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 501 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(105)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "option {\r\n  text-align: right;\r\n}\r\n\r\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);

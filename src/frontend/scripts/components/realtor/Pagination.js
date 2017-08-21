@@ -15,9 +15,8 @@ const Pagination = ({ first, last, total, current, pages, perPage, pageHandler, 
 
     return (
         <div className="Pagination">
-            <span><br></br>Showing {first} to {last} of {total}
+            <span>Showing {first} to {last} of {total}<br></br><br></br>
             </span>
-            <br></br>
             <ButtonGroup>
                 {  
                     buttons.map((button) =>

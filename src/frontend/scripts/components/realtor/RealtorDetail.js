@@ -1,8 +1,9 @@
 import RealtorDetailRow from './RealtorDetailRow';
+import { Table } from 'react-bootstrap';
 
 const RealtorDetail = ({ listings }) => {
     return (
-        <table className="Table">
+        <Table striped bordered condensed hover>
             <thead>
                 <tr>
                     <th>Name</th>
@@ -17,7 +18,7 @@ const RealtorDetail = ({ listings }) => {
                         {...listing} />
                 )}
             </tbody>
-        </table>
+        </Table>
 
     )
 }
