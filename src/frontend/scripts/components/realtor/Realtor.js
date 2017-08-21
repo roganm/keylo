@@ -91,6 +91,10 @@ class Realtor extends Component {
         var pages = Math.ceil(total / this.state.realtorsPerPage);
         var last = first + rows.length - 1;
 
+        if(rows.length === 0) {
+             first = last = 0;
+        }
+
         if (this.state.currentPage > pages) {
             if (pages < 1) pages = 1;
             this.setState({

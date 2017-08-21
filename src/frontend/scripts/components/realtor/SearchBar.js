@@ -10,10 +10,6 @@ class SearchBar extends Component {
         this.props.onFilterTextInput(e.target.value);
     }
 
-    handleInStockInputChange(e) {
-        this.props.onInStockInput(e.target.checked);
-    }
-
     render() {
         return (
             <form className="SearchBar">

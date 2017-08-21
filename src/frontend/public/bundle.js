@@ -34026,6 +34026,10 @@ var Realtor = function (_Component) {
             var pages = Math.ceil(total / this.state.realtorsPerPage);
             var last = first + rows.length - 1;
 
+            if (rows.length === 0) {
+                first = last = 0;
+            }
+
             if (this.state.currentPage > pages) {
                 if (pages < 1) pages = 1;
                 this.setState({
@@ -45506,11 +45510,6 @@ var SearchBar = function (_Component) {
         key: "handleFilterTextInputChange",
         value: function handleFilterTextInputChange(e) {
             this.props.onFilterTextInput(e.target.value);
-        }
-    }, {
-        key: "handleInStockInputChange",
-        value: function handleInStockInputChange(e) {
-            this.props.onInStockInput(e.target.checked);
         }
     }, {
         key: "render",
