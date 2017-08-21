@@ -1,61 +1,10 @@
 import React, { Component } from 'react';
+import Pagination from './Pagination';
+import SearchBar from './SearchBar';
 import RealtorList from './RealtorList';
 import RealtorDetail from './RealtorDetail';
 import './Realtor.css';
 import data from '../../lib/realtors.json';
-
-class SearchBar extends Component {
-    constructor(props) {
-        super(props);
-        this.handleFilterTextInputChange = this.handleFilterTextInputChange.bind(this);
-    }
-
-    handleFilterTextInputChange(e) {
-        this.props.onFilterTextInput(e.target.value);
-    }
-
-    handleInStockInputChange(e) {
-        this.props.onInStockInput(e.target.checked);
-    }
-
-    render() {
-        return (
-            <form className="SearchBar">
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={this.props.filterText}
-                    onChange={this.handleFilterTextInputChange}
-                />
-            </form>
-        );
-    }
-}
-
-class Pagination extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-
-        return (
-            <div className="Pagination">
-                <span>Total Pages: {this.props.pages} || Showing {this.props.first} to {this.props.last} of {this.props.total}
-                </span>
-                <span className="Page">1
-                </span>
-                <span className="Page">2
-                </span>
-                <span className="Page">3
-                </span>
-                <span className="Page">4
-                </span>
-            </div>
-        );
-    }
-
-}
 
 class Realtor extends Component {
     constructor(props) {
@@ -71,15 +20,28 @@ class Realtor extends Component {
         this.realtorSelector = this.realtorSelector.bind(this);
         this.realtorClear = this.realtorClear.bind(this);
         this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
+        this.handlePerPageChange = this.handlePerPageChange.bind(this);
+    }
+
+    handlePageChange(page) {
+        console.log(page);
+        this.setState({
+            currentPage: page
+        });
+    }
+
+    handlePerPageChange(pages) {
+        console.log(pages);
+        this.setState({
+            realtorsPerPage: pages
+        });
     }
 
     handleFilterTextInput(filterText) {
         this.setState({
             filterText: filterText
-        }, () => {
-            console.log(this.state.filterText);
         });
-
     }
 
     realtorSelector(guid) {
@@ -118,17 +80,24 @@ class Realtor extends Component {
             name = realtor.name.toLowerCase();
             if (name.indexOf(filter) !== -1) rows.push(realtor);
         });
+
         var total = rows.length;
         var first = ((this.state.currentPage - 1) * this.state.realtorsPerPage) + 1;
-        var last = total;
-        var pages = 1;
+
         if (rows.length > this.state.realtorsPerPage) {
-            rows = rows.slice(((this.state.currentPage - 1) * this.state.realtorsPerPage), ((this.state.currentPage - 1) * this.state.realtorsPerPage) + this.state.realtorsPerPage);
-            last = ((this.state.currentPage - 1) * this.state.realtorsPerPage) + this.state.realtorsPerPage;
-            pages =Math.ceil(total / this.state.realtorsPerPage);
-            
-        }        
-        
+            rows = rows.slice((first - 1), (first - 1 + this.state.realtorsPerPage));
+        }
+
+        var pages = Math.ceil(total / this.state.realtorsPerPage);
+        var last = first + rows.length - 1;
+
+        if (this.state.currentPage > pages) {
+            if (pages < 1) pages = 1;
+            this.setState({
+                currentPage: pages
+            });
+        }
+
         return (
             (!this.state.selectedRealtorData) ?
                 <div className="RealtorContainer">
@@ -137,13 +106,16 @@ class Realtor extends Component {
                         onFilterTextInput={this.handleFilterTextInput} />
                     <RealtorList
                         realtors={rows}
-                        currentPage={this.state.currentPage}
                         handler={this.realtorSelector} />
                     <Pagination
                         first={first}
                         last={last}
                         total={total}
-                        pages={pages} />
+                        current={this.state.currentPage}
+                        pages={pages}
+                        perPage={this.state.realtorsPerPage}
+                        pageHandler={this.handlePageChange}
+                        perPageHandler={this.handlePerPageChange} />
                 </div> :
                 <div>
                     <RealtorDetail
