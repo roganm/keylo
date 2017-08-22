@@ -13,7 +13,7 @@ class Realtor extends Component {
         this.state = {
             filterText: '',
             realtors: null,
-            realtorsPerPage: 25,
+            realtorsPerPage: 15,
             currentPage: 1,
             selectedRealtorData: null
         }
@@ -54,8 +54,10 @@ class Realtor extends Component {
                     return;
                 }
 
+                
                 // Examine the text in the response  
                 response.json().then(listings => {
+                    console.log(listings)
                     this.setState({
                         selectedRealtorData: listings.data
                     });

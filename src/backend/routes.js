@@ -91,7 +91,7 @@ const routes = [
         },
         handler: (request, reply) => {
             const { realtorGuid } = request.params
-            const getOperation = Knex.raw(`SELECT org.name, ind.name, lst.mlsnumber, price FROM listing_realtor_organization lro LEFT OUTER JOIN individuals ind ON lro.individualid=ind.guid LEFT OUTER JOIN organizations org ON lro.organizationid=org.guid LEFT OUTER JOIN listings lst ON lro.listingid=lst.guid WHERE lro.individualid=\'${realtorGuid}\'`)
+            const getOperation = Knex.raw(`SELECT * FROM listing_realtor_organization lro LEFT OUTER JOIN individuals ind ON lro.individualid=ind.guid LEFT OUTER JOIN organizations org ON lro.organizationid=org.guid LEFT OUTER JOIN listings lst ON lro.listingid=lst.guid WHERE lro.individualid=\'${realtorGuid}\' ORDER BY price DESC`)
 
                 .then(([result]) => {
                     if (!result) {
@@ -140,7 +140,7 @@ const routes = [
                     if (!results || results.length === 0) {
                         reply({
                             error: true,
-                            errMessage: `the realtor with id ${realtorGuid} was not found`
+                            errMessage: `couldn't load realtor data`
                         })
                     } else {
                         reply({

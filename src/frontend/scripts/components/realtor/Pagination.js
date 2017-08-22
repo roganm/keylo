@@ -67,10 +67,10 @@ const Pagination = ({ first, last, total, current, pages, perPage, pageHandler, 
                         )
                     }
                     <DropdownButton title="Records Per Page" id="bg-nested-dropdown">
-                        <MenuItem eventKey="1" active={perPage === 25} onClick={() => perPageHandler(25)}>25</MenuItem>
-                        <MenuItem eventKey="2" active={perPage === 50} onClick={() => perPageHandler(50)}>50</MenuItem>
-                        <MenuItem eventKey="3" active={perPage === 75} onClick={() => perPageHandler(75)}>75</MenuItem>
-                        <MenuItem eventKey="4" active={perPage === 100} onClick={() => perPageHandler(100)}>100</MenuItem>
+                        <MenuItem eventKey="1" active={perPage === 15} onClick={() => perPageHandler(15)}>15</MenuItem>
+                        <MenuItem eventKey="2" active={perPage === 25} onClick={() => perPageHandler(25)}>25</MenuItem>
+                        <MenuItem eventKey="3" active={perPage === 50} onClick={() => perPageHandler(50)}>50</MenuItem>
+                        <MenuItem eventKey="4" active={perPage === 75} onClick={() => perPageHandler(75)}>75</MenuItem>
                     </DropdownButton>
                 </ButtonGroup>
             </div>

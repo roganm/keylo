@@ -26468,7 +26468,7 @@ var Realtor = function (_Component) {
         _this.state = {
             filterText: '',
             realtors: null,
-            realtorsPerPage: 25,
+            realtorsPerPage: 15,
             currentPage: 1,
             selectedRealtorData: null
         };
@@ -26517,6 +26517,7 @@ var Realtor = function (_Component) {
 
                 // Examine the text in the response  
                 response.json().then(function (listings) {
+                    console.log(listings);
                     _this2.setState({
                         selectedRealtorData: listings.data
                     });
@@ -26785,31 +26786,31 @@ var Pagination = function Pagination(_ref) {
                     { title: "Records Per Page", id: "bg-nested-dropdown" },
                     React.createElement(
                         _reactBootstrap.MenuItem,
-                        { eventKey: "1", active: perPage === 25, onClick: function onClick() {
+                        { eventKey: "1", active: perPage === 15, onClick: function onClick() {
+                                return perPageHandler(15);
+                            } },
+                        "15"
+                    ),
+                    React.createElement(
+                        _reactBootstrap.MenuItem,
+                        { eventKey: "2", active: perPage === 25, onClick: function onClick() {
                                 return perPageHandler(25);
                             } },
                         "25"
                     ),
                     React.createElement(
                         _reactBootstrap.MenuItem,
-                        { eventKey: "2", active: perPage === 50, onClick: function onClick() {
+                        { eventKey: "3", active: perPage === 50, onClick: function onClick() {
                                 return perPageHandler(50);
                             } },
                         "50"
                     ),
                     React.createElement(
                         _reactBootstrap.MenuItem,
-                        { eventKey: "3", active: perPage === 75, onClick: function onClick() {
+                        { eventKey: "4", active: perPage === 75, onClick: function onClick() {
                                 return perPageHandler(75);
                             } },
                         "75"
-                    ),
-                    React.createElement(
-                        _reactBootstrap.MenuItem,
-                        { eventKey: "4", active: perPage === 100, onClick: function onClick() {
-                                return perPageHandler(100);
-                            } },
-                        "100"
                     )
                 )
             )
@@ -26978,7 +26979,7 @@ var RealtorList = function RealtorList(_ref) {
                 React.createElement(
                     'th',
                     { width: '40%' },
-                    'Average Price'
+                    'Average Price \u25BC'
                 )
             )
         ),

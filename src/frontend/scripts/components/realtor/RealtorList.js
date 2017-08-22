@@ -9,7 +9,7 @@ const RealtorList = ({ realtors, handler }) => {
                 <tr>
                     <th width="40%">Name</th>
                     <th width="20%">Number of Listings</th>
-                    <th width="40%">Average Price</th>
+                    <th width="40%">Average Price &#9660;</th>
                 </tr>
             </thead>
             <tbody>
