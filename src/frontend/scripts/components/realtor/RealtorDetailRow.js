@@ -1,10 +1,29 @@
-export const RealtorDetailRow = ({ name, mlsnumber, price, handler }) => {
+import { Row, Col } from 'react-bootstrap';
+
+const RealtorDetailRow = ({ id, guid, listingid, mlsnumber, publicremarks, bathroomtotal, bedrooms, sizeinterior, storiestotal, sizetotal, type, propertytype, price, pricehistory, addresstext, longitude, latitude, postalcode, relativedetailsurl, statusid, photochangedateutc, pricechangedateutc, openhouseinsertdateutc, parking, typeid, ownershiptype, ammenitiesnearby, zoningtype, brochurelink, photolink, soundlink, videolink, photosequenceid, highrespath, medrespath, lowrespath, photolastupdated, active, created_at, updated_at }) => {
+    var add = addresstext.split("|")
+
     return (
-        <tr className="Row" onClick={handler}>
-            <td>{name}</td>
-            <td><b>{mlsnumber}</b>&nbsp;</td>
-            <td>${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
-        </tr>
+        <Row>
+            <Col md={2}>
+                <div>
+                    <img src={lowrespath} />
+                </div>
+            </Col>
+            <Col md={2}>
+                <div>
+                    <div>{price}</div>
+                    <div>{sizeinterior}</div>
+                    <div>{bedrooms} Beds {bathroomtotal} Baths</div>
+                    <div>{add[0]}</div>
+                </div>
+            </Col>
+            <Col md={8}>
+                <div>
+                    {publicremarks}
+                </div>
+            </Col>
+        </Row>
     )
 }
 

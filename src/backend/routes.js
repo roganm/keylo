@@ -91,10 +91,34 @@ const routes = [
         },
         handler: (request, reply) => {
             const { realtorGuid } = request.params
-            const getOperation = Knex.raw(`SELECT * FROM listing_realtor_organization lro LEFT OUTER JOIN individuals ind ON lro.individualid=ind.guid LEFT OUTER JOIN organizations org ON lro.organizationid=org.guid LEFT OUTER JOIN listings lst ON lro.listingid=lst.guid WHERE lro.individualid=\'${realtorGuid}\' ORDER BY price DESC`)
+            //id, name, guid, individualid, phonetype1, phonetype2, phonetype3, phonetype4, phonetype5,
+            //websitetype1, websitetype2, websitetype3, websitetype4, websitetype5, email1, email2, email3,
+            //email4, photo, position, permitfreetextemail, firstname,
+            //lastname, corporationdisplaytypeid, permitshowlistinglink, active, created_at, updated_at
+            /*const query =
+                `SELECT ind.name as realtorName ind. FROM listing_realtor_organization lro
+                LEFT OUTER JOIN individuals ind ON lro.individualid=ind.guid
+                LEFT OUTER JOIN organizations org ON lro.organizationid=org.guid
+                LEFT OUTER JOIN listings lst ON lro.listingid=lst.guid
+                WHERE lro.individualid=\'${realtorGuid}\' ORDER BY price DESC`;
+            */
 
-                .then(([result]) => {
-                    if (!result) {
+            const query1 = `SELECT * FROM individuals WHERE guid =\'${realtorGuid}\'`;
+            const query2 =
+                `SELECT * FROM listing_realtor_organization lro
+                 RIGHT JOIN organizations org ON lro.organizationid=org.guid
+                WHERE lro.individualid=\'${realtorGuid}\' LIMIT 1
+                `;
+            const query3 =
+                `SELECT * FROM listing_realtor_organization lro
+                RIGHT JOIN listings lst ON lro.listingid=lst.guid
+                WHERE lro.individualid=\'${realtorGuid}\' AND lst.active=1 ORDER BY price DESC`;
+
+            const getOperation = Knex.select().from('individuals').where({
+                guid: realtorGuid
+            })
+                .then(([realtor]) => {
+                    if (!realtor) {
 
                         reply({
 
@@ -105,10 +129,58 @@ const routes = [
 
                     } else {
 
-                        reply({
-                            data: result
-                        })
+                        const getOp2 = Knex.select().from('listing_realtor_organization')
+                            .rightJoin('organizations', 'listing_realtor_organization.organizationid', 'organizations.guid')
+                            .where({
+                                individualid: realtorGuid
+                            }).limit(1)
+                            .then(([org]) => {
+                                if (!org) {
 
+                                    reply({
+
+                                        error: true,
+                                        errMessage: `the realtor with id ${realtorGuid} was not found`
+
+                                    })
+
+                                } else {
+
+                                    const getOp = Knex.select().from('listing_realtor_organization')
+                                        .join('listings', 'listing_realtor_organization.listingid', 'listings.guid')
+                                        .where({
+                                            individualid: realtorGuid
+                                        })
+                                        .then((listings) => {
+                                            console.log(listings);
+
+                                            if (!listings) {
+
+                                                reply({
+
+                                                    error: true,
+                                                    errMessage: `the realtor with id ${realtorGuid} was not found`
+
+                                                })
+
+                                            } else {
+
+                                                reply({
+                                                    realtor: realtor,
+                                                    org: org,
+                                                    listings: listings
+                                                })
+                                            }
+                                        })
+                                        .catch((err) => {
+                                            reply('server-side error: ' + err);
+                                        });
+
+                                }
+                            })
+                            .catch((err) => {
+                                reply('server-side error: ' + err);
+                            });
                     }
                 })
                 .catch((err) => {
@@ -127,13 +199,20 @@ const routes = [
                 "SELECT ind.name, ind.guid, t.total as total, t.cnt as cnt, (t.total / t.cnt) as average " +
                 "FROM individuals ind " +
                 "LEFT JOIN " +
-                "(SELECT lro.individualid, sum(lst.price) as total, COUNT(*) as cnt " +
+                "(SELECT lro.individualid, sum(CAST(replace(replace(ifnull(price,0),',',''),'$','') AS decimal(10))) as total, COUNT(*) as cnt " +
                 "FROM listing_realtor_organization lro " +
                 "INNER JOIN listings lst " +
                 "ON lst.guid = lro.listingid " +
                 "GROUP BY lro.individualid) t " +
                 "ON ind.GUID = t.individualid " +
                 "ORDER BY average DESC";
+
+            /*
+            SELECT ID, CAST(replace(replace(ifnull(Amount,0),',',''),'$','') AS decimal(10)) as AmountFloat
+            FROM Table1
+            WHERE CAST(replace(replace(ifnull(Amount,0),',',''),'$','') AS decimal(10)) > 0
+            */
+
             const { realtorGuid } = request.params
             const getOperation = Knex.raw(fancyQuery)
                 .then((results) => {

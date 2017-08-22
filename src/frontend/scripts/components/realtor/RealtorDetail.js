@@ -1,8 +1,49 @@
 import RealtorDetailRow from './RealtorDetailRow';
-import { Table } from 'react-bootstrap';
+import { Table, Grid, Row, Col } from 'react-bootstrap';
 
-const RealtorDetail = ({ listings }) => {
+const RealtorDetail = ({ realtor, org, listings }) => {
+    var add = org.addresstext.split("|")
+
     return (
+        <Grid fluid>
+            <Row>
+                <Col md={12}>
+                    <Grid fluid>
+                        <div className="Listing">
+                            <Row>
+                                <Col md={2}>
+                                    <div><img src={realtor.photo} /></div>
+                                </Col>
+                                <Col md={4}>
+                                    <div>{realtor.name}</div>
+                                    <div>{org.name}</div>
+                                    <div>{add[0]}</div>
+                                    <div>{add[1]}</div>
+                                </Col>
+                                <Col md={2}>
+                                    <div className="Star">4.7</div>
+                                </Col>
+                                <Col md={4}>
+                                    <div><img src="star.jpg" className="resize" /></div>
+                                </Col>
+                            </Row>
+                        </div>
+                        {listings.map((listing, i) =>
+                            <div className="Listing" key={i}>
+                                <RealtorDetailRow
+                                    {...listing} />
+                            </div>
+                        )}
+
+                    </Grid>
+                </Col>
+            </Row>
+            <Row>
+            </Row>
+        </Grid>
+
+
+        /*
         <Table striped bordered condensed hover>
             <thead>
                 <tr>
@@ -19,7 +60,7 @@ const RealtorDetail = ({ listings }) => {
                 )}
             </tbody>
         </Table>
-
+        */
     )
 }
 

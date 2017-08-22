@@ -46,6 +46,7 @@ class Realtor extends Component {
     }
 
     realtorSelector(guid) {
+
         fetch('./realtors/' + guid)
             .then(response => {
                 if (response.status !== 200) {
@@ -54,12 +55,13 @@ class Realtor extends Component {
                     return;
                 }
 
-                
+
                 // Examine the text in the response  
-                response.json().then(listings => {
-                    console.log(listings)
+                response.json().then(data => {
                     this.setState({
-                        selectedRealtorData: listings.data
+                        selectedRealtor: data.realtor,
+                        selectedOrg: data.org,
+                        selectedListings: data.listings
                     });
                 });
             }
@@ -72,7 +74,7 @@ class Realtor extends Component {
 
     realtorClear() {
         this.setState({
-            selectedRealtorData: null
+            selectedRealtor: null
         });
     }
 
@@ -84,7 +86,7 @@ class Realtor extends Component {
                         response.status);
                     return;
                 }
-
+                
                 // Examine the text in the response  
                 response.json().then(data => {
                     this.setState({ realtors: data.data[0] });
@@ -98,6 +100,20 @@ class Realtor extends Component {
 
     render() {
         if (this.state.realtors) {
+
+            if (this.state.selectedRealtor) {
+                return (
+                    <div className="RealtorContainer">
+                        <RealtorDetail
+                            realtor={this.state.selectedRealtor}
+                            org={this.state.selectedOrg}
+                            listings={this.state.selectedListings} />
+                        <br></br><Button onClick={this.realtorClear}>Back</Button>
+                    </div>
+                )
+            }
+
+
             var rows = [];
             const filter = this.state.filterText.toLowerCase();
             this.state.realtors.forEach((realtor) => {
@@ -119,17 +135,8 @@ class Realtor extends Component {
                 first = last = 0;
             }
 
-            if (this.state.selectedRealtorData) {
-                return (
-                    <div className="RealtorContainer">
-                        <RealtorDetail
-                            listings={this.state.selectedRealtorData} />
-                        <br></br><Button onClick={this.realtorClear}>Back</Button>
-                    </div>
-                )
-            }
-
             if (last > 0) {
+
                 return (
                     <div className="RealtorContainer">
                         <Home />

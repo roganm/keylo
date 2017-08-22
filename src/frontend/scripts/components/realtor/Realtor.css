@@ -1,6 +1,6 @@
 .RealtorContainer {
   width: 80%;
-  text-align: center;
+  text-align: left;
   margin-left: auto;
   margin-right: auto;
 }
@@ -43,4 +43,20 @@ tr:hover {
 .Spacer {
   font-weight: 700;
   width: 50px;
+}
+
+.Listing {
+  border: 1px solid #AAAAAA;
+  border-radius: 12px;
+  margin-bottom: 3em;
+  padding: 1em 1em;
+}
+
+.Star {
+  font-size: 6em;
+}
+
+img.resize {
+  width: 80px;
+  height: 80px;
 }
