@@ -7,7 +7,7 @@ const RealtorDetailRow = ({ id, guid, listingid, mlsnumber, publicremarks, bathr
         <Row>
             <Col md={2}>
                 <div>
-                    <img src={lowrespath} />
+                    <a href={"https://www.realtor.ca"+relativedetailsurl}><img src={lowrespath} /></a>
                 </div>
             </Col>
             <Col md={2}>
