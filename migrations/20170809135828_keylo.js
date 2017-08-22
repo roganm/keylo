@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
             indsTable.increments();
 
             // Data
-            indsTable.string('name', 50).notNullable();
+            indsTable.string('name', 250).notNullable();
             indsTable.string('guid', 50).notNullable().unique();
             indsTable.integer('individualid').notNullable().unique();
             indsTable.string('phonetype1', 14);
@@ -40,7 +40,7 @@ exports.up = function(knex, Promise) {
             orgsTable.increments();
 
             // Data
-            orgsTable.string('name', 50).notNullable();
+            orgsTable.string('name', 250).notNullable();
             orgsTable.string('guid', 50).notNullable().unique();
             orgsTable.integer('organizationid').notNullable().unique();
             orgsTable.string('logo', 250);
