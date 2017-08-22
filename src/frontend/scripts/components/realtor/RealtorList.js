@@ -7,9 +7,9 @@ const RealtorList = ({ realtors, handler }) => {
         <Table striped bordered condensed hover>
             <thead>
                 <tr>
-                    <th width="33%">Name</th>
-                    <th width="34%">Number of Listings</th>
-                    <th width="33%">Average Price</th>
+                    <th width="40%">Name</th>
+                    <th width="20%">Number of Listings</th>
+                    <th width="40%">Average Price</th>
                 </tr>
             </thead>
             <tbody>

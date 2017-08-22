@@ -8,7 +8,7 @@ function numToString(num){
 const RealtorRow = ({ name, guid, average, cnt, handler }) => {
     return (
         <tr onClick={() => handler(guid)}>
-            <td>{name}</td>
+            <td className="DetailName">&nbsp;&nbsp;&nbsp;{name}</td>
             <td><b>{cnt}</b>&nbsp;</td>
             <td>${numToString(average)}</td>
         </tr>

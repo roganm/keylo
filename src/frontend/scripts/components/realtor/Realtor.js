@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 import Pagination from './Pagination';
 import SearchBar from './SearchBar';
 import RealtorList from './RealtorList';
@@ -84,7 +85,6 @@ class Realtor extends Component {
 
                 // Examine the text in the response  
                 response.json().then(data => {
-                    console.log(data.data[0]);
                     this.setState({ realtors: data.data[0] });
                 });
             }
@@ -122,7 +122,7 @@ class Realtor extends Component {
                     <div className="RealtorContainer">
                         <RealtorDetail
                             listings={this.state.selectedRealtorData} />
-                        <br></br><button onClick={this.realtorClear}>Back</button>
+                        <br></br><Button onClick={this.realtorClear}>Back</Button>
                     </div>
                 )
             }

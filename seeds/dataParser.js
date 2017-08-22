@@ -18,7 +18,7 @@ function parse(data, i) {
 
   Knex('listings').select('guid').where({
     'listingid': data[i].Id
-  }).orWhere({'mlsnumber': data[i].MlsNumber}).then((lst) => {
+  }).orWhere({ 'mlsnumber': data[i].MlsNumber }).then((lst) => {
     if (lst[0]) {
       console.log('dupe found' + data[i].MlsNumber);
       if (data[++i]) {
@@ -105,7 +105,7 @@ function createListing(data) {
     listing.sizeinterior = data.Building.SizeInterior
     listing.sizetotal = data.Land.SizeTotal;
     listing.type = data.Building.Type;
-    listing.price = Number(data.Property.Price.replace(/[^0-9\.-]+/g,""));
+    listing.price = Number(data.Property.Price.replace(/[^0-9\.-]+/g, ""));
     listing.pricehistory.push(data.Property.Price);
     listing.pricehistory = JSON.stringify(listing.pricehistory);
     listing.propertytype = data.Property.Type;
@@ -260,7 +260,9 @@ function createIndividual(data, j, listid) {
           }
         }
 
-        individual.email1 = data[j].Emails[0].ContactId;
+        if (data[j].Emails) {
+          individual.email1 = data[j].Emails[0].ContactId;
+        }
 
         Knex('individuals').insert(individual)
           .then((res) => {

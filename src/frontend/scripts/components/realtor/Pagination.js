@@ -51,7 +51,7 @@ const Pagination = ({ first, last, total, current, pages, perPage, pageHandler, 
                         )
                     }
                 </ButtonGroup>
-                ...
+                <span className="Spacer">&nbsp;. . . &nbsp;</span>
                     <ButtonGroup>
                     {
                         buttons.slice(innerLow, innerHigh).map((button) =>
@@ -59,7 +59,7 @@ const Pagination = ({ first, last, total, current, pages, perPage, pageHandler, 
                         )
                     }
                 </ButtonGroup>
-                ...
+                <span className="Spacer">&nbsp;. . . &nbsp;</spacer>
                     <ButtonGroup>
                     {
                         buttons.slice(pages - 3, pages).map((button) =>
