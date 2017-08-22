@@ -1,9 +1,11 @@
 .App {
   margin-bottom: 15em;
+  width: 80%;
 }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
+  color: white;
   height: 80px;
 }
 
@@ -15,7 +17,7 @@
   margin-top: 2em;
   margin-bottom: 2em;
   font-family: "Oswald";
-  background-color: #D61E1E;
+  background-color: #9D0050;
   padding: 20px;
   color: white;
   box-shadow: 2px 5px 5px #666666;

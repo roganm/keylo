@@ -29,13 +29,15 @@ class Home extends Component {
         const priceTiers = [0, 25000, 50000, 75000, 100000, 125000, 150000, 175000, 200000, 225000, 250000, 275000, 300000, 325000, 350000, 375000, 400000, 425000, 450000, 475000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 950000, 1000000, 1100000, 1200000, 1300000, 1400000, 1500000, 1600000, 1700000, 1800000, 1900000, 2000000, 2500000, 3000000, 4000000, 5000000, 7500000, 10000000];
 
         return (
-            <div width="80%">
+            <div className="container SearchContainer">
                 <br /><br />
                 <form>
                     <FormGroup controlId="formControlsSelect">
-                        <Grid>
-                            <Row className="show-grid">
-                                <Col xs={12} sm={6} md={4}>
+
+                        <Row className="show-grid">
+                            <Col md={3} />
+                            <Col md={2}>
+                                <FormGroup>
                                     <ControlLabel>Minimum Price</ControlLabel>
                                     <FormControl onChange={this.priceSelect()} componentClass="select" placeholder="select">
                                         <option value={null}>Any</option>
@@ -45,8 +47,6 @@ class Home extends Component {
                                             )
                                         }
                                     </FormControl>
-                                </Col>
-                                <Col xs={12} sm={6} md={4}>
                                     <ControlLabel>Maximum Price</ControlLabel>
                                     <FormControl onSelect={this.priceSelect()} componentClass="select" placeholder="select">
                                         <option value={null}>Any</option>
@@ -56,8 +56,10 @@ class Home extends Component {
                                             )
                                         }
                                     </FormControl>
-                                </Col>
-                                <Col xs={12} sm={6} md={4}>
+                                </FormGroup>
+                            </Col>
+                            <Col md={2}>
+                                <FormGroup>
                                     <ControlLabel>Minimum Rooms</ControlLabel>
                                     <FormControl componentClass="select" placeholder="select">
                                         <option value="0">0</option>
@@ -67,8 +69,6 @@ class Home extends Component {
                                         <option value="4">4</option>
                                         <option value="5">5</option>
                                     </FormControl>
-                                </Col>
-                                <Col xs={12} sm={6} md={4}>
                                     <ControlLabel>Maximum Rooms</ControlLabel>
                                     <FormControl componentClass="select" placeholder="select">
                                         <option value="0">0</option>
@@ -77,9 +77,12 @@ class Home extends Component {
                                         <option value="3">3</option>
                                         <option value="4">4</option>
                                         <option value="5">5</option>
-                                        <option value="any">No max</option>                                        </FormControl>
-                                </Col>
-                                <Col xs={12} sm={6} md={4}>
+                                        <option value="any">No max</option>
+                                    </FormControl>
+                                </FormGroup>
+                            </Col>
+                            <Col md={2}>
+                                <FormGroup>
                                     <ControlLabel>Minimum Bathrooms</ControlLabel>
                                     <FormControl componentClass="select" placeholder="select">
                                         <option value="0">0</option>
@@ -89,8 +92,6 @@ class Home extends Component {
                                         <option value="4">4</option>
                                         <option value="5">5</option>
                                     </FormControl>
-                                </Col>
-                                <Col xs={12} sm={6} md={4}>
                                     <ControlLabel>Maximum Bathrooms</ControlLabel>
                                     <FormControl componentClass="select" placeholder="select">
                                         <option value="0">0</option>
@@ -101,11 +102,13 @@ class Home extends Component {
                                         <option value="5">5</option>
                                         <option value="any">No max</option>
                                     </FormControl>
-                                </Col>
-                            </Row>
-                        </Grid>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+
                     </FormGroup>
                 </form>
+
             </div>
         )
     }

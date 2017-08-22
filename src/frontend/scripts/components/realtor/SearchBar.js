@@ -24,11 +24,11 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <Grid>
+            <Grid className="SearchBar">
                 <Row>
                     <form className="SearchBar">
                         <Col md={4} />
-                        <Col xs={12} md={4}>
+                        <Col md={4}>
                             <FieldGroup
                                 id="formControlsText"
                                 type="text"

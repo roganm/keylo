@@ -108,7 +108,7 @@ class Realtor extends Component {
                             realtor={this.state.selectedRealtor}
                             org={this.state.selectedOrg}
                             listings={this.state.selectedListings} />
-                        <br></br><Button onClick={this.realtorClear}>Back</Button>
+                        <div style={{textAlign: 'center'}}><Button onClick={this.realtorClear}>Back</Button></div>
                     </div>
                 )
             }
@@ -138,7 +138,7 @@ class Realtor extends Component {
             if (last > 0) {
 
                 return (
-                    <div className="RealtorContainer">
+                    <div className="RealtorContainer container">
                         <Home />
                         <SearchBar
                             filterText={this.state.filterText}
