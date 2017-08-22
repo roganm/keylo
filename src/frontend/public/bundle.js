@@ -45413,6 +45413,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactBootstrap = __webpack_require__(350);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45420,6 +45422,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var FieldGroup = function FieldGroup(_ref) {
+    var id = _ref.id,
+        label = _ref.label,
+        help = _ref.help,
+        props = _objectWithoutProperties(_ref, ['id', 'label', 'help']);
+
+    return _react2.default.createElement(
+        _reactBootstrap.FormGroup,
+        { controlId: id },
+        _react2.default.createElement(
+            _reactBootstrap.ControlLabel,
+            null,
+            label
+        ),
+        _react2.default.createElement(_reactBootstrap.FormControl, props),
+        help && _react2.default.createElement(
+            HelpBlock,
+            null,
+            help
+        )
+    );
+};
 
 var SearchBar = function (_Component) {
     _inherits(SearchBar, _Component);
@@ -45434,22 +45461,38 @@ var SearchBar = function (_Component) {
     }
 
     _createClass(SearchBar, [{
-        key: "handleFilterTextInputChange",
+        key: 'handleFilterTextInputChange',
         value: function handleFilterTextInputChange(e) {
             this.props.onFilterTextInput(e.target.value);
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                "form",
-                { className: "SearchBar" },
-                _react2.default.createElement("input", {
-                    type: "text",
-                    placeholder: "Search...",
-                    value: this.props.filterText,
-                    onChange: this.handleFilterTextInputChange
-                })
+                _reactBootstrap.Grid,
+                null,
+                _react2.default.createElement(
+                    _reactBootstrap.Row,
+                    null,
+                    _react2.default.createElement(
+                        'form',
+                        { className: 'SearchBar' },
+                        _react2.default.createElement(_reactBootstrap.Col, { md: 4 }),
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 12, md: 4 },
+                            _react2.default.createElement(FieldGroup, {
+                                id: 'formControlsText',
+                                type: 'text',
+                                label: 'Filter Results by Realtor Name',
+                                value: this.props.filterText,
+                                onChange: this.handleFilterTextInputChange,
+                                placeholder: null
+                            })
+                        ),
+                        _react2.default.createElement(_reactBootstrap.Col, { md: 4 })
+                    )
+                )
             );
         }
     }]);
@@ -45793,7 +45836,7 @@ exports = module.exports = __webpack_require__(105)(undefined);
 
 
 // module
-exports.push([module.i, ".App {\r\n  text-align: center;\r\n  margin-bottom: 15em;\r\n}\r\n\r\n.App-logo {\r\n  -webkit-animation: App-logo-spin infinite 20s linear;\r\n          animation: App-logo-spin infinite 20s linear;\r\n  height: 80px;\r\n}\r\n\r\n.App-header {\r\n  margin-top: 2em;\r\n  margin-bottom: 6em;\r\n  font-family: \"Oswald\";\r\n  background-color: #D61E1E;\r\n  padding: 20px;\r\n  color: white;\r\n  box-shadow: 0px 5px 5px #666666;\r\n}\r\n\r\n.App-intro {\r\n  font-size: large;\r\n}\r\n\r\n@-webkit-keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n\r\n@keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n", ""]);
+exports.push([module.i, ".App {\r\n  margin-bottom: 15em;\r\n}\r\n\r\n.App-logo {\r\n  -webkit-animation: App-logo-spin infinite 20s linear;\r\n          animation: App-logo-spin infinite 20s linear;\r\n  height: 80px;\r\n}\r\n\r\n.App-header {\r\n  margin-left: auto;\r\n  margin-right: auto;\r\n  width: 80%;\r\n  margin-top: 2em;\r\n  margin-bottom: 6em;\r\n  font-family: \"Oswald\";\r\n  background-color: #D61E1E;\r\n  padding: 20px;\r\n  color: white;\r\n  box-shadow: 2px 5px 5px #666666;\r\n}\r\n\r\n.App-intro {\r\n  font-size: large;\r\n}\r\n\r\n@-webkit-keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n\r\n@keyframes App-logo-spin {\r\n  from { -webkit-transform: rotate(0deg); transform: rotate(0deg); }\r\n  to { -webkit-transform: rotate(360deg); transform: rotate(360deg); }\r\n}\r\n", ""]);
 
 // exports
 

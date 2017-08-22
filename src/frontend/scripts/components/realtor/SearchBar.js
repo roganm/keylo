@@ -1,4 +1,16 @@
 import React, { Component } from 'react';
+import { Grid, Row, Col, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+
+const FieldGroup = ({ id, label, help, ...props }) => {
+    return (
+        <FormGroup controlId={id}>
+            <ControlLabel>{label}</ControlLabel>
+            <FormControl {...props} />
+            {help && <HelpBlock>{help}</HelpBlock>}
+        </FormGroup>
+    );
+}
+
 
 class SearchBar extends Component {
     constructor(props) {
@@ -12,14 +24,24 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <form className="SearchBar">
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    value={this.props.filterText}
-                    onChange={this.handleFilterTextInputChange}
-                />
-            </form>
+            <Grid>
+                <Row>
+                    <form className="SearchBar">
+                        <Col md={4} />
+                        <Col xs={12} md={4}>
+                            <FieldGroup
+                                id="formControlsText"
+                                type="text"
+                                label="Filter Results by Realtor Name"
+                                value={this.props.filterText}
+                                onChange={this.handleFilterTextInputChange}
+                                placeholder={null}
+                            />
+                        </Col>
+                        <Col md={4} />
+                    </form>
+                </Row>
+            </Grid>
         );
     }
 }

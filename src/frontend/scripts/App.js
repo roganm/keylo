@@ -6,48 +6,50 @@ window.React = React
 
 class App extends Component {
 
-/*
-  componentDidMount() {
-    return fetch('./realtors')
-      .then(response => {
-        if (response.status !== 200) {
-          console.log('Looks like there was a problem. Status Code: ' +
-            response.status);
-          return;
+  /*
+    componentDidMount() {
+      return fetch('./realtors')
+        .then(response => {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+              response.status);
+            return;
+          }
+  
+          // Examine the text in the response  
+          response.json().then(data => {
+            console.log(data);
+            this.setState({ items: data.data });
+          });
         }
-
-        // Examine the text in the response  
-        response.json().then(data => {
-          console.log(data);
-          this.setState({ items: data.data });
+        )
+        .catch(function (err) {
+          console.log('Fetch Error', err);
         });
-      }
-      )
-      .catch(function (err) {
-        console.log('Fetch Error', err);
-      });
-  }
-
-
-  <img src="logo.svg" className="App-logo" alt="Hello" />
-*/
+    }
+  
+  
+    <img src="logo.svg" className="App-logo" alt="Hello" />
+  */
   render() {
-    
+
     return (
       <div className="App">
+
         <div className="App-header">
-          
+
           <h2>Keylo Realtor Hubness of Awesome</h2>
           Navbar | Navbar | Navbar | Navbar
-        </div>
+          </div>
+
         <div>
-            
-            <Realtor />
+
+          <Realtor />
         </div>
-      </div>      
+      </div>
     );
-    
-    
+
+
     /*
 
     return (
