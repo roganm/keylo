@@ -1,2 +1,6 @@
 node_modules
 seeds/huge.json
+seeds/E.json
+seeds/data.json
+src/frontend/scripts/lib/realtors.json
+src/frontend/public/bundle.js

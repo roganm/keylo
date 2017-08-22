@@ -1,4 +1,4 @@
-const bulk_data = require('./data.json');
+const bulk_data = require('./E.json');
 const GUID = require('node-uuid');
 const Knex = require('knex')({
   client: 'mysql',
@@ -18,9 +18,9 @@ function parse(data, i) {
 
   Knex('listings').select('guid').where({
     'listingid': data[i].Id
-  }).then((lst) => {
+  }).orWhere({'mlsnumber': data[i].MlsNumber}).then((lst) => {
     if (lst[0]) {
-      //console.log(lst);
+      console.log('dupe found' + data[i].MlsNumber);
       if (data[++i]) {
         parse(data, i);
       } else {
@@ -105,7 +105,7 @@ function createListing(data) {
     listing.sizeinterior = data.Building.SizeInterior
     listing.sizetotal = data.Land.SizeTotal;
     listing.type = data.Building.Type;
-    listing.price = data.Property.Price;
+    listing.price = Number(data.Property.Price.replace(/[^0-9\.-]+/g,""));
     listing.pricehistory.push(data.Property.Price);
     listing.pricehistory = JSON.stringify(listing.pricehistory);
     listing.propertytype = data.Property.Type;

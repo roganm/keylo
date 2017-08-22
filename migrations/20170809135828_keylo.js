@@ -82,7 +82,7 @@ exports.up = function(knex, Promise) {
             listTable.string('sizetotal', 250);
             listTable.string('type', 250);
             listTable.string('propertytype', 250);
-            listTable.string('price', 250);
+            listTable.integer('price');
             listTable.text('pricehistory', 'longtext');
             listTable.string('addresstext', 250);
             listTable.string('longitude', 250);

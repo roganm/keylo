@@ -6,31 +6,6 @@ window.React = React
 
 class App extends Component {
 
-  /*
-    componentDidMount() {
-      return fetch('./realtors')
-        .then(response => {
-          if (response.status !== 200) {
-            console.log('Looks like there was a problem. Status Code: ' +
-              response.status);
-            return;
-          }
-  
-          // Examine the text in the response  
-          response.json().then(data => {
-            console.log(data);
-            this.setState({ items: data.data });
-          });
-        }
-        )
-        .catch(function (err) {
-          console.log('Fetch Error', err);
-        });
-    }
-  
-  
-    <img src="logo.svg" className="App-logo" alt="Hello" />
-  */
   render() {
 
     return (

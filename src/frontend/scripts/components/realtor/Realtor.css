@@ -24,8 +24,14 @@ tr:hover {
 }
 
 .Pagination {
+  text-align: center;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.NoResults {
+  text-align: center;
+  font-weight: 700;
 }
 

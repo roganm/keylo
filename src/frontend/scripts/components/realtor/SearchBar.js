@@ -41,6 +41,8 @@ class SearchBar extends Component {
                         <Col md={4} />
                     </form>
                 </Row>
+                <Row><br></br>
+                    </Row>
             </Grid>
         );
     }

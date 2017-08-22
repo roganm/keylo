@@ -91,8 +91,8 @@ const routes = [
         },
         handler: (request, reply) => {
             const { realtorGuid } = request.params
-            const getOperation = Knex.raw(`SELECT org.name, ind.name, lst.mlsnumber, lst.price FROM listing_realtor_organization lro LEFT OUTER JOIN individuals ind ON lro.individualid=ind.guid LEFT OUTER JOIN organizations org ON lro.organizationid=org.guid LEFT OUTER JOIN listings lst ON lro.listingid=lst.guid WHERE lro.individualid=\'${realtorGuid}\'`)            
-            
+            const getOperation = Knex.raw(`SELECT org.name, ind.name, lst.mlsnumber, price FROM listing_realtor_organization lro LEFT OUTER JOIN individuals ind ON lro.individualid=ind.guid LEFT OUTER JOIN organizations org ON lro.organizationid=org.guid LEFT OUTER JOIN listings lst ON lro.listingid=lst.guid WHERE lro.individualid=\'${realtorGuid}\'`)
+
                 .then(([result]) => {
                     if (!result) {
 
@@ -115,7 +115,45 @@ const routes = [
                     reply('server-side error: ' + err);
                 });
         }
+    },
+    {
+        path: '/fancy',
+        method: 'GET',
+        config: {
+
+        },
+        handler: (request, reply) => {
+            const fancyQuery =
+                "SELECT ind.name, ind.guid, t.total as total, t.cnt as cnt, (t.total / t.cnt) as average " +
+                "FROM individuals ind " +
+                "LEFT JOIN " +
+                "(SELECT lro.individualid, sum(lst.price) as total, COUNT(*) as cnt " +
+                "FROM listing_realtor_organization lro " +
+                "INNER JOIN listings lst " +
+                "ON lst.guid = lro.listingid " +
+                "GROUP BY lro.individualid) t " +
+                "ON ind.GUID = t.individualid " +
+                "ORDER BY average DESC";
+            const { realtorGuid } = request.params
+            const getOperation = Knex.raw(fancyQuery)
+                .then((results) => {
+                    if (!results || results.length === 0) {
+                        reply({
+                            error: true,
+                            errMessage: `the realtor with id ${realtorGuid} was not found`
+                        })
+                    } else {
+                        reply({
+                            data: results
+                        })
+                    }
+                })
+                .catch((err) => {
+                    reply('server-side error: ' + err);
+                });
+        }
     }
+
     /*
     {
         path: '/users',

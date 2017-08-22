@@ -5,14 +5,13 @@ import RealtorList from './RealtorList';
 import RealtorDetail from './RealtorDetail';
 import Home from '../home/Home';
 import './Realtor.css';
-import data from '../../lib/realtors.json';
 
 class Realtor extends Component {
     constructor(props) {
         super(props);
         this.state = {
             filterText: '',
-            realtors: data,
+            realtors: null,
             realtorsPerPage: 25,
             currentPage: 1,
             selectedRealtorData: null
@@ -74,70 +73,95 @@ class Realtor extends Component {
         });
     }
 
-    render() {
-        var rows = [];
-        const filter = this.state.filterText.toLowerCase();
-        this.state.realtors.forEach((realtor) => {
-            name = realtor.name.toLowerCase();
-            if (name.indexOf(filter) !== -1) rows.push(realtor);
-        });
+    componentDidMount() {
+        return fetch('/fancy')
+            .then(response => {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+                }
 
-        var total = rows.length;
-        var first = ((this.state.currentPage - 1) * this.state.realtorsPerPage) + 1;
-
-        if (rows.length > this.state.realtorsPerPage) {
-            rows = rows.slice((first - 1), (first - 1 + this.state.realtorsPerPage));
-        }
-
-        var pages = Math.ceil(total / this.state.realtorsPerPage);
-        var last = first + rows.length - 1;
-
-        if (rows.length === 0) {
-            first = last = 0;
-        }
-
-        if (this.state.selectedRealtorData) {
-            return (
-                <div className="RealtorContainer">
-                    <RealtorDetail
-                        listings={this.state.selectedRealtorData} />
-                    <br></br><button onClick={this.realtorClear}>Back</button>
-                </div>
+                // Examine the text in the response  
+                response.json().then(data => {
+                    console.log(data.data[0]);
+                    this.setState({ realtors: data.data[0] });
+                });
+            }
             )
-        }
+            .catch(function (err) {
+                console.log('Fetch Error', err);
+            });
+    }
 
-        if (last > 0) {
+    render() {
+        if (this.state.realtors) {
+            var rows = [];
+            const filter = this.state.filterText.toLowerCase();
+            this.state.realtors.forEach((realtor) => {
+                name = realtor.name.toLowerCase();
+                if (name.indexOf(filter) !== -1) rows.push(realtor);
+            });
+
+            var total = rows.length;
+            var first = ((this.state.currentPage - 1) * this.state.realtorsPerPage) + 1;
+
+            if (rows.length > this.state.realtorsPerPage) {
+                rows = rows.slice((first - 1), (first - 1 + this.state.realtorsPerPage));
+            }
+
+            var pages = Math.ceil(total / this.state.realtorsPerPage);
+            var last = first + rows.length - 1;
+
+            if (rows.length === 0) {
+                first = last = 0;
+            }
+
+            if (this.state.selectedRealtorData) {
+                return (
+                    <div className="RealtorContainer">
+                        <RealtorDetail
+                            listings={this.state.selectedRealtorData} />
+                        <br></br><button onClick={this.realtorClear}>Back</button>
+                    </div>
+                )
+            }
+
+            if (last > 0) {
+                return (
+                    <div className="RealtorContainer">
+                        <Home />
+                        <SearchBar
+                            filterText={this.state.filterText}
+                            onFilterTextInput={this.handleFilterTextInput} />
+                        <RealtorList
+                            realtors={rows}
+                            handler={this.realtorSelector} />
+                        <Pagination
+                            first={first}
+                            last={last}
+                            total={total}
+                            current={this.state.currentPage}
+                            pages={pages}
+                            perPage={this.state.realtorsPerPage}
+                            pageHandler={this.handlePageChange}
+                            perPageHandler={this.handlePerPageChange} />
+                    </div>
+                )
+            }
+
             return (
                 <div className="RealtorContainer">
                     <Home />
                     <SearchBar
                         filterText={this.state.filterText}
                         onFilterTextInput={this.handleFilterTextInput} />
-                    <RealtorList
-                        realtors={rows}
-                        handler={this.realtorSelector} />
-                    <Pagination
-                        first={first}
-                        last={last}
-                        total={total}
-                        current={this.state.currentPage}
-                        pages={pages}
-                        perPage={this.state.realtorsPerPage}
-                        pageHandler={this.handlePageChange}
-                        perPageHandler={this.handlePerPageChange} />
+                    <p className="NoResults">No results to display.</p><br /><br />
                 </div>
             )
+        } else {
+            return (null)
         }
-
-        return (
-            <div className="RealtorContainer">
-                <Home />
-                <SearchBar
-                    filterText={this.state.filterText}
-                    onFilterTextInput={this.handleFilterTextInput} />
-                No results to display.<br /><br />
-            </div>
-        )
     }
 }
 

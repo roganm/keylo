@@ -12,7 +12,7 @@
   margin-right: auto;
   width: 80%;
   margin-top: 2em;
-  margin-bottom: 6em;
+  margin-bottom: 2em;
   font-family: "Oswald";
   background-color: #D61E1E;
   padding: 20px;
@@ -28,3 +28,4 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
