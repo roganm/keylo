@@ -44,6 +44,10 @@ tr:hover {
   text-align: left;
 }
 
+.Underline:hover {
+  text-decoration-line: underline;
+}
+
 .Spacer {
   font-weight: 700;
   width: 50px;

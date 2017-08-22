@@ -1,15 +1,15 @@
 import RealtorRow from './RealtorRow';
 import { Table } from 'react-bootstrap';
 
-const RealtorList = ({ realtors, handler }) => {
+const RealtorList = ({ realtors, asc, sortBy, handler, handleSort }) => {
 
     return (
         <Table striped bordered condensed hover>
             <thead>
                 <tr>
-                    <th width="40%">Name</th>
-                    <th width="20%">Number of Listings</th>
-                    <th width="40%">Average Price &#9660;</th>
+                    <th width="37%" onClick={() => handleSort('name')}><span className="Underline">Name {(sortBy === "name") ? ((asc) ? '▲' : '▼') : null}</span></th>
+                    <th width="26%" onClick={() => handleSort('count')}><span className="Underline">Number of Listings {(sortBy === "count") ? ((asc) ? '▲' : '▼') : null}</span></th>
+                    <th width="37%" onClick={() => handleSort('average')}><span className="Underline">Average Price {(sortBy === "average") ? ((asc) ? '▲' : '▼') : null}</span></th>
                 </tr>
             </thead>
             <tbody>

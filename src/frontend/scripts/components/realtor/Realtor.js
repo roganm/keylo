@@ -12,6 +12,8 @@ class Realtor extends Component {
         super(props);
         this.state = {
             filterText: '',
+            sortBy: 'average',
+            asc: false,
             realtors: null,
             realtorsPerPage: 15,
             currentPage: 1,
@@ -23,6 +25,10 @@ class Realtor extends Component {
         this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handlePerPageChange = this.handlePerPageChange.bind(this);
+        this.handleSort = this.handleSort.bind(this);
+        this.sortFuncName = this.sortFuncName.bind(this);
+        this.sortFuncAvg = this.sortFuncAvg.bind(this);
+        this.sortFuncCount = this.sortFuncCount.bind(this);
     }
 
     handlePageChange(page) {
@@ -78,6 +84,80 @@ class Realtor extends Component {
         });
     }
 
+    sortFuncName(a, b) {
+        var n1 = a.name.toLowerCase();
+        var n2 = b.name.toLowerCase();
+
+        if (n1 < n2) return -1;
+        if (n1 > n2) return 1;
+        return 0;
+    }
+
+    sortFuncCount(a, b) {
+        var o1 = a.cnt;
+        var o2 = b.cnt;
+      
+        var p1 = a.average;
+        var p2 = b.average;
+      
+        if (o1 < o2) return -1;
+        if (o1 > o2) return 1;
+        if (p1 < p2) return -1;
+        if (p1 > p2) return 1;
+        return 0;
+    }
+
+    sortFuncAvg(a, b) {
+        var o1 = a.average;
+        var o2 = b.average;
+      
+        var p1 = a.cnt;
+        var p2 = b.cnt;
+      
+        if (o1 < o2) return -1;
+        if (o1 > o2) return 1;
+        if (p1 < p2) return -1;
+        if (p1 > p2) return 1;
+        return 0;
+    }
+
+    handleSort(sortBy) {
+        var realtors = this.state.realtors;
+        var asc = !this.state.asc;
+        if (sortBy === this.state.sortBy) {
+            realtors = this.state.realtors.reverse();
+            this.setState({
+                asc: asc,
+                realtors: realtors
+            });
+        } else if (sortBy === "average"){
+            console.log("average");
+            realtors.sort(this.sortFuncAvg);
+            this.setState({
+                asc: true,
+                sortBy: sortBy,
+                realtors: realtors
+            });
+        } else if (sortBy === "count"){
+            realtors.sort(this.sortFuncCount);
+            this.setState({
+                asc: true,
+                sortBy: sortBy,
+                realtors: realtors
+        });
+        } else if (sortBy === "name"){
+            realtors.sort(this.sortFuncName);
+            this.setState({
+                asc: true,
+                sortBy: sortBy,
+                realtors: realtors
+            });
+        }
+
+        
+
+    }
+
     componentDidMount() {
         return fetch('/fancy')
             .then(response => {
@@ -86,13 +166,12 @@ class Realtor extends Component {
                         response.status);
                     return;
                 }
-                
+
                 // Examine the text in the response  
                 response.json().then(data => {
-                    this.setState({ realtors: data.data[0] });
+                    this.setState({ realtors: data.data });
                 });
-            }
-            )
+            })
             .catch(function (err) {
                 console.log('Fetch Error', err);
             });
@@ -108,7 +187,7 @@ class Realtor extends Component {
                             realtor={this.state.selectedRealtor}
                             org={this.state.selectedOrg}
                             listings={this.state.selectedListings} />
-                        <div style={{textAlign: 'center'}}><Button onClick={this.realtorClear}>Back</Button></div>
+                        <div style={{ textAlign: 'center' }}><Button onClick={this.realtorClear}>Back</Button></div>
                     </div>
                 )
             }
@@ -145,6 +224,9 @@ class Realtor extends Component {
                             onFilterTextInput={this.handleFilterTextInput} />
                         <RealtorList
                             realtors={rows}
+                            asc={this.state.asc}
+                            sortBy={this.state.sortBy}
+                            handleSort={this.handleSort}
                             handler={this.realtorSelector} />
                         <Pagination
                             first={first}

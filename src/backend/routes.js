@@ -129,7 +129,7 @@ const routes = [
 
                     } else {
 
-                        const getOp2 = Knex.select().from('listing_realtor_organization')
+                        const getOp2 = Knex.select('organizations.*').from('listing_realtor_organization')
                             .rightJoin('organizations', 'listing_realtor_organization.organizationid', 'organizations.guid')
                             .where({
                                 individualid: realtorGuid
@@ -146,7 +146,7 @@ const routes = [
 
                                 } else {
 
-                                    const getOp = Knex.select().from('listing_realtor_organization')
+                                    const getOp = Knex.select('listings.*').from('listing_realtor_organization')
                                         .join('listings', 'listing_realtor_organization.listingid', 'listings.guid')
                                         .where({
                                             individualid: realtorGuid
@@ -195,26 +195,9 @@ const routes = [
 
         },
         handler: (request, reply) => {
-            const fancyQuery =
-                "SELECT ind.name, ind.guid, t.total as total, t.cnt as cnt, (t.total / t.cnt) as average " +
-                "FROM individuals ind " +
-                "LEFT JOIN " +
-                "(SELECT lro.individualid, sum(CAST(replace(replace(ifnull(price,0),',',''),'$','') AS decimal(10))) as total, COUNT(*) as cnt " +
-                "FROM listing_realtor_organization lro " +
-                "INNER JOIN listings lst " +
-                "ON lst.guid = lro.listingid " +
-                "GROUP BY lro.individualid) t " +
-                "ON ind.GUID = t.individualid " +
-                "ORDER BY average DESC";
-
-            /*
-            SELECT ID, CAST(replace(replace(ifnull(Amount,0),',',''),'$','') AS decimal(10)) as AmountFloat
-            FROM Table1
-            WHERE CAST(replace(replace(ifnull(Amount,0),',',''),'$','') AS decimal(10)) > 0
-            */
 
             const { realtorGuid } = request.params
-            const getOperation = Knex.raw(fancyQuery)
+            const getOperation = Knex.select().from('fancy')
                 .then((results) => {
                     if (!results || results.length === 0) {
                         reply({
