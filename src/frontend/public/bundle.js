@@ -26642,10 +26642,182 @@ exports.default = Realtor;
 
 /***/ }),
 /* 231 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-throw new Error("Module build failed: SyntaxError: C:/Users/Rogan/kl/keylo/src/frontend/scripts/components/realtor/Pagination.js: Expected corresponding JSX closing tag for <span> (62:59)\n\n\u001b[0m \u001b[90m 60 | \u001b[39m                    }\n \u001b[90m 61 | \u001b[39m                \u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mButtonGroup\u001b[39m\u001b[33m>\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 62 | \u001b[39m                \u001b[33m<\u001b[39m\u001b[33mspan\u001b[39m className\u001b[33m=\u001b[39m\u001b[32m\"Spacer\"\u001b[39m\u001b[33m>\u001b[39m\u001b[33m&\u001b[39mnbsp\u001b[33m;\u001b[39m\u001b[33m.\u001b[39m \u001b[33m.\u001b[39m \u001b[33m.\u001b[39m \u001b[33m&\u001b[39mnbsp\u001b[33m;\u001b[39m\u001b[33m<\u001b[39m\u001b[33m/\u001b[39m\u001b[33mspacer\u001b[39m\u001b[33m>\u001b[39m\n \u001b[90m    | \u001b[39m                                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 63 | \u001b[39m                    \u001b[33m<\u001b[39m\u001b[33mButtonGroup\u001b[39m\u001b[33m>\u001b[39m\n \u001b[90m 64 | \u001b[39m                    {\n \u001b[90m 65 | \u001b[39m                        buttons\u001b[33m.\u001b[39mslice(pages \u001b[33m-\u001b[39m \u001b[35m3\u001b[39m\u001b[33m,\u001b[39m pages)\u001b[33m.\u001b[39mmap((button) \u001b[33m=>\u001b[39m\u001b[0m\n");
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _reactBootstrap = __webpack_require__(273);
+
+var Pagination = function Pagination(_ref) {
+    var first = _ref.first,
+        last = _ref.last,
+        total = _ref.total,
+        current = _ref.current,
+        pages = _ref.pages,
+        perPage = _ref.perPage,
+        pageHandler = _ref.pageHandler,
+        perPageHandler = _ref.perPageHandler;
+
+
+    var buttons = [];
+
+    for (var i = 1; i <= pages; i++) {
+        buttons.push(i);
+    }
+
+    if (current > pages) {
+        current = pages;
+    }
+
+    if (buttons.length < 15) {
+        return React.createElement(
+            "div",
+            { className: "Pagination" },
+            React.createElement(
+                "span",
+                null,
+                "Showing ",
+                first,
+                " to ",
+                last,
+                " of ",
+                total,
+                React.createElement("br", null),
+                React.createElement("br", null)
+            ),
+            React.createElement(
+                _reactBootstrap.ButtonGroup,
+                null,
+                buttons.map(function (button) {
+                    return React.createElement(
+                        _reactBootstrap.Button,
+                        { active: current === button, key: button, onClick: function onClick() {
+                                return pageHandler(button);
+                            } },
+                        button
+                    );
+                })
+            )
+        );
+    } else {
+        var innerLow = 0;
+        var innerHigh = 0;
+        if (current < 7) {
+            innerLow = 3;
+        } else if (current > pages - 6) {
+            innerLow = pages - 8;
+        } else {
+            innerLow = current - 3;
+        }
+
+        innerHigh = innerLow + 5;
+
+        return React.createElement(
+            "div",
+            { className: "Pagination" },
+            React.createElement(
+                "span",
+                null,
+                "Showing ",
+                first,
+                " to ",
+                last,
+                " of ",
+                total,
+                React.createElement("br", null),
+                React.createElement("br", null)
+            ),
+            React.createElement(
+                _reactBootstrap.ButtonGroup,
+                null,
+                buttons.slice(0, 3).map(function (button) {
+                    return React.createElement(
+                        _reactBootstrap.Button,
+                        { active: current === button, key: button, onClick: function onClick() {
+                                return pageHandler(button);
+                            } },
+                        button
+                    );
+                })
+            ),
+            React.createElement(
+                "span",
+                { className: "Spacer" },
+                "\xA0. . . \xA0"
+            ),
+            React.createElement(
+                _reactBootstrap.ButtonGroup,
+                null,
+                buttons.slice(innerLow, innerHigh).map(function (button) {
+                    return React.createElement(
+                        _reactBootstrap.Button,
+                        { active: current === button, key: button, onClick: function onClick() {
+                                return pageHandler(button);
+                            } },
+                        button
+                    );
+                })
+            ),
+            React.createElement(
+                "span",
+                { className: "Spacer" },
+                "\xA0. . . \xA0"
+            ),
+            React.createElement(
+                _reactBootstrap.ButtonGroup,
+                null,
+                buttons.slice(pages - 3, pages).map(function (button) {
+                    return React.createElement(
+                        _reactBootstrap.Button,
+                        { active: current === button, key: button, onClick: function onClick() {
+                                return pageHandler(button);
+                            } },
+                        button
+                    );
+                }),
+                React.createElement(
+                    _reactBootstrap.DropdownButton,
+                    { title: "Records Per Page", id: "bg-nested-dropdown" },
+                    React.createElement(
+                        _reactBootstrap.MenuItem,
+                        { eventKey: "1", active: perPage === 25, onClick: function onClick() {
+                                return perPageHandler(25);
+                            } },
+                        "25"
+                    ),
+                    React.createElement(
+                        _reactBootstrap.MenuItem,
+                        { eventKey: "2", active: perPage === 50, onClick: function onClick() {
+                                return perPageHandler(50);
+                            } },
+                        "50"
+                    ),
+                    React.createElement(
+                        _reactBootstrap.MenuItem,
+                        { eventKey: "3", active: perPage === 75, onClick: function onClick() {
+                                return perPageHandler(75);
+                            } },
+                        "75"
+                    ),
+                    React.createElement(
+                        _reactBootstrap.MenuItem,
+                        { eventKey: "4", active: perPage === 100, onClick: function onClick() {
+                                return perPageHandler(100);
+                            } },
+                        "100"
+                    )
+                )
+            )
+        );
+    }
+};
+
+exports.default = Pagination;
 
 /***/ }),
 /* 232 */
