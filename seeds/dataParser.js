@@ -15,12 +15,11 @@ const Knex = require('knex')({
 function parse(data, i) {
 
   console.log(i);
-
   Knex('listings').select('guid').where({
     'listingid': data[i].Id
   }).orWhere({ 'mlsnumber': data[i].MlsNumber }).then((lst) => {
-    if (lst[0]) {
-      console.log('dupe found' + data[i].MlsNumber);
+    if (lst[0] || !data[i].Property.Price) {
+      console.log('dupe found ' + data[i].MlsNumber);
       if (data[++i]) {
         parse(data, i);
       } else {

@@ -12,7 +12,7 @@ const RealtorDetailRow = ({ id, guid, listingid, mlsnumber, publicremarks, bathr
             </Col>
             <Col md={2}>
                 <div>
-                    <div>{price}</div>
+                    <div>${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
                     <div>{sizeinterior}</div>
                     <div>{bedrooms} Beds {bathroomtotal} Baths</div>
                     <div>{add[0]}</div>

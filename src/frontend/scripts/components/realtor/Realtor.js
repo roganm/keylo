@@ -96,10 +96,10 @@ class Realtor extends Component {
     sortFuncCount(a, b) {
         var o1 = a.cnt;
         var o2 = b.cnt;
-      
+
         var p1 = a.average;
         var p2 = b.average;
-      
+
         if (o1 < o2) return -1;
         if (o1 > o2) return 1;
         if (p1 < p2) return -1;
@@ -110,10 +110,24 @@ class Realtor extends Component {
     sortFuncAvg(a, b) {
         var o1 = a.average;
         var o2 = b.average;
-      
+
         var p1 = a.cnt;
         var p2 = b.cnt;
-      
+
+        if (o1 < o2) return -1;
+        if (o1 > o2) return 1;
+        if (p1 < p2) return -1;
+        if (p1 > p2) return 1;
+        return 0;
+    }
+
+    sortFuncAvg(a, b) {
+        var o1 = a.average;
+        var o2 = b.average;
+
+        var p1 = a.cnt;
+        var p2 = b.cnt;
+
         if (o1 < o2) return -1;
         if (o1 > o2) return 1;
         if (p1 < p2) return -1;
@@ -130,7 +144,7 @@ class Realtor extends Component {
                 asc: asc,
                 realtors: realtors
             });
-        } else if (sortBy === "average"){
+        } else if (sortBy === "average") {
             console.log("average");
             realtors.sort(this.sortFuncAvg);
             this.setState({
@@ -138,15 +152,22 @@ class Realtor extends Component {
                 sortBy: sortBy,
                 realtors: realtors
             });
-        } else if (sortBy === "count"){
+        } else if (sortBy === "count") {
             realtors.sort(this.sortFuncCount);
             this.setState({
                 asc: true,
                 sortBy: sortBy,
                 realtors: realtors
-        });
-        } else if (sortBy === "name"){
+            });
+        } else if (sortBy === "name") {
             realtors.sort(this.sortFuncName);
+            this.setState({
+                asc: true,
+                sortBy: sortBy,
+                realtors: realtors
+            });
+        } else if (sortBy === "tom") {
+            realtors.sort(this.sortFuncTom);
             this.setState({
                 asc: true,
                 sortBy: sortBy,
@@ -154,7 +175,7 @@ class Realtor extends Component {
             });
         }
 
-        
+
 
     }
 

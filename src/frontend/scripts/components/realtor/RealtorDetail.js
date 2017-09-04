@@ -2,7 +2,12 @@ import RealtorDetailRow from './RealtorDetailRow';
 import { Table, Grid, Row, Col } from 'react-bootstrap';
 
 const RealtorDetail = ({ realtor, org, listings }) => {
-    var add = org.addresstext.split("|")
+    
+    if(org.addresstext) var add = org.addresstext.split("|")
+        else {
+            add[0] = '';
+            add[1] = '';
+        }
 
     return (
         <Grid fluid>

@@ -5,12 +5,13 @@ function numToString(num){
     return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-const RealtorRow = ({ name, guid, average, cnt, handler }) => {
+const RealtorRow = ({ name, guid, average, cnt, avgage, handler }) => {
     return (
         <tr onClick={() => handler(guid)}>
             <td className="DetailName">&nbsp;&nbsp;&nbsp;{name}</td>
             <td><b>{cnt}</b>&nbsp;</td>
             <td>${numToString(average)}</td>
+            <td>{avgage}</td>
         </tr>
     )
 }
